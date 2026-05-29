@@ -26,6 +26,8 @@ void main() async {
 
   // Init local storage
   await Hive.initFlutter();
+  await Hive.openBox<String>('workout_logs');
+  await Hive.openBox<String>('enrollment');
 
   runApp(
     const ProviderScope(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,6 +9,7 @@ import '../../../shared/widgets/fp_card.dart';
 import '../../onboarding/domain/onboarding_models.dart';
 import '../data/programs_data.dart';
 import '../domain/program_model.dart';
+import '../providers/enrollment_provider.dart';
 
 // ── Filter state ─────────────────────────────────────────
 final _filterProvider = StateProvider<_ProgramFilter>((ref) => const _ProgramFilter());
@@ -303,13 +305,16 @@ class _Chip extends StatelessWidget {
 }
 
 // ── Program card ──────────────────────────────────────────
-class _ProgramCard extends StatelessWidget {
+class _ProgramCard extends ConsumerWidget {
   const _ProgramCard({required this.program});
 
   final Program program;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final enrollment = ref.watch(enrollmentProvider);
+    final isEnrolled = enrollment?.programId == program.id;
+
     final levelColor = switch (program.level) {
       ExperienceLevel.beginner     => AppColors.beginnerColor,
       ExperienceLevel.intermediate => AppColors.intermediateColor,
@@ -504,6 +509,62 @@ class _ProgramCard extends StatelessWidget {
                     ],
                   ),
                 ],
+                const SizedBox(height: 12),
+                // ── Enroll / Leave button ──
+                GestureDetector(
+                  onTap: () async {
+                    HapticFeedback.mediumImpact();
+                    if (isEnrolled) {
+                      await ref.read(enrollmentProvider.notifier).unenroll();
+                    } else {
+                      await ref
+                          .read(enrollmentProvider.notifier)
+                          .enroll(program.id);
+                    }
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 11),
+                    decoration: BoxDecoration(
+                      color: isEnrolled
+                          ? Colors.transparent
+                          : AppColors.accent,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: isEnrolled
+                            ? context.border
+                            : AppColors.accent,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          isEnrolled
+                              ? Icons.check_circle_rounded
+                              : Icons.play_arrow_rounded,
+                          color: isEnrolled
+                              ? context.secondaryText
+                              : Colors.black,
+                          size: 16,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          isEnrolled ? 'Active Program' : 'Start Program',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 13,
+                            fontWeight: FontWeight.w800,
+                            color: isEnrolled
+                                ? context.secondaryText
+                                : Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),

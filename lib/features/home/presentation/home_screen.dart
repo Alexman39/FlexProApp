@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/fp_card.dart';
+import '../../programs/data/programs_data.dart';
+import '../../programs/providers/enrollment_provider.dart';
+import '../../workout/data/workout_repository.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final enrollment = ref.watch(enrollmentProvider);
+    final history = ref.watch(workoutHistoryProvider);
+    final enrolledProgram = enrollment != null
+        ? kAllPrograms.where((p) => p.id == enrollment.programId).firstOrNull
+        : null;
+
     return Scaffold(
       backgroundColor: context.bg,
       body: SafeArea(
@@ -54,6 +64,44 @@ class HomeScreen extends StatelessWidget {
                 child: _QuickStats()
                     .animate(delay: 220.ms)
                     .fadeIn(duration: 400.ms),
+              ),
+            ),
+
+            // ── Active program banner ──
+            if (enrolledProgram != null)
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
+                sliver: SliverToBoxAdapter(
+                  child: _ActiveProgramBanner(
+                    programName: enrolledProgram.title,
+                    weekLabel: enrollment!.weekLabel,
+                    dayLabel: enrollment.dayLabel,
+                    completedSessions: enrollment.totalSessions,
+                  ).animate(delay: 200.ms).fadeIn(duration: 300.ms),
+                ),
+              ),
+
+            // ── Quick access row ──
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
+              sliver: SliverToBoxAdapter(
+                child: Row(
+                  children: [
+                    _QuickAccessButton(
+                      icon: Icons.fitness_center_rounded,
+                      label: 'Exercise\nLibrary',
+                      count: '${history.isEmpty ? '' : '${history.length} sessions'}',
+                      onTap: () => context.push(AppRoutes.exerciseLibrary),
+                    ),
+                    const SizedBox(width: 10),
+                    _QuickAccessButton(
+                      icon: Icons.history_rounded,
+                      label: 'Workout\nHistory',
+                      count: history.isEmpty ? 'No sessions' : '${history.length} sessions',
+                      onTap: () => context.push(AppRoutes.workoutHistory),
+                    ),
+                  ],
+                ).animate(delay: 240.ms).fadeIn(duration: 300.ms),
               ),
             ),
 
@@ -504,6 +552,165 @@ class _ProgramRow extends StatelessWidget {
           Icon(Icons.chevron_right_rounded,
               color: context.tertiaryText, size: 20),
         ],
+      ),
+    );
+  }
+}
+
+// ── Active program banner ─────────────────────────────────
+class _ActiveProgramBanner extends StatelessWidget {
+  const _ActiveProgramBanner({
+    required this.programName,
+    required this.weekLabel,
+    required this.dayLabel,
+    required this.completedSessions,
+  });
+
+  final String programName;
+  final String weekLabel;
+  final String dayLabel;
+  final int completedSessions;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: AppColors.accent.withAlpha(12),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.accent.withAlpha(50)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 36, height: 36,
+            decoration: BoxDecoration(
+              color: AppColors.accent.withAlpha(26),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Icon(Icons.flag_rounded,
+                color: AppColors.accent, size: 18),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Active Program',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.accent,
+                    letterSpacing: 0.8,
+                  ),
+                ),
+                const SizedBox(height: 1),
+                Text(
+                  programName,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: context.primaryText,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                weekLabel,
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 12,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.accent,
+                ),
+              ),
+              Text(
+                dayLabel,
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontSize: 11,
+                  color: context.secondaryText,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ── Quick access button ───────────────────────────────────
+class _QuickAccessButton extends StatelessWidget {
+  const _QuickAccessButton({
+    required this.icon,
+    required this.label,
+    required this.count,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final String label;
+  final String count;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: FpCard(
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          child: Row(
+            children: [
+              Container(
+                width: 36, height: 36,
+                decoration: BoxDecoration(
+                  color: AppColors.accentDim,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Icon(icon, color: AppColors.accent, size: 18),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: context.primaryText,
+                        height: 1.2,
+                      ),
+                    ),
+                    if (count.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        count,
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 10,
+                          color: context.tertiaryText,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

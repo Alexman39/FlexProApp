@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:uuid/uuid.dart';
+import '../data/workout_repository.dart';
 import '../domain/models.dart';
+import '../domain/workout_log_model.dart';
 
 // ── Elapsed timer ─────────────────────────────────────────
 final workoutElapsedProvider = StreamProvider.autoDispose<Duration>((ref) async* {
@@ -50,7 +53,45 @@ class WorkoutNotifier extends Notifier<ActiveWorkout?> {
     state = w;
   }
 
-  void finish() {
+  Future<void> finish({String? programId, int? programWeek, int? programDay}) async {
+    final w = state;
+    if (w == null) return;
+
+    final completedExercises = w.exercises
+        .map((we) {
+          final loggedSets = we.sets
+              .where((s) => s.isDone && s.loggedReps != null && s.loggedWeight != null)
+              .map((s) => LoggedSet(
+                    reps: s.loggedReps!,
+                    weight: s.loggedWeight!,
+                    rpe: s.loggedRpe,
+                  ))
+              .toList();
+          if (loggedSets.isEmpty) return null;
+          return LoggedExercise(
+            exerciseId: we.exercise.id,
+            exerciseName: we.exercise.name,
+            sets: loggedSets,
+          );
+        })
+        .whereType<LoggedExercise>()
+        .toList();
+
+    if (completedExercises.isNotEmpty) {
+      final log = WorkoutLog(
+        id: const Uuid().v4(),
+        workoutName: w.title,
+        startedAt: w.startedAt,
+        finishedAt: DateTime.now(),
+        exercises: completedExercises,
+        programId: programId,
+        programWeek: programWeek,
+        programDay: programDay,
+      );
+      await ref.read(workoutRepositoryProvider).save(log);
+      ref.read(workoutHistoryProvider.notifier).refresh();
+    }
+
     state = null;
   }
 }

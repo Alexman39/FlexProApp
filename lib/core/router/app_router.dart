@@ -7,22 +7,28 @@ import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
 import '../../features/programs/presentation/programs_screen.dart';
 import '../../features/workout/presentation/workout_screen.dart';
+import '../../features/workout/presentation/workout_history_screen.dart';
 import '../../features/progress/presentation/progress_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/profile/presentation/paywall_screen.dart';
+import '../../features/exercises/presentation/exercise_library_screen.dart';
+import '../../features/exercises/presentation/exercise_detail_screen.dart';
 import '../../shared/widgets/main_shell.dart';
 
 // ── Route paths ──────────────────────────────────────────
 abstract final class AppRoutes {
-  static const splash      = '/';
-  static const onboarding  = '/onboarding';
-  static const home        = '/home';
-  static const programs    = '/programs';
-  static const workout     = '/workout';
-  static const workoutActive = '/workout/active';
-  static const progress    = '/progress';
-  static const profile     = '/profile';
-  static const paywall     = '/paywall';
+  static const splash          = '/';
+  static const onboarding      = '/onboarding';
+  static const home            = '/home';
+  static const programs        = '/programs';
+  static const workout         = '/workout';
+  static const workoutActive   = '/workout/active';
+  static const workoutHistory  = '/workout/history';
+  static const progress        = '/progress';
+  static const profile         = '/profile';
+  static const paywall         = '/paywall';
+  static const exerciseLibrary = '/exercises';
+  static const exerciseDetail  = '/exercises/:id';
 }
 
 // ── Shell navigation keys ────────────────────────────────
@@ -33,7 +39,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     navigatorKey: _rootKey,
     initialLocation: AppRoutes.splash,
-    debugLogDiagnostics: true,
+    debugLogDiagnostics: false,
 
     routes: [
       // ── Splash (no shell) ──
@@ -76,7 +82,7 @@ final routerProvider = Provider<GoRouter>((ref) {
         ],
       ),
 
-      // ── Active workout overlay (full-screen, no shell) ──
+      // ── Active workout (full-screen, no shell) ──
       GoRoute(
         path: AppRoutes.workoutActive,
         builder: (_, state) {
@@ -85,7 +91,27 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
 
-      // ── Paywall (modal-style, no shell) ──
+      // ── Workout history (full-screen, no shell) ──
+      GoRoute(
+        path: AppRoutes.workoutHistory,
+        builder: (_, __) => const WorkoutHistoryScreen(),
+      ),
+
+      // ── Exercise library (full-screen, no shell) ──
+      GoRoute(
+        path: AppRoutes.exerciseLibrary,
+        builder: (_, __) => const ExerciseLibraryScreen(),
+      ),
+
+      // ── Exercise detail ──
+      GoRoute(
+        path: AppRoutes.exerciseDetail,
+        builder: (_, state) => ExerciseDetailScreen(
+          exerciseId: state.pathParameters['id'] ?? '',
+        ),
+      ),
+
+      // ── Paywall (slide-up modal, no shell) ──
       GoRoute(
         path: AppRoutes.paywall,
         pageBuilder: (context, state) => CustomTransitionPage(
