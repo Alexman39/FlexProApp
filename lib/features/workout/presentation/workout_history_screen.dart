@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
-import '../data/workout_repository.dart';
+import '../data/firestore_workout_repository.dart';
 import '../domain/workout_log_model.dart';
 
 class WorkoutHistoryScreen extends ConsumerWidget {
@@ -14,7 +14,7 @@ class WorkoutHistoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final logs = ref.watch(workoutHistoryProvider);
+    final logs = ref.watch(workoutHistoryStreamProvider).valueOrNull ?? [];
 
     return Scaffold(
       backgroundColor: context.bg,
@@ -162,13 +162,13 @@ class _SummaryStat extends StatelessWidget {
 }
 
 // ── Log card ──────────────────────────────────────────────
-class _LogCard extends ConsumerWidget {
+class _LogCard extends StatelessWidget {
   const _LogCard({required this.log});
 
   final WorkoutLog log;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final dateStr = DateFormat('EEE, MMM d').format(log.startedAt);
     final timeStr = DateFormat('h:mm a').format(log.startedAt);
 

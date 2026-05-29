@@ -7,17 +7,20 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/fp_card.dart';
+import '../../auth/providers/auth_providers.dart';
 import '../../programs/data/programs_data.dart';
 import '../../programs/providers/enrollment_provider.dart';
-import '../../workout/data/workout_repository.dart';
+import '../../workout/data/firestore_workout_repository.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final enrollment = ref.watch(enrollmentProvider);
-    final history = ref.watch(workoutHistoryProvider);
+    final enrollment = ref.watch(enrollmentProvider).valueOrNull;
+    final historyAsync = ref.watch(workoutHistoryStreamProvider);
+    final history = historyAsync.valueOrNull ?? [];
+    final appUser = ref.watch(appUserProvider).valueOrNull;
     final enrolledProgram = enrollment != null
         ? kAllPrograms.where((p) => p.id == enrollment.programId).firstOrNull
         : null;
@@ -30,7 +33,7 @@ class HomeScreen extends ConsumerWidget {
           slivers: [
             // ── Header ──
             SliverToBoxAdapter(
-              child: _HomeHeader()
+              child: _HomeHeader(firstName: appUser?.firstName ?? 'Athlete')
                   .animate()
                   .fadeIn(duration: 400.ms),
             ),
@@ -159,8 +162,18 @@ class HomeScreen extends ConsumerWidget {
 
 // ── Header ────────────────────────────────────────────────
 class _HomeHeader extends StatelessWidget {
+  const _HomeHeader({required this.firstName});
+  final String firstName;
+
   @override
   Widget build(BuildContext context) {
+    final hour = DateTime.now().hour;
+    final greeting = hour < 12
+        ? 'Good morning 👋'
+        : hour < 17
+            ? 'Good afternoon 👋'
+            : 'Good evening 👋';
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
       child: Row(
@@ -170,7 +183,7 @@ class _HomeHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Good morning 👋',
+                  greeting,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 13,
@@ -180,7 +193,7 @@ class _HomeHeader extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  'Alex',
+                  firstName,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 24,

@@ -1,76 +1,86 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+import '../data/firestore_enrollment_repository.dart';
 import '../domain/enrollment_model.dart';
 
-const _boxName = 'enrollment';
-const _enrollmentKey = 'active';
-
-// ── Repository ────────────────────────────────────────────
-class EnrollmentRepository {
-  Box<String> get _box => Hive.box<String>(_boxName);
+// ── Local Hive fallback (used when not authenticated) ─────
+class _LocalEnrollmentRepository {
+  static const _box = 'enrollment';
+  static const _key = 'active';
 
   ProgramEnrollment? get() {
-    final s = _box.get(_enrollmentKey);
+    final s = Hive.box<String>(_box).get(_key);
     if (s == null) return null;
-    try {
-      return ProgramEnrollment.fromJsonString(s);
-    } catch (_) {
-      return null;
-    }
+    try { return ProgramEnrollment.fromJsonString(s); } catch (_) { return null; }
   }
 
-  Future<void> save(ProgramEnrollment e) async {
-    await _box.put(_enrollmentKey, e.toJsonString());
-  }
+  Future<void> save(ProgramEnrollment e) async =>
+      Hive.box<String>(_box).put(_key, e.toJsonString());
 
-  Future<void> clear() async {
-    await _box.delete(_enrollmentKey);
-  }
+  Future<void> clear() async => Hive.box<String>(_box).delete(_key);
 }
 
-final enrollmentRepositoryProvider =
-    Provider<EnrollmentRepository>((_) => EnrollmentRepository());
+final _localEnrollmentRepoProvider =
+    Provider<_LocalEnrollmentRepository>((_) => _LocalEnrollmentRepository());
 
 // ── Notifier ──────────────────────────────────────────────
-class EnrollmentNotifier extends Notifier<ProgramEnrollment?> {
+class EnrollmentNotifier extends AsyncNotifier<ProgramEnrollment?> {
   @override
-  ProgramEnrollment? build() =>
-      ref.read(enrollmentRepositoryProvider).get();
+  Future<ProgramEnrollment?> build() async {
+    final firestoreRepo = ref.watch(firestoreEnrollmentRepoProvider);
+    if (firestoreRepo != null) {
+      return firestoreRepo.get();
+    }
+    return ref.read(_localEnrollmentRepoProvider).get();
+  }
 
   Future<void> enroll(String programId) async {
     final enrollment = ProgramEnrollment(
       programId: programId,
       startedAt: DateTime.now(),
     );
-    await ref.read(enrollmentRepositoryProvider).save(enrollment);
-    state = enrollment;
+    final firestoreRepo = ref.read(firestoreEnrollmentRepoProvider);
+    if (firestoreRepo != null) {
+      await firestoreRepo.save(enrollment);
+    } else {
+      await ref.read(_localEnrollmentRepoProvider).save(enrollment);
+    }
+    state = AsyncData(enrollment);
   }
 
   Future<void> unenroll() async {
-    await ref.read(enrollmentRepositoryProvider).clear();
-    state = null;
+    final firestoreRepo = ref.read(firestoreEnrollmentRepoProvider);
+    if (firestoreRepo != null) {
+      await firestoreRepo.clear();
+    } else {
+      await ref.read(_localEnrollmentRepoProvider).clear();
+    }
+    state = const AsyncData(null);
   }
 
   Future<void> completeSession(String logId, {required int daysPerWeek}) async {
-    final e = state;
+    final e = state.valueOrNull;
     if (e == null) return;
 
-    final newIds = [...e.completedSessionIds, logId];
     final newDay = e.currentDay + 1;
     final advanced = newDay >= daysPerWeek;
-
     final updated = e.copyWith(
       currentDay: advanced ? 0 : newDay,
       currentWeek: advanced ? e.currentWeek + 1 : e.currentWeek,
-      completedSessionIds: newIds,
+      completedSessionIds: [...e.completedSessionIds, logId],
     );
 
-    await ref.read(enrollmentRepositoryProvider).save(updated);
-    state = updated;
+    final firestoreRepo = ref.read(firestoreEnrollmentRepoProvider);
+    if (firestoreRepo != null) {
+      await firestoreRepo.save(updated);
+    } else {
+      await ref.read(_localEnrollmentRepoProvider).save(updated);
+    }
+    state = AsyncData(updated);
   }
 }
 
 final enrollmentProvider =
-    NotifierProvider<EnrollmentNotifier, ProgramEnrollment?>(
+    AsyncNotifierProvider<EnrollmentNotifier, ProgramEnrollment?>(
         EnrollmentNotifier.new);

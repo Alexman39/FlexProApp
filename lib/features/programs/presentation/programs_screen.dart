@@ -312,7 +312,7 @@ class _ProgramCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final enrollment = ref.watch(enrollmentProvider);
+    final enrollment = ref.watch(enrollmentProvider).valueOrNull;
     final isEnrolled = enrollment?.programId == program.id;
 
     final levelColor = switch (program.level) {

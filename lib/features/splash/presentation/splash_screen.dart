@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
@@ -24,11 +25,17 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(const Duration(milliseconds: 2400));
     if (!mounted) return;
 
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      context.go(AppRoutes.home);
+      return;
+    }
+
     final prefs = await SharedPreferences.getInstance();
     final hasOnboarded = prefs.getBool('onboarded') ?? false;
 
     if (!mounted) return;
-    context.go(hasOnboarded ? AppRoutes.home : AppRoutes.onboarding);
+    context.go(hasOnboarded ? AppRoutes.login : AppRoutes.onboarding);
   }
 
   @override

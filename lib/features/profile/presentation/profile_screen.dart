@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/fp_card.dart';
+import '../../auth/data/auth_repository.dart';
+import '../../auth/providers/auth_providers.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appUser = ref.watch(appUserProvider).valueOrNull;
     return Scaffold(
       backgroundColor: context.bg,
       body: SafeArea(
@@ -22,9 +26,11 @@ class ProfileScreen extends StatelessWidget {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
-                child: _ProfileHeroCard()
-                    .animate()
-                    .fadeIn(duration: 300.ms),
+                child: _ProfileHeroCard(
+                  name: appUser?.displayName ?? 'Athlete',
+                  email: appUser?.email ?? '',
+                  initials: (appUser?.firstName ?? 'A')[0].toUpperCase(),
+                ).animate().fadeIn(duration: 300.ms),
               ),
             ),
 
@@ -86,7 +92,10 @@ class ProfileScreen extends StatelessWidget {
                         iconBg: const Color(0x26FF4757),
                         label: 'Sign Out',
                         labelColor: AppColors.danger,
-                        onTap: () {},
+                        onTap: () async {
+                          await ref.read(authRepositoryProvider).signOut();
+                          if (context.mounted) context.go(AppRoutes.login);
+                        },
                       ),
                     ],
                   ).animate(delay: 220.ms).fadeIn(),
@@ -143,6 +152,15 @@ class ProfileScreen extends StatelessWidget {
 
 // ── Profile hero card ─────────────────────────────────────
 class _ProfileHeroCard extends StatelessWidget {
+  const _ProfileHeroCard({
+    required this.name,
+    required this.email,
+    required this.initials,
+  });
+  final String name;
+  final String email;
+  final String initials;
+
   @override
   Widget build(BuildContext context) {
     return FpCard(
@@ -162,10 +180,10 @@ class _ProfileHeroCard extends StatelessWidget {
               ),
               border: Border.all(color: AppColors.accent, width: 2),
             ),
-            child: const Center(
+            child: Center(
               child: Text(
-                'A',
-                style: TextStyle(
+                initials,
+                style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 24,
                   fontWeight: FontWeight.w900,
@@ -179,8 +197,8 @@ class _ProfileHeroCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Alex Papadopoulos',
+                Text(
+                  name,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 20,
@@ -190,9 +208,9 @@ class _ProfileHeroCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 3),
-                const Text(
-                  '@alexgains',
-                  style: TextStyle(
+                Text(
+                  email,
+                  style: const TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 13,
                     color: AppColors.accent,

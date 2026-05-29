@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
+import '../data/firestore_workout_repository.dart';
 import '../data/workout_repository.dart';
 import '../domain/models.dart';
 import '../domain/workout_log_model.dart';
@@ -88,8 +89,14 @@ class WorkoutNotifier extends Notifier<ActiveWorkout?> {
         programWeek: programWeek,
         programDay: programDay,
       );
-      await ref.read(workoutRepositoryProvider).save(log);
-      ref.read(workoutHistoryProvider.notifier).refresh();
+      // Save to Firestore (primary) and Hive (local cache)
+      final firestoreRepo = ref.read(firestoreWorkoutRepoProvider);
+      if (firestoreRepo != null) {
+        await firestoreRepo.save(log);
+      } else {
+        await ref.read(workoutRepositoryProvider).save(log);
+        ref.read(workoutHistoryProvider.notifier).refresh();
+      }
     }
 
     state = null;

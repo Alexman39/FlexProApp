@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../features/auth/presentation/auth_screen.dart';
+import '../../features/auth/providers/auth_providers.dart';
 import '../../features/splash/presentation/splash_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
 import '../../features/home/presentation/home_screen.dart';
@@ -19,6 +21,7 @@ import '../../shared/widgets/main_shell.dart';
 abstract final class AppRoutes {
   static const splash          = '/';
   static const onboarding      = '/onboarding';
+  static const login           = '/login';
   static const home            = '/home';
   static const programs        = '/programs';
   static const workout         = '/workout';
@@ -35,11 +38,26 @@ abstract final class AppRoutes {
 final _rootKey  = GlobalKey<NavigatorState>(debugLabel: 'root');
 final _shellKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
+// Protected shell routes — require auth
+const _protectedPrefixes = ['/home', '/programs', '/workout', '/progress', '/profile', '/exercises', '/paywall'];
+
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
     navigatorKey: _rootKey,
     initialLocation: AppRoutes.splash,
     debugLogDiagnostics: false,
+
+    redirect: (context, state) {
+      final loc = state.matchedLocation;
+      final needsAuth = _protectedPrefixes.any((p) => loc.startsWith(p));
+      if (!needsAuth) return null;
+
+      final authState = ref.read(authStateChangesProvider);
+      // Still loading — let splash handle it
+      if (authState.isLoading) return AppRoutes.splash;
+      if (authState.value == null) return AppRoutes.login;
+      return null;
+    },
 
     routes: [
       // ── Splash (no shell) ──
@@ -52,6 +70,12 @@ final routerProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: AppRoutes.onboarding,
         builder: (_, __) => const OnboardingScreen(),
+      ),
+
+      // ── Login / Register (no shell) ──
+      GoRoute(
+        path: AppRoutes.login,
+        builder: (_, __) => const AuthScreen(),
       ),
 
       // ── Main app shell (bottom nav) ──

@@ -50,7 +50,7 @@ final exerciseFilterProvider =
 
 final filteredExercisesProvider = Provider<List<ExerciseModel>>((ref) {
   final filter = ref.watch(exerciseFilterProvider);
-  var list = kExerciseDatabase;
+  var list = kExerciseDatabase.toList();
 
   if (filter.category != null) {
     list = list.where((e) => e.muscleCategory == filter.category).toList();
