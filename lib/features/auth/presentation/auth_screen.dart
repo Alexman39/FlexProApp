@@ -54,6 +54,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
 
     try {
       final repo = ref.read(authRepositoryProvider);
+      if (repo == null) throw Exception('Auth not available on this platform.');
       if (_mode == _AuthMode.signIn) {
         await repo.signIn(
           email: _emailCtrl.text,
@@ -77,7 +78,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   Future<void> _googleSignIn() async {
     setState(() { _loading = true; _error = null; });
     try {
-      await ref.read(authRepositoryProvider).signInWithGoogle();
+      await ref.read(authRepositoryProvider)?.signInWithGoogle();
       if (mounted) context.go(AppRoutes.home);
     } on UnsupportedError catch (e) {
       setState(() { _error = e.message; });

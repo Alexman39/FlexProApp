@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/firebase_availability.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../auth/providers/auth_providers.dart';
 import '../domain/workout_log_model.dart';
@@ -100,12 +101,12 @@ class FirestoreWorkoutRepository {
 
 final firestoreWorkoutRepoProvider =
     Provider<FirestoreWorkoutRepository?>((ref) {
+  if (!ref.watch(firebaseAvailableProvider)) return null;
   final uid = ref.watch(currentUidProvider);
   if (uid == null) return null;
-  return FirestoreWorkoutRepository(
-    ref.read(firestoreProvider),
-    uid,
-  );
+  final db = ref.read(firestoreProvider);
+  if (db == null) return null;
+  return FirestoreWorkoutRepository(db, uid);
 });
 
 // ── Workout history stream ─────────────────────────────────

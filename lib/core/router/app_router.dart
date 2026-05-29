@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../firebase_availability.dart';
 import '../../features/auth/presentation/auth_screen.dart';
 import '../../features/auth/providers/auth_providers.dart';
 import '../../features/splash/presentation/splash_screen.dart';
@@ -48,12 +49,14 @@ final routerProvider = Provider<GoRouter>((ref) {
     debugLogDiagnostics: false,
 
     redirect: (context, state) {
+      // No auth on platforms where Firebase isn't available (Linux desktop)
+      if (!ref.read(firebaseAvailableProvider)) return null;
+
       final loc = state.matchedLocation;
       final needsAuth = _protectedPrefixes.any((p) => loc.startsWith(p));
       if (!needsAuth) return null;
 
       final authState = ref.read(authStateChangesProvider);
-      // Still loading — let splash handle it
       if (authState.isLoading) return AppRoutes.splash;
       if (authState.value == null) return AppRoutes.login;
       return null;

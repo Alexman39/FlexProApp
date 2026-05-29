@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../core/firebase_availability.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../auth/providers/auth_providers.dart';
 import '../domain/enrollment_model.dart';
@@ -57,10 +58,10 @@ class FirestoreEnrollmentRepository {
 
 final firestoreEnrollmentRepoProvider =
     Provider<FirestoreEnrollmentRepository?>((ref) {
+  if (!ref.watch(firebaseAvailableProvider)) return null;
   final uid = ref.watch(currentUidProvider);
   if (uid == null) return null;
-  return FirestoreEnrollmentRepository(
-    ref.read(firestoreProvider),
-    uid,
-  );
+  final db = ref.read(firestoreProvider);
+  if (db == null) return null;
+  return FirestoreEnrollmentRepository(db, uid);
 });

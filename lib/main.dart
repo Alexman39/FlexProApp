@@ -5,38 +5,45 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'app.dart';
+import 'core/firebase_availability.dart';
 import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Force portrait orientation
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
 
-  // Status bar style (dark icons on light, light icons on dark)
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.light,
     systemNavigationBarColor: Colors.transparent,
   ));
 
-  // Enable edge-to-edge rendering
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
 
-  // Init Firebase
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Firebase is not supported on Linux desktop — skip init gracefully.
+  bool firebaseAvailable = false;
+  try {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+    firebaseAvailable = true;
+  } catch (_) {
+    debugPrint('Firebase unavailable on this platform — running in local mode.');
+  }
 
-  // Init local storage
   await Hive.initFlutter();
   await Hive.openBox<String>('workout_logs');
   await Hive.openBox<String>('enrollment');
 
   runApp(
-    const ProviderScope(
-      child: FlexProApp(),
+    ProviderScope(
+      overrides: [
+        firebaseAvailableProvider.overrideWithValue(firebaseAvailable),
+      ],
+      child: const FlexProApp(),
     ),
   );
 }

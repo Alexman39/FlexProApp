@@ -6,6 +6,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
+import '../../../core/firebase_availability.dart';
 import '../domain/app_user.dart';
 
 class AuthRepository {
@@ -108,14 +109,19 @@ class AuthRepository {
 
 // ── Providers ─────────────────────────────────────────────
 
-final firebaseAuthProvider = Provider<FirebaseAuth>(
-    (_) => FirebaseAuth.instance);
+final firebaseAuthProvider = Provider<FirebaseAuth?>((ref) {
+  if (!ref.watch(firebaseAvailableProvider)) return null;
+  return FirebaseAuth.instance;
+});
 
-final firestoreProvider = Provider<FirebaseFirestore>(
-    (_) => FirebaseFirestore.instance);
+final firestoreProvider = Provider<FirebaseFirestore?>((ref) {
+  if (!ref.watch(firebaseAvailableProvider)) return null;
+  return FirebaseFirestore.instance;
+});
 
-final authRepositoryProvider = Provider<AuthRepository>((ref) =>
-    AuthRepository(
-      ref.read(firebaseAuthProvider),
-      ref.read(firestoreProvider),
-    ));
+final authRepositoryProvider = Provider<AuthRepository?>((ref) {
+  final auth = ref.watch(firebaseAuthProvider);
+  final db = ref.watch(firestoreProvider);
+  if (auth == null || db == null) return null;
+  return AuthRepository(auth, db);
+});

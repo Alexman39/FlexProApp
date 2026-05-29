@@ -93,7 +93,7 @@ class ProfileScreen extends ConsumerWidget {
                         label: 'Sign Out',
                         labelColor: AppColors.danger,
                         onTap: () async {
-                          await ref.read(authRepositoryProvider).signOut();
+                          await ref.read(authRepositoryProvider)?.signOut();
                           if (context.mounted) context.go(AppRoutes.login);
                         },
                       ),
