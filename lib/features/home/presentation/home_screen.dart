@@ -10,6 +10,7 @@ import '../../../shared/widgets/fp_card.dart';
 import '../../auth/providers/auth_providers.dart';
 import '../../programs/data/programs_data.dart';
 import '../../programs/providers/enrollment_provider.dart';
+import '../../programs/providers/todays_workout_provider.dart';
 import '../../workout/data/firestore_workout_repository.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -239,18 +240,29 @@ class _HomeHeader extends StatelessWidget {
 }
 
 // ── Hero workout card ─────────────────────────────────────
-class _HeroWorkoutCard extends StatelessWidget {
+class _HeroWorkoutCard extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final session   = ref.watch(todaysSessionProvider);
+    final program   = ref.watch(activeProgramProvider);
+    final enrollment = ref.watch(enrollmentProvider).valueOrNull;
+
+    final title    = session?.name ?? 'Free Workout';
+    final subtitle = program != null && enrollment != null
+        ? '${program.title}  ·  ${enrollment.weekLabel}  ·  ${enrollment.dayLabel}'
+        : 'No program active — log a freestyle session';
+    final exercises = session?.exercises.length ?? 0;
+    final sets      = session?.totalSets ?? 0;
+    final estMin    = session?.estimatedMinutes ?? 0;
+
     return FpCard(
       gradient: AppColors.heroCardGradient,
       borderColor: AppColors.accent.withAlpha(51),
       padding: const EdgeInsets.all(22),
-      onTap: () => context.go(AppRoutes.workoutActive),
+      onTap: () => context.push(AppRoutes.workoutActive),
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          // Glow blob
           Positioned(
             top: -50, right: -50,
             child: Container(
@@ -266,7 +278,6 @@ class _HeroWorkoutCard extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Label
               Text(
                 'TODAY\'S WORKOUT',
                 style: TextStyle(
@@ -278,9 +289,9 @@ class _HeroWorkoutCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                'Upper Body — Push A',
-                style: TextStyle(
+              Text(
+                title,
+                style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 21,
                   fontWeight: FontWeight.w900,
@@ -290,7 +301,7 @@ class _HeroWorkoutCard extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                'Week 3  ·  PPL Hypertrophy  ·  Day 2 of 5',
+                subtitle,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 13,
@@ -298,20 +309,16 @@ class _HeroWorkoutCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-
-              // Stats row
               Row(
                 children: [
-                  _HeroStat(value: '7',  label: 'Exercises'),
+                  _HeroStat(value: '$exercises', label: 'Exercises'),
                   const SizedBox(width: 24),
-                  _HeroStat(value: '52', label: 'Est. min'),
+                  _HeroStat(value: estMin > 0 ? '~$estMin' : '—', label: 'Est. min'),
                   const SizedBox(width: 24),
-                  _HeroStat(value: '21', label: 'Sets'),
+                  _HeroStat(value: '$sets', label: 'Sets'),
                 ],
               ),
               const SizedBox(height: 22),
-
-              // Start button
               Row(
                 children: [
                   Container(

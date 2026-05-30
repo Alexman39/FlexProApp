@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../data/firestore_workout_repository.dart';
 import '../domain/workout_log_model.dart';
@@ -89,10 +90,16 @@ class WorkoutHistoryScreen extends ConsumerWidget {
                       itemCount: logs.length,
                       itemBuilder: (context, i) => Padding(
                         padding: const EdgeInsets.only(bottom: 10),
-                        child: _LogCard(log: logs[i])
-                            .animate(delay: (i * 30).ms)
-                            .fadeIn(duration: 250.ms)
-                            .slideY(begin: 0.05, curve: Curves.easeOut),
+                        child: GestureDetector(
+                          onTap: () => context.push(
+                            AppRoutes.workoutLogDetail,
+                            extra: logs[i],
+                          ),
+                          child: _LogCard(log: logs[i])
+                              .animate(delay: (i * 30).ms)
+                              .fadeIn(duration: 250.ms)
+                              .slideY(begin: 0.05, curve: Curves.easeOut),
+                        ),
                       ),
                     ),
             ),

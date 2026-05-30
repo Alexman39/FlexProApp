@@ -37,6 +37,7 @@ void main() async {
   await Hive.initFlutter();
   await Hive.openBox<String>('workout_logs');
   await Hive.openBox<String>('enrollment');
+  await Hive.openBox<String>('body_weight');
 
   runApp(
     ProviderScope(

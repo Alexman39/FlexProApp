@@ -9,15 +9,29 @@ import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/fp_button.dart';
 import '../../../shared/widgets/fp_card.dart';
+import '../../programs/providers/enrollment_provider.dart';
+import '../../programs/providers/todays_workout_provider.dart';
 import '../domain/models.dart';
 import '../providers/workout_provider.dart';
 
 /// Entry point in the shell nav — shows today's scheduled workout.
-class WorkoutScreen extends StatelessWidget {
+class WorkoutScreen extends ConsumerWidget {
   const WorkoutScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final session    = ref.watch(todaysSessionProvider);
+    final program    = ref.watch(activeProgramProvider);
+    final enrollment = ref.watch(enrollmentProvider).valueOrNull;
+
+    final title   = session?.name ?? 'Free Workout';
+    final sets     = session?.totalSets ?? 0;
+    final estMin   = session?.estimatedMinutes ?? 0;
+    final exCount  = session?.exercises.length ?? 0;
+    final subtitle = program != null && enrollment != null
+        ? '${program.title}  ·  ${enrollment.weekLabel}'
+        : 'No program active';
+
     return Scaffold(
       backgroundColor: context.bg,
       body: SafeArea(
@@ -54,9 +68,9 @@ class WorkoutScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
-                      'Upper Body — Push A',
-                      style: TextStyle(
+                    Text(
+                      title,
+                      style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 20,
                         fontWeight: FontWeight.w900,
@@ -65,7 +79,9 @@ class WorkoutScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      '7 exercises  ·  ~52 min  ·  21 sets',
+                      session != null
+                          ? '$exCount exercises  ·  ~$estMin min  ·  $sets sets'
+                          : subtitle,
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 13,
@@ -106,7 +122,8 @@ class _WorkoutActiveScreenState extends ConsumerState<WorkoutActiveScreen> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(workoutProvider.notifier).start();
+      final todaysWorkout = ref.read(todaysActiveWorkoutProvider);
+      ref.read(workoutProvider.notifier).start(workout: todaysWorkout);
     });
   }
 
@@ -201,9 +218,26 @@ class _WorkoutActiveScreenState extends ConsumerState<WorkoutActiveScreen> {
     ref.read(restTimerProvider.notifier).start(exercise.restSeconds);
   }
 
-  void _finishWorkout() {
+  Future<void> _finishWorkout() async {
     HapticFeedback.heavyImpact();
-    ref.read(workoutProvider.notifier).finish();
+
+    final enrollment = ref.read(enrollmentProvider).valueOrNull;
+    final program    = ref.read(activeProgramProvider);
+
+    final logId = await ref.read(workoutProvider.notifier).finish(
+      programId:   enrollment?.programId,
+      programWeek: enrollment?.currentWeek,
+      programDay:  enrollment?.currentDay,
+    );
+
+    if (enrollment != null && program != null && logId != null) {
+      await ref.read(enrollmentProvider.notifier).completeSession(
+        logId,
+        daysPerWeek: program.daysPerWeek,
+      );
+    }
+
+    if (!mounted) return;
     showModalBottomSheet(
       context: context,
       backgroundColor: context.surface,

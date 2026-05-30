@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../onboarding/domain/onboarding_models.dart';
 import '../domain/program_model.dart';
+import '../domain/program_session.dart';
 
 final List<Program> kAllPrograms = [
 
@@ -20,6 +21,29 @@ final List<Program> kAllPrograms = [
     rating: 4.8,
     bannerGradient: [Color(0xFF1F1A2E), Color(0xFF130F20)],
     accentColor: Color(0xFF9B59B6),
+    sessions: [
+      ProgramSession(id: 'ffb_a', name: 'Full Body A', exercises: [
+        SessionExercise(exerciseId: 'barbell_back_squat', sets: 3, targetReps: 8, maxReps: 10, rpe: 7, restSeconds: 150),
+        SessionExercise(exerciseId: 'barbell_bench_press', sets: 3, targetReps: 8, maxReps: 10, rpe: 7, restSeconds: 150),
+        SessionExercise(exerciseId: 'barbell_row', sets: 3, targetReps: 8, maxReps: 10, rpe: 7, restSeconds: 150),
+        SessionExercise(exerciseId: 'barbell_ohp', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 120),
+        SessionExercise(exerciseId: 'romanian_deadlift', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 120),
+      ]),
+      ProgramSession(id: 'ffb_b', name: 'Full Body B', exercises: [
+        SessionExercise(exerciseId: 'conventional_deadlift', sets: 3, targetReps: 5, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'incline_dumbbell_press', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 120),
+        SessionExercise(exerciseId: 'pull_up', sets: 3, targetReps: 6, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'lateral_raise_dumbbell', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 90),
+        SessionExercise(exerciseId: 'lunges', sets: 3, targetReps: 10, rpe: 7, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'ffb_c', name: 'Full Body C', exercises: [
+        SessionExercise(exerciseId: 'goblet_squat', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 120),
+        SessionExercise(exerciseId: 'dumbbell_bench_press', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 120),
+        SessionExercise(exerciseId: 'seated_cable_row', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 120),
+        SessionExercise(exerciseId: 'seated_dumbbell_press', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 120),
+        SessionExercise(exerciseId: 'hip_thrust_barbell', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 90),
+      ]),
+    ],
   ),
 
   Program(
@@ -37,6 +61,18 @@ final List<Program> kAllPrograms = [
     rating: 4.7,
     bannerGradient: [Color(0xFF1F2A1A), Color(0xFF0F1A0F)],
     accentColor: Color(0xFF2ECC71),
+    sessions: [
+      ProgramSession(id: 'ss_a', name: 'Workout A', exercises: [
+        SessionExercise(exerciseId: 'barbell_back_squat', sets: 5, targetReps: 5, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'barbell_bench_press', sets: 5, targetReps: 5, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'barbell_row', sets: 5, targetReps: 5, rpe: 8, restSeconds: 180),
+      ]),
+      ProgramSession(id: 'ss_b', name: 'Workout B', exercises: [
+        SessionExercise(exerciseId: 'barbell_back_squat', sets: 5, targetReps: 5, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'barbell_ohp', sets: 5, targetReps: 5, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'conventional_deadlift', sets: 1, targetReps: 5, rpe: 9, restSeconds: 240),
+      ]),
+    ],
   ),
 
   Program(
@@ -54,6 +90,36 @@ final List<Program> kAllPrograms = [
     rating: 4.6,
     bannerGradient: [Color(0xFF1A2035), Color(0xFF0F1525)],
     accentColor: Color(0xFF02E6FF),
+    sessions: [
+      ProgramSession(id: 'br_ua', name: 'Upper A', exercises: [
+        SessionExercise(exerciseId: 'barbell_bench_press', sets: 4, targetReps: 8, maxReps: 10, rpe: 7, restSeconds: 150),
+        SessionExercise(exerciseId: 'barbell_row', sets: 4, targetReps: 8, maxReps: 10, rpe: 7, restSeconds: 150),
+        SessionExercise(exerciseId: 'barbell_ohp', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 120),
+        SessionExercise(exerciseId: 'barbell_curl', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 90),
+        SessionExercise(exerciseId: 'tricep_pushdown_rope', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'br_la', name: 'Lower A', exercises: [
+        SessionExercise(exerciseId: 'barbell_back_squat', sets: 4, targetReps: 8, maxReps: 10, rpe: 7, restSeconds: 150),
+        SessionExercise(exerciseId: 'romanian_deadlift', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 120),
+        SessionExercise(exerciseId: 'leg_press', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 120),
+        SessionExercise(exerciseId: 'lying_leg_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 90),
+        SessionExercise(exerciseId: 'standing_calf_raise', sets: 3, targetReps: 15, maxReps: 20, rpe: 7, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'br_ub', name: 'Upper B', exercises: [
+        SessionExercise(exerciseId: 'incline_barbell_press', sets: 4, targetReps: 8, maxReps: 10, rpe: 7, restSeconds: 150),
+        SessionExercise(exerciseId: 'pull_up', sets: 4, targetReps: 6, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'seated_dumbbell_press', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 120),
+        SessionExercise(exerciseId: 'hammer_curl', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 90),
+        SessionExercise(exerciseId: 'close_grip_bench', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'br_lb', name: 'Lower B', exercises: [
+        SessionExercise(exerciseId: 'conventional_deadlift', sets: 3, targetReps: 5, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'front_squat', sets: 3, targetReps: 8, maxReps: 10, rpe: 7, restSeconds: 150),
+        SessionExercise(exerciseId: 'hip_thrust_barbell', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 120),
+        SessionExercise(exerciseId: 'lunges', sets: 3, targetReps: 10, rpe: 7, restSeconds: 90),
+        SessionExercise(exerciseId: 'leg_extension', sets: 3, targetReps: 15, maxReps: 20, rpe: 7, restSeconds: 60),
+      ]),
+    ],
   ),
 
   // ── INTERMEDIATE ──────────────────────────────────────────
@@ -74,6 +140,58 @@ final List<Program> kAllPrograms = [
     isPremium: true,
     bannerGradient: [Color(0xFF1A2A2E), Color(0xFF0D1F24)],
     accentColor: Color(0xFF02E6FF),
+    sessions: [
+      ProgramSession(id: 'ppl_push_a', name: 'Push A', exercises: [
+        SessionExercise(exerciseId: 'barbell_bench_press', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'incline_dumbbell_press', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'cable_fly_mid', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'barbell_ohp', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'lateral_raise_dumbbell', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'tricep_pushdown_rope', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'overhead_cable_extension', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'ppl_pull_a', name: 'Pull A', exercises: [
+        SessionExercise(exerciseId: 'barbell_row', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'lat_pulldown', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'seated_cable_row', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'face_pull', sets: 3, targetReps: 15, maxReps: 20, rpe: 7, restSeconds: 90),
+        SessionExercise(exerciseId: 'barbell_curl', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'hammer_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'ppl_legs_a', name: 'Legs A', exercises: [
+        SessionExercise(exerciseId: 'barbell_back_squat', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'leg_press', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'romanian_deadlift', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'lying_leg_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'leg_extension', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'standing_calf_raise', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'ppl_push_b', name: 'Push B', exercises: [
+        SessionExercise(exerciseId: 'incline_barbell_press', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'dumbbell_bench_press', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'cable_fly_high_to_low', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'seated_dumbbell_press', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'lateral_raise_cable', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'skullcrusher_ez', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'tricep_dips', sets: 3, targetReps: 10, maxReps: 15, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'ppl_pull_b', name: 'Pull B', exercises: [
+        SessionExercise(exerciseId: 'conventional_deadlift', sets: 3, targetReps: 5, rpe: 8, restSeconds: 240),
+        SessionExercise(exerciseId: 'pull_up', sets: 4, targetReps: 8, maxReps: 12, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'tbar_row', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'cable_pullover', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'ez_bar_curl', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'preacher_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'ppl_legs_b', name: 'Legs B', exercises: [
+        SessionExercise(exerciseId: 'front_squat', sets: 4, targetReps: 6, maxReps: 8, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'hack_squat', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'bulgarian_split_squat', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'nordic_curl', sets: 3, targetReps: 6, maxReps: 10, rpe: 9, restSeconds: 150),
+        SessionExercise(exerciseId: 'hip_thrust_barbell', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'seated_calf_raise', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 60),
+      ]),
+    ],
   ),
 
   Program(
@@ -92,6 +210,40 @@ final List<Program> kAllPrograms = [
     isPremium: true,
     bannerGradient: [Color(0xFF1A2A1A), Color(0xFF0F1A0F)],
     accentColor: Color(0xFF2ECC71),
+    sessions: [
+      ProgramSession(id: 'ulph_upper_power', name: 'Upper Power', exercises: [
+        SessionExercise(exerciseId: 'barbell_bench_press', sets: 5, targetReps: 4, maxReps: 6, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'barbell_row', sets: 5, targetReps: 4, maxReps: 6, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'barbell_ohp', sets: 4, targetReps: 5, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'pull_up', sets: 4, targetReps: 6, maxReps: 8, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'tricep_pushdown_bar', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 90),
+        SessionExercise(exerciseId: 'barbell_curl', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'ulph_lower_power', name: 'Lower Power', exercises: [
+        SessionExercise(exerciseId: 'barbell_back_squat', sets: 5, targetReps: 4, maxReps: 6, rpe: 8, restSeconds: 210),
+        SessionExercise(exerciseId: 'conventional_deadlift', sets: 4, targetReps: 4, maxReps: 5, rpe: 8, restSeconds: 210),
+        SessionExercise(exerciseId: 'romanian_deadlift', sets: 3, targetReps: 8, maxReps: 10, rpe: 7, restSeconds: 150),
+        SessionExercise(exerciseId: 'leg_press', sets: 3, targetReps: 10, maxReps: 12, rpe: 7, restSeconds: 120),
+        SessionExercise(exerciseId: 'standing_calf_raise', sets: 4, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'ulph_upper_hyp', name: 'Upper Hypertrophy', exercises: [
+        SessionExercise(exerciseId: 'incline_barbell_press', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'seated_cable_row', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'arnold_press', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'lat_pulldown', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'lateral_raise_dumbbell', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'dumbbell_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 90),
+        SessionExercise(exerciseId: 'overhead_cable_extension', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'ulph_lower_hyp', name: 'Lower Hypertrophy', exercises: [
+        SessionExercise(exerciseId: 'leg_press', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'romanian_deadlift', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'lying_leg_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'hip_thrust_barbell', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'leg_extension', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'seated_calf_raise', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+      ]),
+    ],
   ),
 
   Program(
@@ -110,6 +262,46 @@ final List<Program> kAllPrograms = [
     isPremium: true,
     bannerGradient: [Color(0xFF1A1A2E), Color(0xFF10102A)],
     accentColor: Color(0xFF3498DB),
+    sessions: [
+      ProgramSession(id: 'bro_chest', name: 'Chest', exercises: [
+        SessionExercise(exerciseId: 'barbell_bench_press', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'incline_barbell_press', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'decline_barbell_press', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'cable_fly_mid', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'chest_dips', sets: 3, targetReps: 10, maxReps: 15, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'bro_back', name: 'Back', exercises: [
+        SessionExercise(exerciseId: 'conventional_deadlift', sets: 4, targetReps: 5, rpe: 8, restSeconds: 210),
+        SessionExercise(exerciseId: 'pull_up', sets: 4, targetReps: 8, maxReps: 12, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'barbell_row', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'lat_pulldown', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'seated_cable_row', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 90),
+        SessionExercise(exerciseId: 'face_pull', sets: 3, targetReps: 15, maxReps: 20, rpe: 7, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'bro_shoulders', name: 'Shoulders', exercises: [
+        SessionExercise(exerciseId: 'barbell_ohp', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'lateral_raise_dumbbell', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'arnold_press', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'front_raise_dumbbell', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 60),
+        SessionExercise(exerciseId: 'reverse_fly_dumbbell', sets: 3, targetReps: 15, maxReps: 20, rpe: 7, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'bro_arms', name: 'Arms', exercises: [
+        SessionExercise(exerciseId: 'barbell_curl', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'hammer_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'ez_bar_curl', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'close_grip_bench', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'tricep_pushdown_rope', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'overhead_cable_extension', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'bro_legs', name: 'Legs', exercises: [
+        SessionExercise(exerciseId: 'barbell_back_squat', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'leg_press', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'romanian_deadlift', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'lying_leg_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'leg_extension', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'standing_calf_raise', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+      ]),
+    ],
   ),
 
   Program(
@@ -128,6 +320,45 @@ final List<Program> kAllPrograms = [
     isPremium: true,
     bannerGradient: [Color(0xFF2A1A1A), Color(0xFF1A0F0F)],
     accentColor: Color(0xFFFF4757),
+    sessions: [
+      ProgramSession(id: 'cut_push', name: 'Push', exercises: [
+        SessionExercise(exerciseId: 'barbell_bench_press', sets: 4, targetReps: 8, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'incline_dumbbell_press', sets: 3, targetReps: 10, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'barbell_ohp', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'lateral_raise_dumbbell', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'tricep_pushdown_rope', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'cable_fly_mid', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'cut_pull', name: 'Pull', exercises: [
+        SessionExercise(exerciseId: 'barbell_row', sets: 4, targetReps: 8, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'lat_pulldown', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'face_pull', sets: 3, targetReps: 15, maxReps: 20, rpe: 7, restSeconds: 60),
+        SessionExercise(exerciseId: 'barbell_curl', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'hammer_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'cut_legs', name: 'Legs', exercises: [
+        SessionExercise(exerciseId: 'barbell_back_squat', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'romanian_deadlift', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'leg_press', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'lying_leg_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'standing_calf_raise', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'cut_upper', name: 'Upper', exercises: [
+        SessionExercise(exerciseId: 'incline_barbell_press', sets: 4, targetReps: 8, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'pull_up', sets: 4, targetReps: 8, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'seated_dumbbell_press', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'seated_cable_row', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'dumbbell_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'tricep_pushdown_bar', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'cut_lower', name: 'Lower', exercises: [
+        SessionExercise(exerciseId: 'conventional_deadlift', sets: 3, targetReps: 5, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'hip_thrust_barbell', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'bulgarian_split_squat', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'leg_extension', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'seated_calf_raise', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+      ]),
+    ],
   ),
 
   // ── ADVANCED ──────────────────────────────────────────────
@@ -148,6 +379,54 @@ final List<Program> kAllPrograms = [
     isPremium: true,
     bannerGradient: [Color(0xFF2A1A1A), Color(0xFF1A0F0F)],
     accentColor: Color(0xFFFF4757),
+    sessions: [
+      ProgramSession(id: 'elite_chest', name: 'Chest & Calves', exercises: [
+        SessionExercise(exerciseId: 'barbell_bench_press', sets: 5, targetReps: 6, maxReps: 8, rpe: 9, restSeconds: 180),
+        SessionExercise(exerciseId: 'incline_dumbbell_press', sets: 4, targetReps: 10, maxReps: 12, rpe: 9, restSeconds: 120),
+        SessionExercise(exerciseId: 'decline_barbell_press', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'cable_fly_mid', sets: 4, targetReps: 12, maxReps: 15, rpe: 9, restSeconds: 90),
+        SessionExercise(exerciseId: 'pec_deck', sets: 3, targetReps: 15, maxReps: 20, rpe: 9, restSeconds: 90),
+        SessionExercise(exerciseId: 'standing_calf_raise', sets: 5, targetReps: 12, maxReps: 15, rpe: 9, restSeconds: 60),
+        SessionExercise(exerciseId: 'seated_calf_raise', sets: 4, targetReps: 15, maxReps: 20, rpe: 9, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'elite_back', name: 'Back & Abs', exercises: [
+        SessionExercise(exerciseId: 'conventional_deadlift', sets: 4, targetReps: 5, rpe: 9, restSeconds: 240),
+        SessionExercise(exerciseId: 'pull_up', sets: 4, targetReps: 10, maxReps: 12, rpe: 9, restSeconds: 150),
+        SessionExercise(exerciseId: 'barbell_row', sets: 4, targetReps: 8, maxReps: 10, rpe: 9, restSeconds: 150),
+        SessionExercise(exerciseId: 'tbar_row', sets: 3, targetReps: 10, maxReps: 12, rpe: 9, restSeconds: 120),
+        SessionExercise(exerciseId: 'lat_pulldown', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'hanging_leg_raise', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'cable_crunch', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'elite_shoulders', name: 'Shoulders', exercises: [
+        SessionExercise(exerciseId: 'barbell_ohp', sets: 5, targetReps: 6, maxReps: 8, rpe: 9, restSeconds: 180),
+        SessionExercise(exerciseId: 'lateral_raise_dumbbell', sets: 5, targetReps: 15, maxReps: 20, rpe: 9, restSeconds: 60),
+        SessionExercise(exerciseId: 'arnold_press', sets: 4, targetReps: 10, maxReps: 12, rpe: 9, restSeconds: 120),
+        SessionExercise(exerciseId: 'reverse_fly_machine', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'front_raise_cable', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'face_pull', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'upright_row', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'elite_arms', name: 'Arms', exercises: [
+        SessionExercise(exerciseId: 'barbell_curl', sets: 4, targetReps: 8, maxReps: 10, rpe: 9, restSeconds: 90),
+        SessionExercise(exerciseId: 'ez_bar_curl', sets: 3, targetReps: 10, maxReps: 12, rpe: 9, restSeconds: 90),
+        SessionExercise(exerciseId: 'preacher_curl', sets: 3, targetReps: 10, maxReps: 12, rpe: 9, restSeconds: 90),
+        SessionExercise(exerciseId: 'hammer_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'close_grip_bench', sets: 4, targetReps: 8, maxReps: 10, rpe: 9, restSeconds: 120),
+        SessionExercise(exerciseId: 'skullcrusher_ez', sets: 3, targetReps: 10, maxReps: 12, rpe: 9, restSeconds: 90),
+        SessionExercise(exerciseId: 'overhead_cable_extension', sets: 3, targetReps: 12, maxReps: 15, rpe: 9, restSeconds: 90),
+        SessionExercise(exerciseId: 'tricep_pushdown_rope', sets: 3, targetReps: 15, maxReps: 20, rpe: 9, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'elite_legs', name: 'Legs', exercises: [
+        SessionExercise(exerciseId: 'barbell_back_squat', sets: 5, targetReps: 6, maxReps: 8, rpe: 9, restSeconds: 210),
+        SessionExercise(exerciseId: 'leg_press', sets: 4, targetReps: 12, maxReps: 15, rpe: 9, restSeconds: 150),
+        SessionExercise(exerciseId: 'hack_squat', sets: 3, targetReps: 10, maxReps: 12, rpe: 9, restSeconds: 150),
+        SessionExercise(exerciseId: 'romanian_deadlift', sets: 4, targetReps: 10, maxReps: 12, rpe: 9, restSeconds: 150),
+        SessionExercise(exerciseId: 'lying_leg_curl', sets: 4, targetReps: 12, maxReps: 15, rpe: 9, restSeconds: 90),
+        SessionExercise(exerciseId: 'leg_extension', sets: 3, targetReps: 15, maxReps: 20, rpe: 9, restSeconds: 90),
+        SessionExercise(exerciseId: 'hip_thrust_barbell', sets: 3, targetReps: 12, maxReps: 15, rpe: 9, restSeconds: 90),
+      ]),
+    ],
   ),
 
   Program(
@@ -166,6 +445,55 @@ final List<Program> kAllPrograms = [
     isPremium: true,
     bannerGradient: [Color(0xFF1A2A2E), Color(0xFF0D1F24)],
     accentColor: Color(0xFF02E6FF),
+    sessions: [
+      ProgramSession(id: 'appl_push_a', name: 'Push A', exercises: [
+        SessionExercise(exerciseId: 'barbell_bench_press', sets: 5, targetReps: 6, maxReps: 8, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'incline_barbell_press', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'cable_fly_mid', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'barbell_ohp', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'lateral_raise_cable', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'skullcrusher_ez', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'appl_pull_a', name: 'Pull A', exercises: [
+        SessionExercise(exerciseId: 'conventional_deadlift', sets: 4, targetReps: 4, maxReps: 6, rpe: 8, restSeconds: 240),
+        SessionExercise(exerciseId: 'pull_up', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'barbell_row', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'face_pull', sets: 4, targetReps: 15, maxReps: 20, rpe: 7, restSeconds: 60),
+        SessionExercise(exerciseId: 'ez_bar_curl', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'hammer_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'appl_legs_a', name: 'Legs A', exercises: [
+        SessionExercise(exerciseId: 'barbell_back_squat', sets: 5, targetReps: 6, maxReps: 8, rpe: 8, restSeconds: 210),
+        SessionExercise(exerciseId: 'romanian_deadlift', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'leg_press', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'lying_leg_curl', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'standing_calf_raise', sets: 5, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'appl_push_b', name: 'Push B', exercises: [
+        SessionExercise(exerciseId: 'incline_dumbbell_press', sets: 5, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'dumbbell_bench_press', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'cable_fly_low_to_high', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'seated_dumbbell_press', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'lateral_raise_machine', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'overhead_cable_extension', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'appl_pull_b', name: 'Pull B', exercises: [
+        SessionExercise(exerciseId: 'tbar_row', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'lat_pulldown', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'single_arm_dumbbell_row', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'cable_pullover', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'preacher_curl', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'incline_dumbbell_curl', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'appl_legs_b', name: 'Legs B', exercises: [
+        SessionExercise(exerciseId: 'front_squat', sets: 4, targetReps: 6, maxReps: 8, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'hack_squat', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'nordic_curl', sets: 3, targetReps: 6, maxReps: 8, rpe: 9, restSeconds: 150),
+        SessionExercise(exerciseId: 'hip_thrust_barbell', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'leg_extension', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'seated_calf_raise', sets: 5, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+      ]),
+    ],
   ),
 
   Program(
@@ -184,6 +512,44 @@ final List<Program> kAllPrograms = [
     isPremium: true,
     bannerGradient: [Color(0xFF1F1A2E), Color(0xFF130F20)],
     accentColor: Color(0xFF9B59B6),
+    sessions: [
+      ProgramSession(id: 'pb_bench', name: 'Bench & Chest', exercises: [
+        SessionExercise(exerciseId: 'barbell_bench_press', sets: 5, targetReps: 3, maxReps: 5, rpe: 9, restSeconds: 240),
+        SessionExercise(exerciseId: 'close_grip_bench', sets: 4, targetReps: 6, maxReps: 8, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'incline_dumbbell_press', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'cable_fly_mid', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'tricep_pushdown_rope', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'pb_deadlift', name: 'Deadlift & Back', exercises: [
+        SessionExercise(exerciseId: 'conventional_deadlift', sets: 5, targetReps: 3, maxReps: 5, rpe: 9, restSeconds: 300),
+        SessionExercise(exerciseId: 'rack_pull', sets: 4, targetReps: 5, rpe: 8, restSeconds: 210),
+        SessionExercise(exerciseId: 'barbell_row', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'lat_pulldown', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'barbell_curl', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'pb_squat', name: 'Squat & Legs', exercises: [
+        SessionExercise(exerciseId: 'barbell_back_squat', sets: 5, targetReps: 3, maxReps: 5, rpe: 9, restSeconds: 300),
+        SessionExercise(exerciseId: 'front_squat', sets: 3, targetReps: 5, maxReps: 6, rpe: 8, restSeconds: 210),
+        SessionExercise(exerciseId: 'leg_press', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'romanian_deadlift', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'standing_calf_raise', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'pb_ohp', name: 'OHP & Shoulders', exercises: [
+        SessionExercise(exerciseId: 'barbell_ohp', sets: 5, targetReps: 4, maxReps: 6, rpe: 9, restSeconds: 210),
+        SessionExercise(exerciseId: 'seated_dumbbell_press', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'lateral_raise_dumbbell', sets: 5, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'face_pull', sets: 4, targetReps: 15, maxReps: 20, rpe: 7, restSeconds: 60),
+        SessionExercise(exerciseId: 'barbell_shrug', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'pb_accessories', name: 'Arms & Accessories', exercises: [
+        SessionExercise(exerciseId: 'barbell_curl', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'hammer_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'skullcrusher_ez', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'overhead_cable_extension', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'face_pull', sets: 3, targetReps: 20, rpe: 7, restSeconds: 60),
+        SessionExercise(exerciseId: 'hanging_leg_raise', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 60),
+      ]),
+    ],
   ),
 
   Program(
@@ -202,6 +568,56 @@ final List<Program> kAllPrograms = [
     isPremium: true,
     bannerGradient: [Color(0xFF2A2A1A), Color(0xFF1A1A0F)],
     accentColor: Color(0xFFF39C12),
+    sessions: [
+      ProgramSession(id: 'arnold_cb_a', name: 'Chest & Back A', exercises: [
+        SessionExercise(exerciseId: 'barbell_bench_press', sets: 5, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'barbell_row', sets: 5, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'incline_barbell_press', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'pull_up', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'dumbbell_fly', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'tbar_row', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+      ]),
+      ProgramSession(id: 'arnold_sa_a', name: 'Shoulders & Arms A', exercises: [
+        SessionExercise(exerciseId: 'barbell_ohp', sets: 5, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'lateral_raise_dumbbell', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'barbell_curl', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'skullcrusher_barbell', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'hammer_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'tricep_pushdown_rope', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'arnold_legs_a', name: 'Legs A', exercises: [
+        SessionExercise(exerciseId: 'barbell_back_squat', sets: 5, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'leg_press', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'romanian_deadlift', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'lying_leg_curl', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'leg_extension', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'standing_calf_raise', sets: 5, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'arnold_cb_b', name: 'Chest & Back B', exercises: [
+        SessionExercise(exerciseId: 'incline_dumbbell_press', sets: 5, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'lat_pulldown', sets: 5, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'decline_barbell_press', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'seated_cable_row', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'cable_fly_low_to_high', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'face_pull', sets: 3, targetReps: 15, maxReps: 20, rpe: 7, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'arnold_sa_b', name: 'Shoulders & Arms B', exercises: [
+        SessionExercise(exerciseId: 'arnold_press', sets: 5, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'front_raise_dumbbell', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 60),
+        SessionExercise(exerciseId: 'ez_bar_curl', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'close_grip_bench', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'concentration_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'overhead_dumbbell_extension', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'arnold_legs_b', name: 'Legs B', exercises: [
+        SessionExercise(exerciseId: 'front_squat', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 180),
+        SessionExercise(exerciseId: 'hack_squat', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'hip_thrust_barbell', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'nordic_curl', sets: 3, targetReps: 6, maxReps: 10, rpe: 9, restSeconds: 150),
+        SessionExercise(exerciseId: 'lunges', sets: 3, targetReps: 10, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'seated_calf_raise', sets: 5, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+      ]),
+    ],
   ),
 
   Program(
@@ -221,5 +637,53 @@ final List<Program> kAllPrograms = [
     isPremium: true,
     bannerGradient: [Color(0xFF2A1A2A), Color(0xFF1A0F1A)],
     accentColor: Color(0xFFFF4757),
+    sessions: [
+      ProgramSession(id: 'cp_push', name: 'Push', exercises: [
+        SessionExercise(exerciseId: 'barbell_bench_press', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'incline_dumbbell_press', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'lateral_raise_dumbbell', sets: 5, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'barbell_ohp', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'tricep_pushdown_rope', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'cable_fly_high_to_low', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'cp_pull', name: 'Pull', exercises: [
+        SessionExercise(exerciseId: 'barbell_row', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'lat_pulldown', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'face_pull', sets: 4, targetReps: 15, maxReps: 20, rpe: 7, restSeconds: 60),
+        SessionExercise(exerciseId: 'seated_cable_row', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'barbell_curl', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'hammer_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'cp_legs_a', name: 'Legs A', exercises: [
+        SessionExercise(exerciseId: 'barbell_back_squat', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'leg_press', sets: 4, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'romanian_deadlift', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'lying_leg_curl', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'leg_extension', sets: 3, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'cp_upper', name: 'Upper', exercises: [
+        SessionExercise(exerciseId: 'incline_barbell_press', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'pull_up', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'arnold_press', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'tbar_row', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'ez_bar_curl', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'overhead_cable_extension', sets: 3, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 90),
+      ]),
+      ProgramSession(id: 'cp_legs_b', name: 'Legs B', exercises: [
+        SessionExercise(exerciseId: 'front_squat', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
+        SessionExercise(exerciseId: 'hip_thrust_barbell', sets: 4, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'bulgarian_split_squat', sets: 3, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 90),
+        SessionExercise(exerciseId: 'nordic_curl', sets: 3, targetReps: 8, maxReps: 10, rpe: 9, restSeconds: 120),
+        SessionExercise(exerciseId: 'standing_calf_raise', sets: 5, targetReps: 12, maxReps: 15, rpe: 8, restSeconds: 60),
+      ]),
+      ProgramSession(id: 'cp_shoulders', name: 'Shoulders', exercises: [
+        SessionExercise(exerciseId: 'barbell_ohp', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),
+        SessionExercise(exerciseId: 'lateral_raise_cable', sets: 5, targetReps: 15, maxReps: 20, rpe: 8, restSeconds: 60),
+        SessionExercise(exerciseId: 'reverse_fly_machine', sets: 4, targetReps: 15, maxReps: 20, rpe: 7, restSeconds: 60),
+        SessionExercise(exerciseId: 'front_raise_cable', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 60),
+        SessionExercise(exerciseId: 'upright_row', sets: 3, targetReps: 12, maxReps: 15, rpe: 7, restSeconds: 90),
+        SessionExercise(exerciseId: 'face_pull', sets: 4, targetReps: 20, rpe: 7, restSeconds: 60),
+      ]),
+    ],
   ),
 ];

@@ -54,9 +54,9 @@ class WorkoutNotifier extends Notifier<ActiveWorkout?> {
     state = w;
   }
 
-  Future<void> finish({String? programId, int? programWeek, int? programDay}) async {
+  Future<String?> finish({String? programId, int? programWeek, int? programDay}) async {
     final w = state;
-    if (w == null) return;
+    if (w == null) return null;
 
     final completedExercises = w.exercises
         .map((we) {
@@ -78,9 +78,11 @@ class WorkoutNotifier extends Notifier<ActiveWorkout?> {
         .whereType<LoggedExercise>()
         .toList();
 
+    String? logId;
     if (completedExercises.isNotEmpty) {
+      logId = const Uuid().v4();
       final log = WorkoutLog(
-        id: const Uuid().v4(),
+        id: logId,
         workoutName: w.title,
         startedAt: w.startedAt,
         finishedAt: DateTime.now(),
@@ -89,7 +91,6 @@ class WorkoutNotifier extends Notifier<ActiveWorkout?> {
         programWeek: programWeek,
         programDay: programDay,
       );
-      // Save to Firestore (primary) and Hive (local cache)
       final firestoreRepo = ref.read(firestoreWorkoutRepoProvider);
       if (firestoreRepo != null) {
         await firestoreRepo.save(log);
@@ -100,6 +101,7 @@ class WorkoutNotifier extends Notifier<ActiveWorkout?> {
     }
 
     state = null;
+    return logId;
   }
 }
 

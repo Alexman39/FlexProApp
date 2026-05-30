@@ -90,6 +90,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   }
 
   String _friendlyError(String raw) {
+    debugPrint('AUTH ERROR: $raw');
     if (raw.contains('user-not-found') || raw.contains('wrong-password') ||
         raw.contains('invalid-credential')) {
       return 'Incorrect email or password.';
@@ -100,7 +101,16 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     if (raw.contains('weak-password')) return 'Password must be at least 6 characters.';
     if (raw.contains('invalid-email')) return 'Please enter a valid email address.';
     if (raw.contains('network')) return 'Network error. Check your connection.';
-    return 'Something went wrong. Please try again.';
+    if (raw.contains('operation-not-allowed')) {
+      return 'This sign-in method is not enabled. Enable it in Firebase Console → Authentication → Sign-in method.';
+    }
+    if (raw.contains('permission-denied')) {
+      return 'Account created but profile save failed. Check Firestore security rules.';
+    }
+    if (raw.contains('configuration-not-found') || raw.contains('ApiException: 10')) {
+      return 'Google Sign-In is not configured. Add your SHA-1 fingerprint to Firebase Console.';
+    }
+    return 'Error: $raw';
   }
 
   @override

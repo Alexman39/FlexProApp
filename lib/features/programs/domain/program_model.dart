@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../onboarding/domain/onboarding_models.dart';
+import 'program_session.dart';
 
 enum ProgramSplit { fullBody, upperLower, ppl, bro, arnold, custom }
 
@@ -23,6 +24,7 @@ class Program {
     this.isPremium = false,
     this.bannerGradient,
     this.accentColor,
+    this.sessions = const [],
   });
 
   final String id;
@@ -41,6 +43,7 @@ class Program {
   final bool isPremium;
   final List<Color>? bannerGradient;
   final Color? accentColor;
+  final List<ProgramSession> sessions;
 
   String get levelLabel => switch (level) {
     ExperienceLevel.beginner     => 'Beginner',
