@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../core/firebase_availability.dart';
 import '../domain/app_user.dart';
@@ -32,6 +33,7 @@ class AuthRepository {
     );
     await cred.user!.updateDisplayName(displayName.trim());
     await _createUserDocument(cred.user!, displayName: displayName.trim());
+    await _identifyRevenueCat(cred.user!.uid);
   }
 
   // ── Sign in ────────────────────────────────────────────
@@ -40,10 +42,11 @@ class AuthRepository {
     required String email,
     required String password,
   }) async {
-    await _auth.signInWithEmailAndPassword(
+    final cred = await _auth.signInWithEmailAndPassword(
       email: email.trim(),
       password: password,
     );
+    await _identifyRevenueCat(cred.user!.uid);
   }
 
   // ── Google sign in ─────────────────────────────────────
@@ -68,6 +71,7 @@ class AuthRepository {
     if (cred.additionalUserInfo?.isNewUser == true) {
       await _createUserDocument(cred.user!);
     }
+    await _identifyRevenueCat(cred.user!.uid);
   }
 
   // ── Sign out ───────────────────────────────────────────
@@ -75,6 +79,11 @@ class AuthRepository {
   Future<void> signOut() async {
     await GoogleSignIn().signOut().catchError((_) {});
     await _auth.signOut();
+    try { await Purchases.logOut(); } catch (_) {}
+  }
+
+  Future<void> _identifyRevenueCat(String uid) async {
+    try { await Purchases.logIn(uid); } catch (_) {}
   }
 
   // ── Helpers ────────────────────────────────────────────

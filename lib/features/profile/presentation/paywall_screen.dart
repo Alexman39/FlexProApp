@@ -1,29 +1,116 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/fp_button.dart';
+import '../../subscription/providers/subscription_provider.dart';
 
-class PaywallScreen extends StatefulWidget {
+class PaywallScreen extends ConsumerStatefulWidget {
   const PaywallScreen({super.key});
 
   @override
-  State<PaywallScreen> createState() => _PaywallScreenState();
+  ConsumerState<PaywallScreen> createState() => _PaywallScreenState();
 }
 
-class _PaywallScreenState extends State<PaywallScreen> {
-  int _selectedPlan = 1; // 0=monthly, 1=annual
+class _PaywallScreenState extends ConsumerState<PaywallScreen> {
+  int _selectedPlan = 1; // 0=monthly 1=annual
+  bool _loading = false;
+  String? _error;
+
+  Package? get _selectedPackage {
+    final offerings = ref.read(offeringsProvider).valueOrNull;
+    final current = offerings?.current;
+    if (current == null) return null;
+    final packages = current.availablePackages;
+    if (packages.isEmpty) return null;
+    if (_selectedPlan == 1) {
+      return packages.firstWhere(
+        (p) => p.packageType == PackageType.annual,
+        orElse: () => packages.last,
+      );
+    }
+    return packages.firstWhere(
+      (p) => p.packageType == PackageType.monthly,
+      orElse: () => packages.first,
+    );
+  }
+
+  Future<void> _purchase() async {
+    final package = _selectedPackage;
+    if (package == null) {
+      setState(() => _error = 'No products available yet. Check back soon.');
+      return;
+    }
+    HapticFeedback.mediumImpact();
+    setState(() { _loading = true; _error = null; });
+    try {
+      final isPremium =
+          await ref.read(subscriptionProvider.notifier).purchase(package);
+      if (!mounted) return;
+      if (isPremium) {
+        HapticFeedback.heavyImpact();
+        context.pop();
+      }
+    } catch (e) {
+      setState(() => _error = 'Purchase failed. Please try again.');
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
+
+  Future<void> _restore() async {
+    setState(() { _loading = true; _error = null; });
+    try {
+      final restored =
+          await ref.read(subscriptionProvider.notifier).restorePurchases();
+      if (!mounted) return;
+      if (restored) {
+        HapticFeedback.heavyImpact();
+        context.pop();
+      } else {
+        setState(() => _error = 'No previous purchases found.');
+      }
+    } catch (_) {
+      setState(() => _error = 'Restore failed. Please try again.');
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final offerings = ref.watch(offeringsProvider);
+    final packages = offerings.valueOrNull?.current?.availablePackages ?? [];
+    final hasProducts = packages.isNotEmpty;
+
+    String monthlyPrice = '€14.99';
+    String annualPrice  = '€89.99';
+    String annualMonthly = '€7.50/mo';
+
+    if (hasProducts) {
+      final monthly = packages.firstWhere(
+        (p) => p.packageType == PackageType.monthly,
+        orElse: () => packages.first,
+      );
+      final annual = packages.firstWhere(
+        (p) => p.packageType == PackageType.annual,
+        orElse: () => packages.last,
+      );
+      monthlyPrice = monthly.storeProduct.priceString;
+      annualPrice  = annual.storeProduct.priceString;
+    }
+
     return Scaffold(
       backgroundColor: context.bg,
       body: SafeArea(
         child: Column(
           children: [
-            // ── Close button ──
+            // ── Close ──
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
               child: Row(
@@ -49,21 +136,34 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       ),
                     ),
                   ),
+                  const Spacer(),
+                  GestureDetector(
+                    onTap: _loading ? null : _restore,
+                    child: Text(
+                      'Restore',
+                      style: TextStyle(
+                        fontFamily: 'Inter',
+                        fontSize: 13,
+                        fontWeight: FontWeight.w600,
+                        color: context.tertiaryText,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
 
-            // ── Scrollable content ──
+            // ── Content ──
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
                 padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
                 child: Column(
                   children: [
-                    // Hero
                     const Text('⚡', style: TextStyle(fontSize: 56))
                         .animate()
-                        .scale(begin: const Offset(0.6, 0.6), curve: Curves.easeOutBack)
+                        .scale(begin: const Offset(0.6, 0.6),
+                            curve: Curves.easeOutBack)
                         .fadeIn(),
                     const SizedBox(height: 16),
 
@@ -125,7 +225,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
                         Expanded(
                           child: _PlanCard(
                             name: 'Monthly',
-                            price: '14.99',
+                            price: monthlyPrice,
                             period: '/month',
                             isSelected: _selectedPlan == 0,
                             onTap: () => setState(() => _selectedPlan = 0),
@@ -135,9 +235,9 @@ class _PaywallScreenState extends State<PaywallScreen> {
                         Expanded(
                           child: _PlanCard(
                             name: 'Annual',
-                            price: '89.99',
+                            price: annualPrice,
                             period: '/year',
-                            savings: 'Save 50%  ·  €7.50/mo',
+                            savings: 'Save 50%  ·  $annualMonthly',
                             isBestValue: true,
                             isSelected: _selectedPlan == 1,
                             onTap: () => setState(() => _selectedPlan = 1),
@@ -148,7 +248,7 @@ class _PaywallScreenState extends State<PaywallScreen> {
 
                     const SizedBox(height: 24),
 
-                    // ── Feature list ──
+                    // ── Features ──
                     ...[
                       'All 12 expert-designed programs',
                       'Unlimited Custom Program Builder',
@@ -157,11 +257,35 @@ class _PaywallScreenState extends State<PaywallScreen> {
                       'Full exercise video library (300+)',
                       'Priority support from Tasos',
                       'Offline mode & cloud sync',
-                    ].asMap().entries.map((e) => _FeatureRow(
-                      label: e.value,
-                    ).animate(delay: Duration(milliseconds: 250 + e.key * 35))
+                    ].asMap().entries.map((e) => _FeatureRow(label: e.value)
+                        .animate(
+                            delay:
+                                Duration(milliseconds: 250 + e.key * 35))
                         .fadeIn()
                         .slideX(begin: -0.03, curve: Curves.easeOut)),
+
+                    if (_error != null) ...[
+                      const SizedBox(height: 16),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 14, vertical: 10),
+                        decoration: BoxDecoration(
+                          color: AppColors.danger.withAlpha(20),
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                              color: AppColors.danger.withAlpha(60)),
+                        ),
+                        child: Text(
+                          _error!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 13,
+                            color: AppColors.danger,
+                          ),
+                        ),
+                      ),
+                    ],
 
                     const SizedBox(height: 28),
                   ],
@@ -175,15 +299,14 @@ class _PaywallScreenState extends State<PaywallScreen> {
               child: Column(
                 children: [
                   FpButton(
-                    label: 'Start 7-Day Free Trial',
-                    onPressed: () {
-                      context.pop();
-                      // TODO: trigger RevenueCat purchase
-                    },
+                    label: _loading
+                        ? 'Processing...'
+                        : 'Start 7-Day Free Trial',
+                    onPressed: _loading ? null : _purchase,
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    '7-day free trial, then €${_selectedPlan == 1 ? '89.99/year' : '14.99/month'}.\nCancel anytime. Terms & Privacy apply.',
+                    '7-day free trial, then ${_selectedPlan == 1 ? annualPrice + '/year' : monthlyPrice + '/month'}.\nCancel anytime. Terms & Privacy apply.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Inter',
@@ -244,7 +367,8 @@ class _PlanCard extends StatelessWidget {
               Positioned(
                 top: -24, right: -4,
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
                     color: AppColors.accent,
                     borderRadius: BorderRadius.circular(20),
@@ -274,38 +398,23 @@ class _PlanCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 6),
-                RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: '€',
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: context.secondaryText,
-                        ),
-                      ),
-                      TextSpan(
-                        text: price,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 24,
-                          fontWeight: FontWeight.w900,
-                          color: context.primaryText,
-                          letterSpacing: -0.5,
-                        ),
-                      ),
-                      TextSpan(
-                        text: period,
-                        style: TextStyle(
-                          fontFamily: 'Inter',
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                          color: context.secondaryText,
-                        ),
-                      ),
-                    ],
+                Text(
+                  price,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 22,
+                    fontWeight: FontWeight.w900,
+                    color: context.primaryText,
+                    letterSpacing: -0.5,
+                  ),
+                ),
+                Text(
+                  period,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: context.secondaryText,
                   ),
                 ),
                 if (savings != null) ...[

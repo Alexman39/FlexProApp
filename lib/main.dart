@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 import 'app.dart';
 import 'core/firebase_availability.dart';
@@ -38,6 +39,10 @@ void main() async {
   await Hive.openBox<String>('workout_logs');
   await Hive.openBox<String>('enrollment');
   await Hive.openBox<String>('body_weight');
+
+  await Purchases.configure(
+    PurchasesConfiguration('test_FUcEakasJeeSPewEJUzctYWHgGQ'),
+  );
 
   runApp(
     ProviderScope(

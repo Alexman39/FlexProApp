@@ -4,9 +4,11 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/fp_card.dart';
 import '../../onboarding/domain/onboarding_models.dart';
+import '../../subscription/providers/subscription_provider.dart';
 import '../data/programs_data.dart';
 import '../domain/program_model.dart';
 import '../providers/enrollment_provider.dart';
@@ -314,6 +316,8 @@ class _ProgramCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final enrollment = ref.watch(enrollmentProvider).valueOrNull;
     final isEnrolled = enrollment?.programId == program.id;
+    final isPremium  = ref.watch(isPremiumProvider);
+    final isLocked   = program.isPremium && !isPremium;
 
     final levelColor = switch (program.level) {
       ExperienceLevel.beginner     => AppColors.beginnerColor,
@@ -510,10 +514,14 @@ class _ProgramCard extends ConsumerWidget {
                   ),
                 ],
                 const SizedBox(height: 12),
-                // ── Enroll / Leave button ──
+                // ── Enroll / Unlock / Leave button ──
                 GestureDetector(
                   onTap: () async {
                     HapticFeedback.mediumImpact();
+                    if (isLocked) {
+                      context.push(AppRoutes.paywall);
+                      return;
+                    }
                     if (isEnrolled) {
                       await ref.read(enrollmentProvider.notifier).unenroll();
                     } else {
@@ -527,38 +535,52 @@ class _ProgramCard extends ConsumerWidget {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(vertical: 11),
                     decoration: BoxDecoration(
-                      color: isEnrolled
-                          ? Colors.transparent
-                          : AppColors.accent,
+                      color: isLocked
+                          ? AppColors.accentDim
+                          : isEnrolled
+                              ? Colors.transparent
+                              : AppColors.accent,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: isEnrolled
-                            ? context.border
-                            : AppColors.accent,
+                        color: isLocked
+                            ? AppColors.accent.withAlpha(77)
+                            : isEnrolled
+                                ? context.border
+                                : AppColors.accent,
                       ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(
-                          isEnrolled
-                              ? Icons.check_circle_rounded
-                              : Icons.play_arrow_rounded,
-                          color: isEnrolled
-                              ? context.secondaryText
-                              : Colors.black,
+                          isLocked
+                              ? Icons.lock_open_rounded
+                              : isEnrolled
+                                  ? Icons.check_circle_rounded
+                                  : Icons.play_arrow_rounded,
+                          color: isLocked
+                              ? AppColors.accent
+                              : isEnrolled
+                                  ? context.secondaryText
+                                  : Colors.black,
                           size: 16,
                         ),
                         const SizedBox(width: 6),
                         Text(
-                          isEnrolled ? 'Active Program' : 'Start Program',
+                          isLocked
+                              ? 'Unlock Program'
+                              : isEnrolled
+                                  ? 'Active Program'
+                                  : 'Start Program',
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 13,
                             fontWeight: FontWeight.w800,
-                            color: isEnrolled
-                                ? context.secondaryText
-                                : Colors.black,
+                            color: isLocked
+                                ? AppColors.accent
+                                : isEnrolled
+                                    ? context.secondaryText
+                                    : Colors.black,
                           ),
                         ),
                       ],
