@@ -60,7 +60,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       if (!needsAuth) return null;
 
       final authState = ref.read(authStateChangesProvider);
-      if (authState.isLoading) return AppRoutes.splash;
+      if (authState.isLoading) return null; // let splash handle auth wait
       if (authState.value == null) return AppRoutes.login;
       return null;
     },

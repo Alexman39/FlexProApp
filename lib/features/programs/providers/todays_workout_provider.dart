@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../exercises/data/exercise_database.dart';
+import '../../exercises/domain/exercise_model.dart';
 import '../../workout/domain/models.dart';
 import '../data/programs_data.dart';
 import '../domain/program_model.dart';
@@ -41,9 +42,9 @@ final todaysActiveWorkoutProvider = Provider<ActiveWorkout?>((ref) {
             name: model.name,
             primaryMuscle: model.primaryMuscle.label,
             secondaryMuscles:
-                model.secondaryMuscles.map((g) => g.label).toList(),
+                model.secondaryMuscles.map<String>((g) => g.label).toList(),
             equipment: model.equipment.label,
-            cues: model.tips,
+            cues: model.tips != null ? [model.tips!] : [],
           ),
           restSeconds: se.restSeconds,
           sets: List.generate(

@@ -61,11 +61,11 @@ class WorkoutNotifier extends Notifier<ActiveWorkout?> {
     final completedExercises = w.exercises
         .map((we) {
           final loggedSets = we.sets
-              .where((s) => s.isDone && s.loggedReps != null && s.loggedWeight != null)
+              .where((s) => s.isDone)
               .map((s) => LoggedSet(
-                    reps: s.loggedReps!,
-                    weight: s.loggedWeight!,
-                    rpe: s.loggedRpe,
+                    reps: s.loggedReps ?? s.targetReps ?? 0,
+                    weight: s.loggedWeight ?? s.targetWeight ?? 0,
+                    rpe: s.loggedRpe ?? s.rpe,
                   ))
               .toList();
           if (loggedSets.isEmpty) return null;

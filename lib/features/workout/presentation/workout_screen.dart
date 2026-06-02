@@ -490,9 +490,12 @@ class _ExerciseCardState extends ConsumerState<_ExerciseCard> {
           // ── Sets table ──
           _SetsTable(
             sets: ex.sets,
-            onComplete: (i) {
+            onComplete: (i, weight, reps, rpe) {
               setState(() {
-                ex.sets[i].status = SetStatus.completed;
+                ex.sets[i].status       = SetStatus.completed;
+                ex.sets[i].loggedWeight = weight;
+                ex.sets[i].loggedReps   = reps;
+                ex.sets[i].loggedRpe    = rpe;
               });
               widget.onSetComplete(i);
             },
@@ -518,7 +521,7 @@ class _SetsTable extends StatefulWidget {
   const _SetsTable({required this.sets, required this.onComplete});
 
   final List<WorkoutSet> sets;
-  final void Function(int) onComplete;
+  final void Function(int setIdx, double? weight, int? reps, double? rpe) onComplete;
 
   @override
   State<_SetsTable> createState() => _SetsTableState();
@@ -613,7 +616,12 @@ class _SetsTableState extends State<_SetsTable> {
                   onTap: set.isDone ? null : () {
                     HapticFeedback.mediumImpact();
                     setState(() => set.status = SetStatus.completed);
-                    widget.onComplete(i);
+                    widget.onComplete(
+                      i,
+                      double.tryParse(_weightCtrl[i].text),
+                      int.tryParse(_repsCtrl[i].text),
+                      double.tryParse(_rpeCtrl[i].text),
+                    );
                   },
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
