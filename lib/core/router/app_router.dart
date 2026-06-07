@@ -15,6 +15,7 @@ import '../../features/progress/presentation/progress_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/profile/presentation/paywall_screen.dart';
 import '../../features/exercises/presentation/exercise_library_screen.dart';
+import '../../features/coach/presentation/coach_profile_screen.dart';
 import '../../features/exercises/presentation/exercise_detail_screen.dart';
 import '../../features/workout/domain/workout_log_model.dart';
 import '../../features/workout/presentation/workout_log_detail_screen.dart';
@@ -36,6 +37,7 @@ abstract final class AppRoutes {
   static const exerciseLibrary  = '/exercises';
   static const exerciseDetail   = '/exercises/:id';
   static const workoutLogDetail = '/workout/history/detail';
+  static const coachProfile    = '/coach';
 }
 
 // ── Shell navigation keys ────────────────────────────────
@@ -133,6 +135,12 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, state) => WorkoutLogDetailScreen(
           log: state.extra as WorkoutLog,
         ),
+      ),
+
+      // ── Coach profile ──
+      GoRoute(
+        path: AppRoutes.coachProfile,
+        builder: (_, __) => const CoachProfileScreen(),
       ),
 
       // ── Exercise library (full-screen, no shell) ──

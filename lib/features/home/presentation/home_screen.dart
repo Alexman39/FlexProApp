@@ -85,6 +85,66 @@ class HomeScreen extends ConsumerWidget {
                 ),
               ),
 
+            // ── Meet your coach ──
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
+              sliver: SliverToBoxAdapter(
+                child: GestureDetector(
+                  onTap: () => context.push(AppRoutes.coachProfile),
+                  child: Container(
+                    padding: const EdgeInsets.all(14),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [Color(0xFF0D2228), Color(0xFF1A3A44)],
+                      ),
+                      borderRadius: BorderRadius.circular(AppTheme.radius),
+                      border: Border.all(color: AppColors.accent.withAlpha(51)),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 48, height: 48,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            gradient: const LinearGradient(
+                              colors: [AppColors.accent, Color(0xFF66F0FF)],
+                            ),
+                            border: Border.all(color: AppColors.accent, width: 2),
+                          ),
+                          child: const Center(
+                            child: Text('T', style: TextStyle(
+                              fontFamily: 'Inter', fontSize: 20,
+                              fontWeight: FontWeight.w900, color: Colors.black,
+                            )),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Tasos Misailidis', style: TextStyle(
+                                fontFamily: 'Inter', fontSize: 14,
+                                fontWeight: FontWeight.w800, color: Colors.white,
+                              )),
+                              Text('Your Coach · 25+ years experience',
+                                style: TextStyle(fontFamily: 'Inter',
+                                  fontSize: 12, color: Colors.white.withAlpha(153)),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Icon(Icons.arrow_forward_ios_rounded,
+                            color: AppColors.accent, size: 14),
+                      ],
+                    ),
+                  ),
+                ).animate(delay: 220.ms).fadeIn(duration: 300.ms),
+              ),
+            ),
+
             // ── Quick access row ──
             SliverPadding(
               padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),

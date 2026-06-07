@@ -85,7 +85,7 @@ class ProfileScreen extends ConsumerWidget {
                       _SettingItem(icon: '❓', iconBg: const Color(0x262ECC71),
                           label: 'Help & FAQ', onTap: () {}),
                       _SettingItem(icon: '📧', iconBg: const Color(0x26F39C12),
-                          label: 'Contact Tasos', onTap: () {}),
+                          label: 'Contact Tasos', onTap: () => context.push(AppRoutes.coachProfile)),
                       _SettingItem(icon: '📋', iconBg: AppColors.accentDim,
                           label: 'Privacy Policy (GDPR)', onTap: () {}),
                       _SettingItem(
