@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../core/constants/app_colors.dart';
+import '../../../core/providers/theme_provider.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/fp_card.dart';
@@ -428,34 +429,33 @@ class _SettingItem extends StatelessWidget {
 }
 
 // ── Dark mode toggle ──────────────────────────────────────
-class _DarkModeToggle extends StatefulWidget {
+class _DarkModeToggle extends ConsumerWidget {
   @override
-  State<_DarkModeToggle> createState() => _DarkModeToggleState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isDark = ref.watch(themeModeProvider) == ThemeMode.dark;
 
-class _DarkModeToggleState extends State<_DarkModeToggle> {
-  bool _isDark = true;
-
-  @override
-  Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => setState(() => _isDark = !_isDark),
+      onTap: () {
+        final newMode = isDark ? ThemeMode.light : ThemeMode.dark;
+        ref.read(themeModeProvider.notifier).state = newMode;
+        persistThemeMode(newMode);
+      },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
         width: 48, height: 26,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(13),
-          color: _isDark ? AppColors.accent : context.surface3,
+          color: isDark ? AppColors.accent : context.surface3,
         ),
         child: AnimatedAlign(
           duration: const Duration(milliseconds: 250),
-          alignment: _isDark ? Alignment.centerRight : Alignment.centerLeft,
+          alignment: isDark ? Alignment.centerRight : Alignment.centerLeft,
           child: Container(
             margin: const EdgeInsets.all(3),
             width: 20, height: 20,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: _isDark ? Colors.black : Colors.white,
+              color: isDark ? Colors.black : Colors.white,
             ),
           ),
         ),

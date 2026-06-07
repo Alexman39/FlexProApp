@@ -11,6 +11,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 import 'app.dart';
 import 'core/firebase_availability.dart';
+import 'core/providers/theme_provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -44,6 +45,8 @@ void main() async {
   await Hive.openBox<String>('enrollment');
   await Hive.openBox<String>('body_weight');
 
+  final initialThemeMode = await loadThemeMode();
+
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
     try {
       await Purchases.configure(
@@ -58,6 +61,7 @@ void main() async {
     ProviderScope(
       overrides: [
         firebaseAvailableProvider.overrideWithValue(firebaseAvailable),
+        themeModeProvider.overrideWith((ref) => initialThemeMode),
       ],
       child: const FlexProApp(),
     ),
