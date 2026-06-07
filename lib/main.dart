@@ -1,4 +1,8 @@
+import 'dart:io' show Platform;
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -40,9 +44,28 @@ void main() async {
   await Hive.openBox<String>('enrollment');
   await Hive.openBox<String>('body_weight');
 
-  await Purchases.configure(
-    PurchasesConfiguration('test_FUcEakasJeeSPewEJUzctYWHgGQ'),
-  );
+  if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
+    try {
+      final config = PurchasesConfiguration('test_FUcEakasJeeSPewEJUzctYWHgGQ');
+      await Purchases.configure(config);
+      debugPrint('RevenueCat configured.');
+
+      // Identify already-signed-in user so their customer record appears
+      // in the RevenueCat dashboard immediately on launch.
+      if (firebaseAvailable) {
+        final user = await FirebaseAuth.instance
+            .authStateChanges()
+            .first
+            .timeout(const Duration(seconds: 5), onTimeout: () => null);
+        if (user != null) {
+          await Purchases.logIn(user.uid);
+          debugPrint('RevenueCat: identified user ${user.uid}');
+        }
+      }
+    } catch (e) {
+      debugPrint('RevenueCat error: $e');
+    }
+  }
 
   runApp(
     ProviderScope(

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 import '../data/firestore_workout_repository.dart';
@@ -91,12 +92,16 @@ class WorkoutNotifier extends Notifier<ActiveWorkout?> {
         programWeek: programWeek,
         programDay: programDay,
       );
-      final firestoreRepo = ref.read(firestoreWorkoutRepoProvider);
-      if (firestoreRepo != null) {
-        await firestoreRepo.save(log);
-      } else {
-        await ref.read(workoutRepositoryProvider).save(log);
-        ref.read(workoutHistoryProvider.notifier).refresh();
+      try {
+        final firestoreRepo = ref.read(firestoreWorkoutRepoProvider);
+        if (firestoreRepo != null) {
+          await firestoreRepo.save(log);
+        } else {
+          await ref.read(workoutRepositoryProvider).save(log);
+          ref.read(workoutHistoryProvider.notifier).refresh();
+        }
+      } catch (e) {
+        debugPrint('Workout save failed: $e');
       }
     }
 
