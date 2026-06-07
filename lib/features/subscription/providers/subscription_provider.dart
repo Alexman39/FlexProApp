@@ -1,17 +1,33 @@
+import 'dart:io' show Platform;
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
+import '../../auth/providers/auth_providers.dart';
+
 const _premiumEntitlement = 'premium';
+
+bool get _rcSupported => !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 
 // ── Customer info ─────────────────────────────────────────
 
 class SubscriptionNotifier extends AsyncNotifier<CustomerInfo?> {
   @override
   Future<CustomerInfo?> build() async {
+    if (!_rcSupported) return null;
+
+    // Re-run automatically whenever the signed-in user changes.
+    final uid = ref.watch(currentUidProvider);
+
     try {
-      final info = await Purchases.getCustomerInfo();
-      return info;
+      if (uid != null) {
+        await Purchases.logIn(uid);
+      } else {
+        await Purchases.logOut();
+      }
+      return await Purchases.getCustomerInfo();
     } catch (_) {
       return null;
     }
@@ -40,25 +56,10 @@ class SubscriptionNotifier extends AsyncNotifier<CustomerInfo?> {
       final info = await Purchases.restorePurchases();
       state = AsyncData(info);
       return info.entitlements.active.containsKey(_premiumEntitlement);
-    } catch (e) {
+    } catch (_) {
       state = AsyncData(await Purchases.getCustomerInfo());
       return false;
     }
-  }
-
-  Future<void> identify(String uid) async {
-    try {
-      await Purchases.logIn(uid);
-      final info = await Purchases.getCustomerInfo();
-      state = AsyncData(info);
-    } catch (_) {}
-  }
-
-  Future<void> logout() async {
-    try {
-      await Purchases.logOut();
-    } catch (_) {}
-    state = const AsyncData(null);
   }
 }
 
@@ -69,6 +70,7 @@ final subscriptionProvider =
 // ── Derived: is the user premium? ────────────────────────
 
 final isPremiumProvider = Provider<bool>((ref) {
+  if (!_rcSupported) return false;
   final info = ref.watch(subscriptionProvider).valueOrNull;
   return info?.entitlements.active.containsKey(_premiumEntitlement) ?? false;
 });
@@ -76,6 +78,7 @@ final isPremiumProvider = Provider<bool>((ref) {
 // ── Available offerings from RevenueCat ──────────────────
 
 final offeringsProvider = FutureProvider<Offerings?>((ref) async {
+  if (!_rcSupported) return null;
   try {
     return await Purchases.getOfferings();
   } catch (_) {

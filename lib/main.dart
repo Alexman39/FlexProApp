@@ -46,24 +46,11 @@ void main() async {
 
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
     try {
-      final config = PurchasesConfiguration('test_FUcEakasJeeSPewEJUzctYWHgGQ');
-      await Purchases.configure(config);
-      debugPrint('RevenueCat configured.');
-
-      // Identify already-signed-in user so their customer record appears
-      // in the RevenueCat dashboard immediately on launch.
-      if (firebaseAvailable) {
-        final user = await FirebaseAuth.instance
-            .authStateChanges()
-            .first
-            .timeout(const Duration(seconds: 5), onTimeout: () => null);
-        if (user != null) {
-          await Purchases.logIn(user.uid);
-          debugPrint('RevenueCat: identified user ${user.uid}');
-        }
-      }
+      await Purchases.configure(
+        PurchasesConfiguration('test_FUcEakasJeeSPewEJUzctYWHgGQ'),
+      );
     } catch (e) {
-      debugPrint('RevenueCat error: $e');
+      debugPrint('RevenueCat configure error: $e');
     }
   }
 
