@@ -236,6 +236,9 @@ class AppLocalizationsEl extends AppLocalizations {
   String get privacyPolicy => 'Πολιτική Απορρήτου (GDPR)';
 
   @override
+  String get termsOfService => 'Όροι Χρήσης';
+
+  @override
   String get signOut => 'Αποσύνδεση';
 
   @override

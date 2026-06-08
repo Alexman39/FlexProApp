@@ -14,6 +14,7 @@ import '../../features/workout/presentation/workout_history_screen.dart';
 import '../../features/progress/presentation/progress_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/profile/presentation/paywall_screen.dart';
+import '../../features/profile/presentation/legal_screen.dart';
 import '../../features/exercises/presentation/exercise_library_screen.dart';
 import '../../features/coach/presentation/coach_profile_screen.dart';
 import '../../features/exercises/presentation/exercise_detail_screen.dart';
@@ -38,6 +39,8 @@ abstract final class AppRoutes {
   static const exerciseDetail   = '/exercises/:id';
   static const workoutLogDetail = '/workout/history/detail';
   static const coachProfile    = '/coach';
+  static const privacyPolicy   = '/privacy';
+  static const termsOfService  = '/terms';
 }
 
 // ── Shell navigation keys ────────────────────────────────
@@ -155,6 +158,16 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, state) => ExerciseDetailScreen(
           exerciseId: state.pathParameters['id'] ?? '',
         ),
+      ),
+
+      // ── Legal screens ──
+      GoRoute(
+        path: AppRoutes.privacyPolicy,
+        builder: (_, __) => const LegalScreen(type: LegalDocType.privacyPolicy),
+      ),
+      GoRoute(
+        path: AppRoutes.termsOfService,
+        builder: (_, __) => const LegalScreen(type: LegalDocType.terms),
       ),
 
       // ── Paywall (slide-up modal, no shell) ──

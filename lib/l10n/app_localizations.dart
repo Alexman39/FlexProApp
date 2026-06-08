@@ -548,6 +548,12 @@ abstract class AppLocalizations {
   /// **'Privacy Policy (GDPR)'**
   String get privacyPolicy;
 
+  /// No description provided for @termsOfService.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms of Service'**
+  String get termsOfService;
+
   /// No description provided for @signOut.
   ///
   /// In en, this message translates to:

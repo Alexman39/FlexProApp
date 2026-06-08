@@ -235,6 +235,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get privacyPolicy => 'Privacy Policy (GDPR)';
 
   @override
+  String get termsOfService => 'Terms of Service';
+
+  @override
   String get signOut => 'Sign Out';
 
   @override
