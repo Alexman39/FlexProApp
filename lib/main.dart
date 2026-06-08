@@ -12,7 +12,9 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 import 'app.dart';
 import 'core/firebase_availability.dart';
 import 'core/providers/locale_provider.dart';
+import 'core/providers/notification_provider.dart';
 import 'core/providers/theme_provider.dart';
+import 'core/services/notification_service.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -46,8 +48,11 @@ void main() async {
   await Hive.openBox<String>('enrollment');
   await Hive.openBox<String>('body_weight');
 
-  final initialThemeMode = await loadThemeMode();
-  final initialLocale    = await loadLocale();
+  await NotificationService.instance.init();
+
+  final initialThemeMode   = await loadThemeMode();
+  final initialLocale      = await loadLocale();
+  final initialNotifSettings = await loadNotificationSettings();
 
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
     try {
@@ -65,6 +70,9 @@ void main() async {
         firebaseAvailableProvider.overrideWithValue(firebaseAvailable),
         themeModeProvider.overrideWith((ref) => initialThemeMode),
         localeProvider.overrideWith((ref) => initialLocale),
+        notificationSettingsProvider.overrideWith(
+          (ref) => NotificationSettingsNotifier(initialNotifSettings),
+        ),
       ],
       child: const FlexProApp(),
     ),

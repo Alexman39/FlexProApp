@@ -709,6 +709,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Get My Program ✓'**
   String get getMyProgram;
+
+  /// No description provided for @notificationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'FlexPro — Workout Reminder'**
+  String get notificationTitle;
+
+  /// No description provided for @notificationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Time to train! Your workout is ready 💪'**
+  String get notificationBody;
+
+  /// No description provided for @notificationReminderTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Reminder Time'**
+  String get notificationReminderTime;
+
+  /// No description provided for @notificationOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get notificationOn;
+
+  /// No description provided for @notificationOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get notificationOff;
+
+  /// No description provided for @notificationPermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable notifications in system settings to receive workout reminders.'**
+  String get notificationPermissionDenied;
 }
 
 class _AppLocalizationsDelegate

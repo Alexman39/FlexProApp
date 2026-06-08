@@ -36,6 +36,10 @@ dependencies:
   # Subscriptions
   purchases_flutter: ^8.0.0
 
+  # Notifications
+  flutter_local_notifications: ^18.0.0
+  timezone: ^0.9.4
+
   # Utils
   intl: ^0.20.2
   uuid: ^4.4.2

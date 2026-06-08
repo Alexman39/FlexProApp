@@ -7,6 +7,7 @@ import 'package:flexpro_coaching/l10n/app_localizations.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/providers/locale_provider.dart';
+import '../../../core/providers/notification_provider.dart';
 import '../../../core/providers/theme_provider.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_theme.dart';
@@ -59,6 +60,26 @@ void _showLanguagePicker(BuildContext context, WidgetRef ref) {
   );
 }
 
+void _showNotificationSheet(BuildContext context, WidgetRef ref) {
+  final l = AppLocalizations.of(context)!;
+  showModalBottomSheet<void>(
+    context: context,
+    backgroundColor: context.surface,
+    isScrollControlled: true,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(AppTheme.radiusXXL)),
+    ),
+    builder: (sheetCtx) => _NotificationSheet(
+      onPermissionDenied: () {
+        Navigator.pop(sheetCtx);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l.notificationPermissionDenied)),
+        );
+      },
+    ),
+  );
+}
+
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
@@ -101,6 +122,7 @@ class ProfileScreen extends ConsumerWidget {
                     final l = AppLocalizations.of(context)!;
                     final locale = ref.watch(localeProvider);
                     final langLabel = locale.languageCode == 'el' ? 'Ελληνικά' : 'English';
+                    final notifEnabled = ref.watch(notificationSettingsProvider).enabled;
                     return Column(
                       children: [
                         _SettingsSection(
@@ -131,8 +153,13 @@ class ProfileScreen extends ConsumerWidget {
                               value: langLabel,
                               onTap: () => _showLanguagePicker(context, ref),
                             ),
-                            _SettingItem(icon: '🔔', iconBg: AppColors.accentDim,
-                                label: l.notifications, value: 'On', onTap: () {}),
+                            _SettingItem(
+                              icon: '🔔',
+                              iconBg: AppColors.accentDim,
+                              label: l.notifications,
+                              value: notifEnabled ? l.notificationOn : l.notificationOff,
+                              onTap: () => _showNotificationSheet(context, ref),
+                            ),
                             _SettingItem(icon: '⚖️', iconBg: AppColors.accentDim,
                                 label: l.units, value: 'Metric (kg)', onTap: () {}),
                           ],
@@ -484,6 +511,104 @@ class _SettingItem extends StatelessWidget {
                     color: context.tertiaryText, size: 18),
               ],
             ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Notification settings sheet ──────────────────────────
+class _NotificationSheet extends ConsumerWidget {
+  const _NotificationSheet({required this.onPermissionDenied});
+
+  final VoidCallback onPermissionDenied;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l        = AppLocalizations.of(context)!;
+    final settings = ref.watch(notificationSettingsProvider);
+    final notifier = ref.read(notificationSettingsProvider.notifier);
+
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const SizedBox(height: 12),
+            Container(
+              width: 40, height: 4,
+              decoration: BoxDecoration(
+                color: context.surface3,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              children: [
+                Text(
+                  l.notifications,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 17,
+                    fontWeight: FontWeight.w800,
+                    color: context.primaryText,
+                  ),
+                ),
+                const Spacer(),
+                Switch(
+                  value: settings.enabled,
+                  activeColor: AppColors.accent,
+                  onChanged: (val) async {
+                    final ok = await notifier.setEnabled(
+                      val,
+                      title: l.notificationTitle,
+                      body: l.notificationBody,
+                    );
+                    if (!ok) onPermissionDenied();
+                  },
+                ),
+              ],
+            ),
+            if (settings.enabled) ...[
+              Divider(height: 1, color: context.border),
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(
+                  l.notificationReminderTime,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: context.primaryText,
+                  ),
+                ),
+                trailing: Text(
+                  settings.time.format(context),
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.accent,
+                  ),
+                ),
+                onTap: () async {
+                  final picked = await showTimePicker(
+                    context: context,
+                    initialTime: settings.time,
+                  );
+                  if (picked != null) {
+                    await notifier.setTime(
+                      picked,
+                      title: l.notificationTitle,
+                      body: l.notificationBody,
+                    );
+                  }
+                },
+              ),
+            ],
+            const SizedBox(height: 8),
           ],
         ),
       ),

@@ -316,4 +316,24 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get getMyProgram => 'Λήψη Προγράμματος ✓';
+
+  @override
+  String get notificationTitle => 'FlexPro — Υπενθύμιση Προπόνησης';
+
+  @override
+  String get notificationBody =>
+      'Ώρα για προπόνηση! Η προπόνησή σου σε περιμένει 💪';
+
+  @override
+  String get notificationReminderTime => 'Ώρα Υπενθύμισης';
+
+  @override
+  String get notificationOn => 'Ενεργό';
+
+  @override
+  String get notificationOff => 'Ανενεργό';
+
+  @override
+  String get notificationPermissionDenied =>
+      'Ενεργοποιήστε τις ειδοποιήσεις στις ρυθμίσεις συστήματος για υπενθυμίσεις προπόνησης.';
 }

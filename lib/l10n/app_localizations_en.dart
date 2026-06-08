@@ -315,4 +315,23 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get getMyProgram => 'Get My Program ✓';
+
+  @override
+  String get notificationTitle => 'FlexPro — Workout Reminder';
+
+  @override
+  String get notificationBody => 'Time to train! Your workout is ready 💪';
+
+  @override
+  String get notificationReminderTime => 'Reminder Time';
+
+  @override
+  String get notificationOn => 'On';
+
+  @override
+  String get notificationOff => 'Off';
+
+  @override
+  String get notificationPermissionDenied =>
+      'Enable notifications in system settings to receive workout reminders.';
 }

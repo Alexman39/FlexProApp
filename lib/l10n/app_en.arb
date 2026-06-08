@@ -112,5 +112,12 @@
   "skip": "Skip for now",
   "skipStats": "Skip stats",
   "cancel": "Cancel",
-  "getMyProgram": "Get My Program ✓"
+  "getMyProgram": "Get My Program ✓",
+
+  "notificationTitle": "FlexPro — Workout Reminder",
+  "notificationBody": "Time to train! Your workout is ready 💪",
+  "notificationReminderTime": "Reminder Time",
+  "notificationOn": "On",
+  "notificationOff": "Off",
+  "notificationPermissionDenied": "Enable notifications in system settings to receive workout reminders."
 }

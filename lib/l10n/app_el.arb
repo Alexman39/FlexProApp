@@ -112,5 +112,12 @@
   "skip": "Παράλειψη",
   "skipStats": "Παράλειψη στατιστικών",
   "cancel": "Ακύρωση",
-  "getMyProgram": "Λήψη Προγράμματος ✓"
+  "getMyProgram": "Λήψη Προγράμματος ✓",
+
+  "notificationTitle": "FlexPro — Υπενθύμιση Προπόνησης",
+  "notificationBody": "Ώρα για προπόνηση! Η προπόνησή σου σε περιμένει 💪",
+  "notificationReminderTime": "Ώρα Υπενθύμισης",
+  "notificationOn": "Ενεργό",
+  "notificationOff": "Ανενεργό",
+  "notificationPermissionDenied": "Ενεργοποιήστε τις ειδοποιήσεις στις ρυθμίσεις συστήματος για υπενθυμίσεις προπόνησης."
 }
