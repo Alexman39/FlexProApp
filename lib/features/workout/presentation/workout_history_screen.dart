@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flexpro_coaching/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -15,6 +16,7 @@ class WorkoutHistoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     final logs = ref.watch(workoutHistoryStreamProvider).valueOrNull ?? [];
 
     return Scaffold(
@@ -41,7 +43,7 @@ class WorkoutHistoryScreen extends ConsumerWidget {
                   ),
                   const SizedBox(width: 12),
                   Text(
-                    'Workout History',
+                    l.historyTitle,
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 20,
@@ -52,7 +54,7 @@ class WorkoutHistoryScreen extends ConsumerWidget {
                   ),
                   const Spacer(),
                   Text(
-                    '${logs.length} sessions',
+                    '${logs.length} ${l.sessions}',
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 13,
@@ -70,13 +72,13 @@ class WorkoutHistoryScreen extends ConsumerWidget {
                 child: Row(
                   children: [
                     _SummaryStat(
-                        value: '${logs.length}', label: 'Total'),
+                        value: '${logs.length}', label: l.total),
                     const SizedBox(width: 10),
                     _SummaryStat(
-                        value: _totalVolumeLabel(logs), label: 'Volume'),
+                        value: _totalVolumeLabel(logs), label: l.volume),
                     const SizedBox(width: 10),
                     _SummaryStat(
-                        value: _avgDurationLabel(logs), label: 'Avg Duration'),
+                        value: _avgDurationLabel(logs), label: l.avgDuration),
                   ],
                 ),
               ),
@@ -387,6 +389,7 @@ class _StatChip extends StatelessWidget {
 class _EmptyState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -394,7 +397,7 @@ class _EmptyState extends StatelessWidget {
           const Text('📋', style: TextStyle(fontSize: 48)),
           const SizedBox(height: 16),
           Text(
-            'No workouts yet',
+            l.noWorkouts,
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 18,
@@ -404,7 +407,7 @@ class _EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Complete your first workout to see it here',
+            l.noWorkoutsSubtitle,
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 14,

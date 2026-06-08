@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flexpro_coaching/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -16,6 +17,7 @@ class OnboardingScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     final step = ref.watch(onboardingStepProvider);
     final data = ref.watch(onboardingProvider);
 
@@ -58,14 +60,14 @@ class OnboardingScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   FpButton(
-                    label: step == 4 ? 'Get My Program ✓' : 'Continue',
+                    label: step == 4 ? l.getMyProgram : l.continueBtn,
                     onPressed: _canContinue(step, data)
                         ? () => _onContinue(context, ref, step, data)
                         : null,
                   ),
                   const SizedBox(height: 10),
                   FpButton(
-                    label: step == 4 ? 'Skip stats' : 'Skip for now',
+                    label: step == 4 ? l.skipStats : l.skip,
                     variant: FpButtonVariant.ghost,
                     size: FpButtonSize.medium,
                     onPressed: () => _onContinue(context, ref, step, data, skip: true),

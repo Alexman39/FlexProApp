@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flexpro_coaching/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -105,6 +106,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
       annualPrice  = annual.storeProduct.priceString;
     }
 
+    final l = AppLocalizations.of(context)!;
     return Scaffold(
       backgroundColor: context.bg,
       body: SafeArea(
@@ -140,7 +142,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   GestureDetector(
                     onTap: _loading ? null : _restore,
                     child: Text(
-                      'Restore',
+                      l.restore,
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 13,
@@ -207,7 +209,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
 
                     const SizedBox(height: 10),
                     Text(
-                      'Access all 12 programs, unlimited custom builder,\nadvanced analytics, and auto-progression.',
+                      l.premiumSubtitle,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontFamily: 'Inter',
@@ -224,7 +226,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                       children: [
                         Expanded(
                           child: _PlanCard(
-                            name: 'Monthly',
+                            name: l.monthly,
                             price: monthlyPrice,
                             period: '/month',
                             isSelected: _selectedPlan == 0,
@@ -234,7 +236,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: _PlanCard(
-                            name: 'Annual',
+                            name: l.annual,
                             price: annualPrice,
                             period: '/year',
                             savings: 'Save 50%  ·  $annualMonthly',
@@ -301,7 +303,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                   FpButton(
                     label: _loading
                         ? 'Processing...'
-                        : 'Start 7-Day Free Trial',
+                        : l.startTrial,
                     onPressed: _loading ? null : _purchase,
                   ),
                   const SizedBox(height: 10),
@@ -373,8 +375,8 @@ class _PlanCard extends StatelessWidget {
                     color: AppColors.accent,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Text(
-                    'BEST VALUE',
+                  child: Text(
+                    AppLocalizations.of(context)!.bestValue,
                     style: TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 9,

@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flexpro_coaching/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -115,6 +116,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final isRegister = _mode == _AuthMode.register;
     final showGoogle = kIsWeb || !Platform.isLinux;
 
@@ -169,7 +171,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
 
                 // ── Title ──
                 Text(
-                  isRegister ? 'Create account' : 'Welcome back',
+                  isRegister ? l.createAccountTitle : l.welcomeBack,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 30,
@@ -182,9 +184,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                 const SizedBox(height: 6),
 
                 Text(
-                  isRegister
-                      ? 'Start your premium training journey'
-                      : 'Sign in to continue your training',
+                  isRegister ? l.createAccountSubtitle : l.signInSubtitle,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 15,
@@ -198,7 +198,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                 if (isRegister) ...[
                   _Field(
                     controller: _nameCtrl,
-                    label: 'Full Name',
+                    label: l.fullName,
                     hint: 'Alex Papadopoulos',
                     icon: Icons.person_outline_rounded,
                     validator: (v) =>
@@ -210,7 +210,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                 // ── Email ──
                 _Field(
                   controller: _emailCtrl,
-                  label: 'Email',
+                  label: l.email,
                   hint: 'your@email.com',
                   icon: Icons.email_outlined,
                   keyboardType: TextInputType.emailAddress,
@@ -224,7 +224,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                 // ── Password ──
                 _Field(
                   controller: _passwordCtrl,
-                  label: 'Password',
+                  label: l.password,
                   hint: '••••••••',
                   icon: Icons.lock_outline_rounded,
                   obscure: _obscure,
@@ -303,7 +303,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                               ),
                             )
                           : Text(
-                              isRegister ? 'Create Account' : 'Sign In',
+                              isRegister ? l.createAccount : l.signIn,
                               style: const TextStyle(
                                 fontFamily: 'Inter',
                                 fontSize: 15,
@@ -354,7 +354,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                           ),
                           const SizedBox(width: 10),
                           Text(
-                            'Continue with Google',
+                            l.continueWithGoogle,
                             style: TextStyle(
                               fontFamily: 'Inter',
                               fontSize: 14,
@@ -384,11 +384,11 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                         children: [
                           TextSpan(
                             text: isRegister
-                                ? 'Already have an account? '
-                                : "Don't have an account? ",
+                                ? '${l.alreadyHaveAccount} '
+                                : '${l.dontHaveAccount} ',
                           ),
                           TextSpan(
-                            text: isRegister ? 'Sign in' : 'Sign up',
+                            text: isRegister ? l.signIn : l.signUp,
                             style: const TextStyle(
                               color: AppColors.accent,
                               fontWeight: FontWeight.w700,

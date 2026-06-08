@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flexpro_coaching/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -53,7 +54,7 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
                   children: [
                     Expanded(
                       child: Text(
-                        'Progress',
+                        AppLocalizations.of(context)!.progressTitle,
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 28,
@@ -121,14 +122,14 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 14),
               sliver: SliverToBoxAdapter(
                 child: _BarChartCard(
-                  title: 'Weekly Volume',
-                  subtitle: 'Total weight lifted per week (kg)',
+                  title: AppLocalizations.of(context)!.weeklyVolume,
+                  subtitle: AppLocalizations.of(context)!.weeklyVolumeSubtitle,
                   bars: weeklyVolume,
                   formatValue: (v) {
                     if (v >= 1000) return '${(v / 1000).toStringAsFixed(1)}t';
                     return '${v.toStringAsFixed(0)}kg';
                   },
-                  emptyMessage: 'Complete workouts to see volume data',
+                  emptyMessage: AppLocalizations.of(context)!.noVolumeData,
                 ).animate(delay: 100.ms).fadeIn().slideY(begin: 0.06, curve: Curves.easeOut),
               ),
             ),
@@ -138,11 +139,11 @@ class _ProgressScreenState extends ConsumerState<ProgressScreen> {
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 14),
               sliver: SliverToBoxAdapter(
                 child: _BarChartCard(
-                  title: 'Workout Frequency',
-                  subtitle: 'Sessions completed per week',
+                  title: AppLocalizations.of(context)!.workoutFrequency,
+                  subtitle: AppLocalizations.of(context)!.workoutFrequencySubtitle,
                   bars: weeklyWorkouts,
                   formatValue: (v) => v.toStringAsFixed(0),
-                  emptyMessage: 'Complete workouts to see frequency data',
+                  emptyMessage: AppLocalizations.of(context)!.noFrequencyData,
                   accentBars: true,
                 ).animate(delay: 140.ms).fadeIn().slideY(begin: 0.06, curve: Curves.easeOut),
               ),
@@ -246,13 +247,14 @@ class _SummaryRow extends StatelessWidget {
       return '${v.toStringAsFixed(0)}kg';
     }
 
+    final l = AppLocalizations.of(context)!;
     return Row(
       children: [
-        _SumCard(value: '${logs.length}',  label: 'Sessions'),
+        _SumCard(value: '${logs.length}',  label: l.sessions),
         const SizedBox(width: 10),
-        _SumCard(value: fmtVol(totalVolume), label: 'Volume'),
+        _SumCard(value: fmtVol(totalVolume), label: l.volume),
         const SizedBox(width: 10),
-        _SumCard(value: '${avgDuration}min', label: 'Avg Duration'),
+        _SumCard(value: '${avgDuration}min', label: l.avgDuration),
       ],
     );
   }
@@ -457,7 +459,7 @@ class _PRSection extends StatelessWidget {
               const Text('🏆', style: TextStyle(fontSize: 18)),
               const SizedBox(width: 8),
               Text(
-                'Personal Records',
+                AppLocalizations.of(context)!.personalRecords,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 16,
@@ -522,6 +524,7 @@ class _BodyWeightSection extends ConsumerStatefulWidget {
 
 class _BodyWeightSectionState extends ConsumerState<_BodyWeightSection> {
   void _showLogModal() {
+    final l = AppLocalizations.of(context)!;
     final ctrl = TextEditingController();
     showModalBottomSheet(
       context: context,
@@ -550,7 +553,7 @@ class _BodyWeightSectionState extends ConsumerState<_BodyWeightSection> {
             ),
             const SizedBox(height: 20),
             Text(
-              'Log Body Weight',
+              l.logBodyWeight,
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 20,
@@ -619,10 +622,10 @@ class _BodyWeightSectionState extends ConsumerState<_BodyWeightSection> {
                     color: AppColors.accent,
                     borderRadius: BorderRadius.circular(14),
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
-                      'Save',
-                      style: TextStyle(
+                      l.save,
+                      style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 15,
                         fontWeight: FontWeight.w800,
@@ -668,7 +671,7 @@ class _BodyWeightSectionState extends ConsumerState<_BodyWeightSection> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Body Weight',
+                      AppLocalizations.of(context)!.bodyWeight,
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 16,
@@ -678,7 +681,7 @@ class _BodyWeightSectionState extends ConsumerState<_BodyWeightSection> {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      'Track your weight over time',
+                      AppLocalizations.of(context)!.bodyWeightSubtitle,
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 12,
@@ -731,7 +734,7 @@ class _BodyWeightSectionState extends ConsumerState<_BodyWeightSection> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 child: Text(
-                  'Tap + Log Weight to start tracking',
+                  AppLocalizations.of(context)!.logWeightPrompt,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 13,
@@ -801,14 +804,14 @@ class _BodyWeightSectionState extends ConsumerState<_BodyWeightSection> {
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: AppColors.accent.withAlpha(77)),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.add_rounded, color: AppColors.accent, size: 16),
-                  SizedBox(width: 6),
+                  const Icon(Icons.add_rounded, color: AppColors.accent, size: 16),
+                  const SizedBox(width: 6),
                   Text(
-                    'Log Weight',
-                    style: TextStyle(
+                    AppLocalizations.of(context)!.logWeight,
+                    style: const TextStyle(
                       fontFamily: 'Inter',
                       fontSize: 13,
                       fontWeight: FontWeight.w700,

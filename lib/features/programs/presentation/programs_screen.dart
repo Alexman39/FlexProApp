@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flexpro_coaching/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -70,7 +71,7 @@ class ProgramsScreen extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: Text(
-                          'Programs',
+                          AppLocalizations.of(context)!.programsTitle,
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 28,
@@ -169,7 +170,7 @@ class _SearchBar extends StatelessWidget {
                 color: context.primaryText,
               ),
               decoration: InputDecoration(
-                hintText: 'Search programs...',
+                hintText: AppLocalizations.of(context)!.searchPrograms,
                 hintStyle: TextStyle(color: context.tertiaryText),
                 border: InputBorder.none,
                 isDense: true,
@@ -315,6 +316,7 @@ class _ProgramCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     final enrollment = ref.watch(enrollmentProvider).valueOrNull;
     final isEnrolled = enrollment?.programId == program.id;
     final isPremium  = ref.watch(isPremiumProvider);
@@ -569,10 +571,10 @@ class _ProgramCard extends ConsumerWidget {
                         const SizedBox(width: 6),
                         Text(
                           isLocked
-                              ? 'Unlock Program'
+                              ? l.unlockProgram
                               : isEnrolled
-                                  ? 'Active Program'
-                                  : 'Start Program',
+                                  ? l.activeProgram
+                                  : l.startProgram,
                           style: TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 13,

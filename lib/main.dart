@@ -11,6 +11,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 import 'app.dart';
 import 'core/firebase_availability.dart';
+import 'core/providers/locale_provider.dart';
 import 'core/providers/theme_provider.dart';
 import 'firebase_options.dart';
 
@@ -46,6 +47,7 @@ void main() async {
   await Hive.openBox<String>('body_weight');
 
   final initialThemeMode = await loadThemeMode();
+  final initialLocale    = await loadLocale();
 
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
     try {
@@ -62,6 +64,7 @@ void main() async {
       overrides: [
         firebaseAvailableProvider.overrideWithValue(firebaseAvailable),
         themeModeProvider.overrideWith((ref) => initialThemeMode),
+        localeProvider.overrideWith((ref) => initialLocale),
       ],
       child: const FlexProApp(),
     ),

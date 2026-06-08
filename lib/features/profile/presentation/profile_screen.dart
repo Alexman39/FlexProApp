@@ -3,13 +3,61 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'package:flexpro_coaching/l10n/app_localizations.dart';
+
 import '../../../core/constants/app_colors.dart';
+import '../../../core/providers/locale_provider.dart';
 import '../../../core/providers/theme_provider.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../shared/widgets/fp_card.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../auth/providers/auth_providers.dart';
+
+void _showLanguagePicker(BuildContext context, WidgetRef ref) {
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: context.surface,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(AppTheme.radiusXXL)),
+    ),
+    builder: (_) => SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 12),
+          Container(
+            width: 40, height: 4,
+            decoration: BoxDecoration(
+              color: context.surface3,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(height: 16),
+          for (final entry in const [('English', 'en'), ('Ελληνικά', 'el')])
+            ListTile(
+              title: Text(entry.$1,
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
+                    color: context.primaryText,
+                  )),
+              trailing: ref.watch(localeProvider).languageCode == entry.$2
+                  ? const Icon(Icons.check_rounded, color: AppColors.accent)
+                  : null,
+              onTap: () {
+                final locale = Locale(entry.$2);
+                ref.read(localeProvider.notifier).state = locale;
+                persistLocale(locale);
+                Navigator.pop(context);
+              },
+            ),
+          const SizedBox(height: 8),
+        ],
+      ),
+    ),
+  );
+}
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -49,57 +97,72 @@ class ProfileScreen extends ConsumerWidget {
             SliverToBoxAdapter(
               child: Column(
                 children: [
-                  _SettingsSection(
-                    label: 'Account',
-                    items: [
-                      _SettingItem(icon: '👤', iconBg: AppColors.accentDim,
-                          label: 'Edit Profile', onTap: () {}),
-                      _SettingItem(icon: '🎯', iconBg: AppColors.accentDim,
-                          label: 'My Goals', value: 'Hypertrophy', onTap: () {}),
-                      _SettingItem(icon: '📊', iconBg: const Color(0x262ECC71),
-                          label: 'Body Stats', value: '82 kg · 178 cm', onTap: () {}),
-                    ],
-                  ).animate(delay: 140.ms).fadeIn(),
+                  Builder(builder: (context) {
+                    final l = AppLocalizations.of(context)!;
+                    final locale = ref.watch(localeProvider);
+                    final langLabel = locale.languageCode == 'el' ? 'Ελληνικά' : 'English';
+                    return Column(
+                      children: [
+                        _SettingsSection(
+                          label: l.account,
+                          items: [
+                            _SettingItem(icon: '👤', iconBg: AppColors.accentDim,
+                                label: l.editProfile, onTap: () {}),
+                            _SettingItem(icon: '🎯', iconBg: AppColors.accentDim,
+                                label: l.myGoals, value: 'Hypertrophy', onTap: () {}),
+                            _SettingItem(icon: '📊', iconBg: const Color(0x262ECC71),
+                                label: l.bodyStats, value: '82 kg · 178 cm', onTap: () {}),
+                          ],
+                        ).animate(delay: 140.ms).fadeIn(),
 
-                  _SettingsSection(
-                    label: 'Preferences',
-                    items: [
-                      _SettingItem(
-                        icon: '🌙',
-                        iconBg: AppColors.accentDim,
-                        label: 'Appearance',
-                        trailing: _DarkModeToggle(),
-                      ),
-                      _SettingItem(icon: '🌍', iconBg: const Color(0x26F39C12),
-                          label: 'Language', value: 'English', onTap: () {}),
-                      _SettingItem(icon: '🔔', iconBg: AppColors.accentDim,
-                          label: 'Notifications', value: 'On', onTap: () {}),
-                      _SettingItem(icon: '⚖️', iconBg: AppColors.accentDim,
-                          label: 'Units', value: 'Metric (kg)', onTap: () {}),
-                    ],
-                  ).animate(delay: 180.ms).fadeIn(),
+                        _SettingsSection(
+                          label: l.preferences,
+                          items: [
+                            _SettingItem(
+                              icon: '🌙',
+                              iconBg: AppColors.accentDim,
+                              label: l.appearance,
+                              trailing: _DarkModeToggle(),
+                            ),
+                            _SettingItem(
+                              icon: '🌍',
+                              iconBg: const Color(0x26F39C12),
+                              label: l.language,
+                              value: langLabel,
+                              onTap: () => _showLanguagePicker(context, ref),
+                            ),
+                            _SettingItem(icon: '🔔', iconBg: AppColors.accentDim,
+                                label: l.notifications, value: 'On', onTap: () {}),
+                            _SettingItem(icon: '⚖️', iconBg: AppColors.accentDim,
+                                label: l.units, value: 'Metric (kg)', onTap: () {}),
+                          ],
+                        ).animate(delay: 180.ms).fadeIn(),
 
-                  _SettingsSection(
-                    label: 'Support',
-                    items: [
-                      _SettingItem(icon: '❓', iconBg: const Color(0x262ECC71),
-                          label: 'Help & FAQ', onTap: () {}),
-                      _SettingItem(icon: '📧', iconBg: const Color(0x26F39C12),
-                          label: 'Contact Tasos', onTap: () => context.push(AppRoutes.coachProfile)),
-                      _SettingItem(icon: '📋', iconBg: AppColors.accentDim,
-                          label: 'Privacy Policy (GDPR)', onTap: () {}),
-                      _SettingItem(
-                        icon: '🚪',
-                        iconBg: const Color(0x26FF4757),
-                        label: 'Sign Out',
-                        labelColor: AppColors.danger,
-                        onTap: () async {
-                          await ref.read(authRepositoryProvider)?.signOut();
-                          if (context.mounted) context.go(AppRoutes.login);
-                        },
-                      ),
-                    ],
-                  ).animate(delay: 220.ms).fadeIn(),
+                        _SettingsSection(
+                          label: l.support,
+                          items: [
+                            _SettingItem(icon: '❓', iconBg: const Color(0x262ECC71),
+                                label: l.helpFaq, onTap: () {}),
+                            _SettingItem(icon: '📧', iconBg: const Color(0x26F39C12),
+                                label: l.contactTasos,
+                                onTap: () => context.push(AppRoutes.coachProfile)),
+                            _SettingItem(icon: '📋', iconBg: AppColors.accentDim,
+                                label: l.privacyPolicy, onTap: () {}),
+                            _SettingItem(
+                              icon: '🚪',
+                              iconBg: const Color(0x26FF4757),
+                              label: l.signOut,
+                              labelColor: AppColors.danger,
+                              onTap: () async {
+                                await ref.read(authRepositoryProvider)?.signOut();
+                                if (context.mounted) context.go(AppRoutes.login);
+                              },
+                            ),
+                          ],
+                        ).animate(delay: 220.ms).fadeIn(),
+                      ],
+                    );
+                  }),
                 ],
               ),
             ),

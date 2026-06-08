@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flexpro_coaching/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -174,8 +175,8 @@ class HomeScreen extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
               sliver: SliverToBoxAdapter(
                 child: FpSectionHeader(
-                  title: 'Recommended for You',
-                  action: 'See all',
+                  title: AppLocalizations.of(context)!.recommended,
+                  action: AppLocalizations.of(context)!.seeAll,
                   onAction: () => context.go(AppRoutes.programs),
                 ).animate(delay: 280.ms).fadeIn(),
               ),
@@ -228,12 +229,13 @@ class _HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     final hour = DateTime.now().hour;
     final greeting = hour < 12
-        ? 'Good morning 👋'
+        ? '${l.greetingMorning} 👋'
         : hour < 17
-            ? 'Good afternoon 👋'
-            : 'Good evening 👋';
+            ? '${l.greetingAfternoon} 👋'
+            : '${l.greetingEvening} 👋';
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
@@ -303,14 +305,15 @@ class _HomeHeader extends StatelessWidget {
 class _HeroWorkoutCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     final session   = ref.watch(todaysSessionProvider);
     final program   = ref.watch(activeProgramProvider);
     final enrollment = ref.watch(enrollmentProvider).valueOrNull;
 
-    final title    = session?.name ?? 'Free Workout';
+    final title    = session?.name ?? l.freeWorkout;
     final subtitle = program != null && enrollment != null
         ? '${program.title}  ·  ${enrollment.weekLabel}  ·  ${enrollment.dayLabel}'
-        : 'No program active — log a freestyle session';
+        : l.noProgram;
     final exercises = session?.exercises.length ?? 0;
     final sets      = session?.totalSets ?? 0;
     final estMin    = session?.estimatedMinutes ?? 0;
@@ -339,7 +342,7 @@ class _HeroWorkoutCard extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'TODAY\'S WORKOUT',
+                l.todaysWorkout,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 11,
@@ -371,11 +374,11 @@ class _HeroWorkoutCard extends ConsumerWidget {
               const SizedBox(height: 20),
               Row(
                 children: [
-                  _HeroStat(value: '$exercises', label: 'Exercises'),
+                  _HeroStat(value: '$exercises', label: l.exercises),
                   const SizedBox(width: 24),
-                  _HeroStat(value: estMin > 0 ? '~$estMin' : '—', label: 'Est. min'),
+                  _HeroStat(value: estMin > 0 ? '~$estMin' : '—', label: l.estMin),
                   const SizedBox(width: 24),
-                  _HeroStat(value: '$sets', label: 'Sets'),
+                  _HeroStat(value: '$sets', label: l.sets),
                 ],
               ),
               const SizedBox(height: 22),
@@ -394,14 +397,14 @@ class _HeroWorkoutCard extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.play_arrow_rounded, color: Colors.black, size: 18),
-                        SizedBox(width: 6),
+                        const Icon(Icons.play_arrow_rounded, color: Colors.black, size: 18),
+                        const SizedBox(width: 6),
                         Text(
-                          'Start Workout',
-                          style: TextStyle(
+                          l.startWorkout,
+                          style: const TextStyle(
                             fontFamily: 'Inter',
                             fontSize: 14,
                             fontWeight: FontWeight.w800,
@@ -653,6 +656,7 @@ class _ActiveProgramBanner extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
@@ -677,7 +681,7 @@ class _ActiveProgramBanner extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Active Program',
+                  l.activeProgram,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 10,

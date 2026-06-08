@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:flexpro_coaching/l10n/app_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -20,11 +21,12 @@ class WorkoutScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l = AppLocalizations.of(context)!;
     final session    = ref.watch(todaysSessionProvider);
     final program    = ref.watch(activeProgramProvider);
     final enrollment = ref.watch(enrollmentProvider).valueOrNull;
 
-    final title   = session?.name ?? 'Free Workout';
+    final title   = session?.name ?? l.freeWorkout;
     final sets     = session?.totalSets ?? 0;
     final estMin   = session?.estimatedMinutes ?? 0;
     final exCount  = session?.exercises.length ?? 0;
@@ -41,7 +43,7 @@ class WorkoutScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Workout',
+                l.workoutTitle,
                 style: TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 28,
@@ -58,7 +60,7 @@ class WorkoutScreen extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'TODAY\'S WORKOUT',
+                      l.todaysWorkout,
                       style: TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 11,
@@ -90,7 +92,7 @@ class WorkoutScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 20),
                     FpButton(
-                      label: 'Start Workout',
+                      label: l.startWorkout,
                       icon: const Icon(Icons.play_arrow_rounded),
                       onPressed: () => context.push(AppRoutes.workoutActive),
                     ),
@@ -310,7 +312,7 @@ class _TopBar extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             ),
             child: Text(
-              'Finish',
+              AppLocalizations.of(context)!.finish,
               style: TextStyle(
                 fontFamily: 'Inter',
                 fontSize: 13,
@@ -440,7 +442,7 @@ class _ExerciseCardState extends ConsumerState<_ExerciseCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'EXERCISE ${widget.exerciseIdx + 1}',
+                      '${AppLocalizations.of(context)!.exercise} ${widget.exerciseIdx + 1}',
                       style: const TextStyle(
                         fontFamily: 'Inter',
                         fontSize: 11,
@@ -803,6 +805,7 @@ class _RestBar extends ConsumerWidget {
     final s = restSeconds % 60;
     final label = '${m}:${s.toString().padLeft(2, '0')}';
 
+    final l = AppLocalizations.of(context)!;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       decoration: BoxDecoration(
@@ -815,7 +818,7 @@ class _RestBar extends ConsumerWidget {
           const Icon(Icons.timer_outlined, color: AppColors.accent, size: 16),
           const SizedBox(width: 8),
           Text(
-            'REST  $label',
+            '${l.rest}  $label',
             style: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 12,
@@ -826,7 +829,7 @@ class _RestBar extends ConsumerWidget {
           ),
           const Spacer(),
           Text(
-            isThisTimer ? 'Running…' : 'Tap ✓ to start',
+            isThisTimer ? l.running : l.tapToStart,
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 12,
@@ -846,11 +849,12 @@ class _CuesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'TECHNIQUE CUES',
+          l.techniqueCues,
           style: TextStyle(
             fontFamily: 'Inter',
             fontSize: 10,
@@ -903,9 +907,9 @@ class _RestOverlay extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text(
-                'REST',
-                style: TextStyle(
+              Text(
+                AppLocalizations.of(context)!.rest,
+                style: const TextStyle(
                   fontFamily: 'Inter',
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
@@ -960,9 +964,9 @@ class _RestOverlay extends StatelessWidget {
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 ),
-                child: const Text(
-                  'Skip Rest',
-                  style: TextStyle(
+                child: Text(
+                  AppLocalizations.of(context)!.skipRest,
+                  style: const TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 14,
                     fontWeight: FontWeight.w700,
@@ -1004,7 +1008,7 @@ class _BottomNav extends StatelessWidget {
         children: [
           Expanded(
             child: FpButton(
-              label: '← Previous',
+              label: AppLocalizations.of(context)!.previous,
               variant: FpButtonVariant.secondary,
               size: FpButtonSize.medium,
               onPressed: canGoPrev ? onPrev : null,
@@ -1013,7 +1017,7 @@ class _BottomNav extends StatelessWidget {
           const SizedBox(width: 12),
           Expanded(
             child: FpButton(
-              label: 'Next →',
+              label: AppLocalizations.of(context)!.next,
               size: FpButtonSize.medium,
               onPressed: canGoNext ? onNext : null,
             ),
@@ -1047,7 +1051,7 @@ class _WorkoutSummarySheet extends StatelessWidget {
           const Text('🏆', style: TextStyle(fontSize: 52)),
           const SizedBox(height: 12),
           Text(
-            'Workout Complete!',
+            AppLocalizations.of(context)!.workoutComplete,
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 24,
@@ -1057,7 +1061,7 @@ class _WorkoutSummarySheet extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Great work! Rest well and fuel your body with clean nutrition.',
+            AppLocalizations.of(context)!.workoutCompleteSubtitle,
             textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: 'Inter',
@@ -1067,7 +1071,7 @@ class _WorkoutSummarySheet extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 28),
-          FpButton(label: 'Done', onPressed: onClose),
+          FpButton(label: AppLocalizations.of(context)!.done, onPressed: onClose),
           const SizedBox(height: 8),
         ],
       ),
