@@ -55,7 +55,12 @@ class AuthRepository {
           'Google Sign-In is not supported on Linux desktop.');
     }
 
-    final googleUser = await GoogleSignIn().signIn();
+    // serverClientId = web OAuth client from google-services.json (type 3).
+    // Required on Android so that authentication.idToken is non-null.
+    final googleUser = await GoogleSignIn(
+      serverClientId:
+          '956635335187-s0tsg1vm41oa2ghmvau46lbg9ki93m89.apps.googleusercontent.com',
+    ).signIn();
     if (googleUser == null) throw Exception('Sign in cancelled');
 
     final googleAuth = await googleUser.authentication;
