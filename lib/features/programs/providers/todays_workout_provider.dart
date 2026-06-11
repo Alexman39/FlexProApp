@@ -19,7 +19,8 @@ final activeProgramProvider = Provider<Program?>((ref) {
 final todaysSessionProvider = Provider<ProgramSession?>((ref) {
   final program = ref.watch(activeProgramProvider);
   if (program == null || program.sessions.isEmpty) return null;
-  final enrollment = ref.watch(enrollmentProvider).valueOrNull!;
+  final enrollment = ref.watch(enrollmentProvider).valueOrNull;
+  if (enrollment == null) return null;
   final idx = enrollment.currentDay % program.sessions.length;
   return program.sessions[idx];
 });

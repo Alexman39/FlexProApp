@@ -68,7 +68,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
           displayName: _nameCtrl.text,
         );
       }
-      if (mounted) context.go(AppRoutes.home);
+      if (mounted) context.go(AppRoutes.today);
     } on Exception catch (e) {
       setState(() { _error = _friendlyError(e.toString()); });
     } finally {
@@ -80,7 +80,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     setState(() { _loading = true; _error = null; });
     try {
       await ref.read(authRepositoryProvider)?.signInWithGoogle();
-      if (mounted) context.go(AppRoutes.home);
+      if (mounted) context.go(AppRoutes.today);
     } on UnsupportedError catch (e) {
       setState(() { _error = e.message; });
     } on Exception catch (e) {

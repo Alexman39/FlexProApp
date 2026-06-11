@@ -4,8 +4,10 @@
   "appTitle": "FlexPro Coaching",
 
   "navHome": "Αρχική",
+  "navToday": "Σήμερα",
   "navPrograms": "Προγράμματα",
   "navWorkout": "Προπόνηση",
+  "navCoach": "Προπονητής",
   "navProgress": "Πρόοδος",
   "navProfile": "Προφίλ",
 
@@ -30,6 +32,11 @@
   "activeProgram": "Ενεργό Πρόγραμμα",
   "unlockProgram": "Ξεκλείδωμα",
   "searchPrograms": "Αναζήτηση προγραμμάτων...",
+  "programLibrary": "Βιβλιοθήκη Προγραμμάτων",
+  "viewProgram": "Προβολή Προγράμματος",
+  "allSessions": "Όλες οι Προπονήσεις",
+  "leaveProgram": "Αποχώρηση",
+  "noProgramsFound": "Δεν βρέθηκαν προγράμματα",
 
   "workoutTitle": "Προπόνηση",
   "finish": "Ολοκλήρωση",
@@ -54,6 +61,13 @@
   "avgDuration": "Μέσος Χρόνος",
   "duration": "Διάρκεια",
 
+  "coachNoteLabel": "ΑΠΟ ΤΟΝ ΠΡΟΠΟΝΗΤΗ",
+  "readinessTitle": "Πώς αισθάνεσαι σήμερα;",
+  "readinessSleep": "Ύπνος",
+  "readinessEnergy": "Ενέργεια",
+  "readinessSoreness": "Πόνος",
+  "recentActivity": "Πρόσφατη Δραστηριότητα",
+
   "progressTitle": "Πρόοδος",
   "weeklyVolume": "Εβδομαδιαίος Όγκος",
   "weeklyVolumeSubtitle": "Συνολικό βάρος ανά εβδομάδα (kg)",
@@ -68,6 +82,13 @@
   "noFrequencyData": "Ολοκληρώστε προπονήσεις για δεδομένα συχνότητας",
   "logWeightPrompt": "Πατήστε + για καταχώριση βάρους",
   "save": "Αποθήκευση",
+
+  "progressTabTraining": "Προπόνηση",
+  "progressTabExercise": "Άσκηση",
+  "progressTabBody": "Σώμα",
+  "exerciseHistory": "Ιστορικό Ασκήσεων",
+  "selectExercise": "Επιλέξτε άσκηση για να δείτε πρόοδο",
+  "noExerciseData": "Ολοκληρώστε προπονήσεις για να παρακολουθείτε την πρόοδό σας",
 
   "profileTitle": "Προφίλ",
   "account": "Λογαριασμός",
@@ -86,6 +107,12 @@
   "termsOfService": "Όροι Χρήσης",
   "signOut": "Αποσύνδεση",
   "memberSince": "Μέλος από Ιαν. 2025",
+  "athleteStats": "Αθλητικά Στοιχεία",
+  "goal": "Στόχος",
+  "experienceLevel": "Εμπειρία",
+  "trainingDays": "Μέρες / Εβδ.",
+  "equipmentLabel": "Εξοπλισμός",
+  "heightLabel": "Ύψος",
 
   "signIn": "Σύνδεση",
   "signUp": "Εγγραφή",
@@ -120,5 +147,80 @@
   "notificationReminderTime": "Ώρα Υπενθύμισης",
   "notificationOn": "Ενεργό",
   "notificationOff": "Ανενεργό",
-  "notificationPermissionDenied": "Ενεργοποιήστε τις ειδοποιήσεις στις ρυθμίσεις συστήματος για υπενθυμίσεις προπόνησης."
+  "notificationPermissionDenied": "Ενεργοποιήστε τις ειδοποιήσεις στις ρυθμίσεις συστήματος για υπενθυμίσεις προπόνησης.",
+
+  "setNumber": "Σερί {number}",
+  "@setNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "weightLabel": "ΒΑΡΟΣ",
+  "repsLabel": "ΕΠΑΝΑΛ.",
+  "rpeLabel": "RPE",
+  "completeSet": "Ολοκλήρωση Σετ",
+  "markComplete": "Σήμανση ως Τελειωμένο",
+
+  "newPr": "ΝΕΟ ΡΕΚ",
+  "requestCoachFeedback": "Αίτηση Feedback",
+  "feedbackRequested": "Feedback Εστάλη!",
+  "backToToday": "Πίσω στο Σήμερα",
+  "volLabel": "ΌΓΚ",
+
+  "assignTitle": "Επιλέξτε το Πρώτο σας Πρόγραμμα",
+  "assignSubtitle": "Βάσει των στόχων σας, βρήκαμε τις καλύτερες επιλογές.",
+  "browsePrograms": "Εξερεύνηση Προγραμμάτων",
+  "noActiveProgram": "Χωρίς ενεργό πρόγραμμα",
+  "noActiveProgramHint": "Επιλέξτε πρόγραμμα από τη βιβλιοθήκη παρακάτω για να ξεκινήσετε.",
+
+  "coachNoNote": "Δεν υπάρχει σημείωση προπονητή για σήμερα",
+  "workoutDoneLabel": "ΟΛΟΚΛΗΡΩΘΗΚΕ",
+  "viewDetails": "Λεπτομέρειες",
+
+  "restDayLabel": "ΗΜΕΡΑ ΑΝΑΠΑΥΣΗΣ",
+  "restDayTitle": "Ημέρα Αποκατάστασης",
+  "restDayBody": "Χρησιμοποιήστε αυτόν τον χρόνο για αποκατάσταση και προετοιμασία.",
+  "restDayTipSleep": "8ώρος Ύπνος",
+  "restDayTipHydration": "Ενυδάτωση",
+  "restDayTipMobility": "Ελαφριά Κινητικότητα",
+
+  "filterAll": "Όλα",
+  "filterBeginner": "Αρχάριος",
+  "filterIntermediate": "Μέσος",
+  "filterAdvanced": "Προχωρημένος",
+  "filterHypertrophy": "Υπερτροφία",
+  "filterStrength": "Δύναμη",
+  "filterFatLoss": "Απώλεια Λίπους",
+
+  "weeksLabel": "Εβδομάδες",
+  "daysPerWeekShort": "Μέρες/Εβδ",
+  "ratingLabel": "Βαθμολογία",
+  "usersLabel": "Χρήστες",
+
+  "secondsRemaining": "δευτερόλεπτα",
+
+  "exerciseLibrary": "Βιβλιοθήκη Ασκήσεων",
+  "searchExercises": "Αναζήτηση ασκήσεων...",
+  "noExercisesFound": "Δεν βρέθηκαν ασκήσεις",
+  "tryDifferentFilter": "Δοκιμάστε διαφορετικό φίλτρο ή αναζήτηση",
+
+  "checkInSent": "Το check-in εστάλη!",
+  "coachUpdates": "Ενημερώσεις Προπονητή",
+  "noCoachPosts": "Δεν υπάρχουν αναρτήσεις",
+  "weeklyCheckIn": "Εβδομαδιαίο Check-In",
+  "coachFeedbackSection": "Σχόλια Προπονητή",
+  "noCoachFeedback": "Δεν υπάρχουν σχόλια ακόμα",
+  "yourCoach": "Ο Προπονητής σου",
+  "viewProfile": "Προβολή Προφίλ",
+
+  "postTypeTip": "Συμβουλή",
+  "postTypeMotivation": "Κίνητρο",
+  "postTypeProgramUpdate": "Ενημέρωση Προγράμματος",
+  "postTypeNutrition": "Διατροφή",
+
+  "howWasYourWeek": "Πώς πήγε η εβδομάδα σου;",
+  "checkInPlaceholder": "Μοιράσου την πρόοδό σου, πώς νιώθεις, τυχόν ερωτήσεις...",
+  "submitCheckIn": "Υποβολή Check-In"
 }

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import '../../onboarding/domain/onboarding_models.dart';
 import 'program_session.dart';
 
@@ -12,7 +11,6 @@ class Program {
     required this.title,
     required this.subtitle,
     required this.description,
-    required this.emoji,
     required this.level,
     required this.goal,
     required this.split,
@@ -22,8 +20,6 @@ class Program {
     required this.rating,
     this.isTasosFeatured = false,
     this.isPremium = false,
-    this.bannerGradient,
-    this.accentColor,
     this.sessions = const [],
   });
 
@@ -31,7 +27,6 @@ class Program {
   final String title;
   final String subtitle;
   final String description;
-  final String emoji;
   final ExperienceLevel level;
   final ProgramGoal goal;
   final ProgramSplit split;
@@ -41,14 +36,29 @@ class Program {
   final double rating;
   final bool isTasosFeatured;
   final bool isPremium;
-  final List<Color>? bannerGradient;
-  final Color? accentColor;
   final List<ProgramSession> sessions;
 
   String get levelLabel => switch (level) {
     ExperienceLevel.beginner     => 'Beginner',
     ExperienceLevel.intermediate => 'Intermediate',
     ExperienceLevel.advanced     => 'Advanced',
+  };
+
+  String get goalLabel => switch (goal) {
+    ProgramGoal.hypertrophy => 'Hypertrophy',
+    ProgramGoal.strength    => 'Strength',
+    ProgramGoal.fatLoss     => 'Fat Loss',
+    ProgramGoal.recomp      => 'Recomp',
+    ProgramGoal.general     => 'General',
+  };
+
+  String get splitLabel => switch (split) {
+    ProgramSplit.fullBody   => 'Full Body',
+    ProgramSplit.upperLower => 'Upper/Lower',
+    ProgramSplit.ppl        => 'PPL',
+    ProgramSplit.bro        => 'Bro Split',
+    ProgramSplit.arnold     => 'Arnold Split',
+    ProgramSplit.custom     => 'Custom',
   };
 
   String get formattedUsers {

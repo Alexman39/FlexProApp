@@ -15,10 +15,16 @@ class AppLocalizationsEl extends AppLocalizations {
   String get navHome => 'Αρχική';
 
   @override
+  String get navToday => 'Σήμερα';
+
+  @override
   String get navPrograms => 'Προγράμματα';
 
   @override
   String get navWorkout => 'Προπόνηση';
+
+  @override
+  String get navCoach => 'Προπονητής';
 
   @override
   String get navProgress => 'Πρόοδος';
@@ -87,6 +93,21 @@ class AppLocalizationsEl extends AppLocalizations {
   String get searchPrograms => 'Αναζήτηση προγραμμάτων...';
 
   @override
+  String get programLibrary => 'Βιβλιοθήκη Προγραμμάτων';
+
+  @override
+  String get viewProgram => 'Προβολή Προγράμματος';
+
+  @override
+  String get allSessions => 'Όλες οι Προπονήσεις';
+
+  @override
+  String get leaveProgram => 'Αποχώρηση';
+
+  @override
+  String get noProgramsFound => 'Δεν βρέθηκαν προγράμματα';
+
+  @override
   String get workoutTitle => 'Προπόνηση';
 
   @override
@@ -151,6 +172,24 @@ class AppLocalizationsEl extends AppLocalizations {
   String get duration => 'Διάρκεια';
 
   @override
+  String get coachNoteLabel => 'ΑΠΟ ΤΟΝ ΠΡΟΠΟΝΗΤΗ';
+
+  @override
+  String get readinessTitle => 'Πώς αισθάνεσαι σήμερα;';
+
+  @override
+  String get readinessSleep => 'Ύπνος';
+
+  @override
+  String get readinessEnergy => 'Ενέργεια';
+
+  @override
+  String get readinessSoreness => 'Πόνος';
+
+  @override
+  String get recentActivity => 'Πρόσφατη Δραστηριότητα';
+
+  @override
   String get progressTitle => 'Πρόοδος';
 
   @override
@@ -192,6 +231,25 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get save => 'Αποθήκευση';
+
+  @override
+  String get progressTabTraining => 'Προπόνηση';
+
+  @override
+  String get progressTabExercise => 'Άσκηση';
+
+  @override
+  String get progressTabBody => 'Σώμα';
+
+  @override
+  String get exerciseHistory => 'Ιστορικό Ασκήσεων';
+
+  @override
+  String get selectExercise => 'Επιλέξτε άσκηση για να δείτε πρόοδο';
+
+  @override
+  String get noExerciseData =>
+      'Ολοκληρώστε προπονήσεις για να παρακολουθείτε την πρόοδό σας';
 
   @override
   String get profileTitle => 'Προφίλ';
@@ -243,6 +301,24 @@ class AppLocalizationsEl extends AppLocalizations {
 
   @override
   String get memberSince => 'Μέλος από Ιαν. 2025';
+
+  @override
+  String get athleteStats => 'Αθλητικά Στοιχεία';
+
+  @override
+  String get goal => 'Στόχος';
+
+  @override
+  String get experienceLevel => 'Εμπειρία';
+
+  @override
+  String get trainingDays => 'Μέρες / Εβδ.';
+
+  @override
+  String get equipmentLabel => 'Εξοπλισμός';
+
+  @override
+  String get heightLabel => 'Ύψος';
 
   @override
   String get signIn => 'Σύνδεση';
@@ -339,4 +415,178 @@ class AppLocalizationsEl extends AppLocalizations {
   @override
   String get notificationPermissionDenied =>
       'Ενεργοποιήστε τις ειδοποιήσεις στις ρυθμίσεις συστήματος για υπενθυμίσεις προπόνησης.';
+
+  @override
+  String setNumber(int number) {
+    return 'Σερί $number';
+  }
+
+  @override
+  String get weightLabel => 'ΒΑΡΟΣ';
+
+  @override
+  String get repsLabel => 'ΕΠΑΝΑΛ.';
+
+  @override
+  String get rpeLabel => 'RPE';
+
+  @override
+  String get completeSet => 'Ολοκλήρωση Σετ';
+
+  @override
+  String get markComplete => 'Σήμανση ως Τελειωμένο';
+
+  @override
+  String get newPr => 'ΝΕΟ ΡΕΚ';
+
+  @override
+  String get requestCoachFeedback => 'Αίτηση Feedback';
+
+  @override
+  String get feedbackRequested => 'Feedback Εστάλη!';
+
+  @override
+  String get backToToday => 'Πίσω στο Σήμερα';
+
+  @override
+  String get volLabel => 'ΌΓΚ';
+
+  @override
+  String get assignTitle => 'Επιλέξτε το Πρώτο σας Πρόγραμμα';
+
+  @override
+  String get assignSubtitle =>
+      'Βάσει των στόχων σας, βρήκαμε τις καλύτερες επιλογές.';
+
+  @override
+  String get browsePrograms => 'Εξερεύνηση Προγραμμάτων';
+
+  @override
+  String get noActiveProgram => 'Χωρίς ενεργό πρόγραμμα';
+
+  @override
+  String get noActiveProgramHint =>
+      'Επιλέξτε πρόγραμμα από τη βιβλιοθήκη παρακάτω για να ξεκινήσετε.';
+
+  @override
+  String get coachNoNote => 'Δεν υπάρχει σημείωση προπονητή για σήμερα';
+
+  @override
+  String get workoutDoneLabel => 'ΟΛΟΚΛΗΡΩΘΗΚΕ';
+
+  @override
+  String get viewDetails => 'Λεπτομέρειες';
+
+  @override
+  String get restDayLabel => 'ΗΜΕΡΑ ΑΝΑΠΑΥΣΗΣ';
+
+  @override
+  String get restDayTitle => 'Ημέρα Αποκατάστασης';
+
+  @override
+  String get restDayBody =>
+      'Χρησιμοποιήστε αυτόν τον χρόνο για αποκατάσταση και προετοιμασία.';
+
+  @override
+  String get restDayTipSleep => '8ώρος Ύπνος';
+
+  @override
+  String get restDayTipHydration => 'Ενυδάτωση';
+
+  @override
+  String get restDayTipMobility => 'Ελαφριά Κινητικότητα';
+
+  @override
+  String get filterAll => 'Όλα';
+
+  @override
+  String get filterBeginner => 'Αρχάριος';
+
+  @override
+  String get filterIntermediate => 'Μέσος';
+
+  @override
+  String get filterAdvanced => 'Προχωρημένος';
+
+  @override
+  String get filterHypertrophy => 'Υπερτροφία';
+
+  @override
+  String get filterStrength => 'Δύναμη';
+
+  @override
+  String get filterFatLoss => 'Απώλεια Λίπους';
+
+  @override
+  String get weeksLabel => 'Εβδομάδες';
+
+  @override
+  String get daysPerWeekShort => 'Μέρες/Εβδ';
+
+  @override
+  String get ratingLabel => 'Βαθμολογία';
+
+  @override
+  String get usersLabel => 'Χρήστες';
+
+  @override
+  String get secondsRemaining => 'δευτερόλεπτα';
+
+  @override
+  String get exerciseLibrary => 'Βιβλιοθήκη Ασκήσεων';
+
+  @override
+  String get searchExercises => 'Αναζήτηση ασκήσεων...';
+
+  @override
+  String get noExercisesFound => 'Δεν βρέθηκαν ασκήσεις';
+
+  @override
+  String get tryDifferentFilter => 'Δοκιμάστε διαφορετικό φίλτρο ή αναζήτηση';
+
+  @override
+  String get checkInSent => 'Το check-in εστάλη!';
+
+  @override
+  String get coachUpdates => 'Ενημερώσεις Προπονητή';
+
+  @override
+  String get noCoachPosts => 'Δεν υπάρχουν αναρτήσεις';
+
+  @override
+  String get weeklyCheckIn => 'Εβδομαδιαίο Check-In';
+
+  @override
+  String get coachFeedbackSection => 'Σχόλια Προπονητή';
+
+  @override
+  String get noCoachFeedback => 'Δεν υπάρχουν σχόλια ακόμα';
+
+  @override
+  String get yourCoach => 'Ο Προπονητής σου';
+
+  @override
+  String get viewProfile => 'Προβολή Προφίλ';
+
+  @override
+  String get postTypeTip => 'Συμβουλή';
+
+  @override
+  String get postTypeMotivation => 'Κίνητρο';
+
+  @override
+  String get postTypeProgramUpdate => 'Ενημέρωση Προγράμματος';
+
+  @override
+  String get postTypeNutrition => 'Διατροφή';
+
+  @override
+  String get howWasYourWeek => 'Πώς πήγε η εβδομάδα σου;';
+
+  @override
+  String get checkInPlaceholder =>
+      'Μοιράσου την πρόοδό σου, πώς νιώθεις, τυχόν ερωτήσεις...';
+
+  @override
+  String get submitCheckIn => 'Υποβολή Check-In';
 }

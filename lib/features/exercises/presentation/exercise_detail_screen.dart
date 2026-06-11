@@ -99,11 +99,9 @@ class ExerciseDetailScreen extends ConsumerWidget {
                         border: Border.all(
                             color: AppColors.accent.withAlpha(60), width: 1),
                       ),
-                      child: Center(
-                        child: Text(
-                          exercise.muscleCategory.emoji,
-                          style: const TextStyle(fontSize: 30),
-                        ),
+                      child: const Center(
+                        child: Icon(Icons.fitness_center_rounded,
+                            color: AppColors.accent, size: 28),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -204,7 +202,7 @@ class ExerciseDetailScreen extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: _Section(
                     title: "Tasos's Tip",
-                    titleIcon: '💡',
+                    titleIcon: Icons.lightbulb_outline_rounded,
                     child: Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
@@ -246,7 +244,7 @@ class _Section extends StatelessWidget {
 
   final String title;
   final Widget child;
-  final String? titleIcon;
+  final IconData? titleIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -263,7 +261,7 @@ class _Section extends StatelessWidget {
           Row(
             children: [
               if (titleIcon != null) ...[
-                Text(titleIcon!, style: const TextStyle(fontSize: 16)),
+                Icon(titleIcon!, size: 16, color: AppColors.accent),
                 const SizedBox(width: 6),
               ],
               Text(

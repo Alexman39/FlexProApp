@@ -96,7 +96,7 @@ class OnboardingScreen extends ConsumerWidget {
     HapticFeedback.lightImpact();
     if (step == 4) {
       ref.read(onboardingProvider.notifier).complete();
-      context.go(AppRoutes.home);
+      context.go(AppRoutes.programAssign);
     } else {
       ref.read(onboardingStepProvider.notifier).next();
     }
@@ -202,7 +202,7 @@ class _StepHeading extends StatelessWidget {
 class _OptionTile<T> extends StatelessWidget {
   const _OptionTile({
     super.key,
-    required this.emoji,
+    required this.icon,
     required this.label,
     required this.description,
     required this.value,
@@ -210,7 +210,7 @@ class _OptionTile<T> extends StatelessWidget {
     required this.onTap,
   });
 
-  final String emoji;
+  final IconData icon;
   final String label;
   final String description;
   final T value;
@@ -250,7 +250,7 @@ class _OptionTile<T> extends StatelessWidget {
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Center(
-                child: Text(emoji, style: const TextStyle(fontSize: 20)),
+                child: Icon(icon, color: AppColors.accent, size: 22),
               ),
             ),
             const SizedBox(width: 14),
@@ -313,7 +313,7 @@ class _GoalStep extends StatelessWidget {
             children: TrainingGoal.values.map((g) => Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: _OptionTile(
-                emoji: g.emoji,
+                icon: g.icon,
                 label: g.label,
                 description: g.description,
                 value: g,
@@ -351,7 +351,7 @@ class _ExperienceStep extends StatelessWidget {
             children: ExperienceLevel.values.map((e) => Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: _OptionTile(
-                emoji: e.emoji,
+                icon: e.icon,
                 label: e.label,
                 description: e.description,
                 value: e,
@@ -467,7 +467,7 @@ class _EquipmentStep extends StatelessWidget {
             children: EquipmentAccess.values.map((e) => Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: _OptionTile(
-                emoji: e.emoji,
+                icon: e.icon,
                 label: e.label,
                 description: e.description,
                 value: e,
@@ -548,7 +548,7 @@ class _StatsStepState extends State<_StatsStep> {
             ),
             child: Row(
               children: [
-                const Text('ℹ️', style: TextStyle(fontSize: 16)),
+                const Icon(Icons.info_outline_rounded, color: AppColors.accent, size: 16),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(

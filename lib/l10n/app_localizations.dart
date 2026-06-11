@@ -110,6 +110,12 @@ abstract class AppLocalizations {
   /// **'Home'**
   String get navHome;
 
+  /// No description provided for @navToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get navToday;
+
   /// No description provided for @navPrograms.
   ///
   /// In en, this message translates to:
@@ -121,6 +127,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Workout'**
   String get navWorkout;
+
+  /// No description provided for @navCoach.
+  ///
+  /// In en, this message translates to:
+  /// **'Coach'**
+  String get navCoach;
 
   /// No description provided for @navProgress.
   ///
@@ -254,6 +266,36 @@ abstract class AppLocalizations {
   /// **'Search programs...'**
   String get searchPrograms;
 
+  /// No description provided for @programLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'Program Library'**
+  String get programLibrary;
+
+  /// No description provided for @viewProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'View Program'**
+  String get viewProgram;
+
+  /// No description provided for @allSessions.
+  ///
+  /// In en, this message translates to:
+  /// **'All Sessions'**
+  String get allSessions;
+
+  /// No description provided for @leaveProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave Program'**
+  String get leaveProgram;
+
+  /// No description provided for @noProgramsFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No programs found'**
+  String get noProgramsFound;
+
   /// No description provided for @workoutTitle.
   ///
   /// In en, this message translates to:
@@ -380,6 +422,42 @@ abstract class AppLocalizations {
   /// **'Duration'**
   String get duration;
 
+  /// No description provided for @coachNoteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'FROM YOUR COACH'**
+  String get coachNoteLabel;
+
+  /// No description provided for @readinessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How are you feeling?'**
+  String get readinessTitle;
+
+  /// No description provided for @readinessSleep.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep'**
+  String get readinessSleep;
+
+  /// No description provided for @readinessEnergy.
+  ///
+  /// In en, this message translates to:
+  /// **'Energy'**
+  String get readinessEnergy;
+
+  /// No description provided for @readinessSoreness.
+  ///
+  /// In en, this message translates to:
+  /// **'Soreness'**
+  String get readinessSoreness;
+
+  /// No description provided for @recentActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent Activity'**
+  String get recentActivity;
+
   /// No description provided for @progressTitle.
   ///
   /// In en, this message translates to:
@@ -463,6 +541,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save'**
   String get save;
+
+  /// No description provided for @progressTabTraining.
+  ///
+  /// In en, this message translates to:
+  /// **'Training'**
+  String get progressTabTraining;
+
+  /// No description provided for @progressTabExercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise'**
+  String get progressTabExercise;
+
+  /// No description provided for @progressTabBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Body'**
+  String get progressTabBody;
+
+  /// No description provided for @exerciseHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise History'**
+  String get exerciseHistory;
+
+  /// No description provided for @selectExercise.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an exercise to view progression'**
+  String get selectExercise;
+
+  /// No description provided for @noExerciseData.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete workouts to track exercise progress'**
+  String get noExerciseData;
 
   /// No description provided for @profileTitle.
   ///
@@ -565,6 +679,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Member since Jan 2025'**
   String get memberSince;
+
+  /// No description provided for @athleteStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Athlete Stats'**
+  String get athleteStats;
+
+  /// No description provided for @goal.
+  ///
+  /// In en, this message translates to:
+  /// **'Goal'**
+  String get goal;
+
+  /// No description provided for @experienceLevel.
+  ///
+  /// In en, this message translates to:
+  /// **'Experience'**
+  String get experienceLevel;
+
+  /// No description provided for @trainingDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Days / Week'**
+  String get trainingDays;
+
+  /// No description provided for @equipmentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Equipment'**
+  String get equipmentLabel;
+
+  /// No description provided for @heightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Height'**
+  String get heightLabel;
 
   /// No description provided for @signIn.
   ///
@@ -751,6 +901,342 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Enable notifications in system settings to receive workout reminders.'**
   String get notificationPermissionDenied;
+
+  /// No description provided for @setNumber.
+  ///
+  /// In en, this message translates to:
+  /// **'Set {number}'**
+  String setNumber(int number);
+
+  /// No description provided for @weightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'WEIGHT'**
+  String get weightLabel;
+
+  /// No description provided for @repsLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'REPS'**
+  String get repsLabel;
+
+  /// No description provided for @rpeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'RPE'**
+  String get rpeLabel;
+
+  /// No description provided for @completeSet.
+  ///
+  /// In en, this message translates to:
+  /// **'Complete Set'**
+  String get completeSet;
+
+  /// No description provided for @markComplete.
+  ///
+  /// In en, this message translates to:
+  /// **'Mark Complete'**
+  String get markComplete;
+
+  /// No description provided for @newPr.
+  ///
+  /// In en, this message translates to:
+  /// **'NEW PR'**
+  String get newPr;
+
+  /// No description provided for @requestCoachFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Request Coach Feedback'**
+  String get requestCoachFeedback;
+
+  /// No description provided for @feedbackRequested.
+  ///
+  /// In en, this message translates to:
+  /// **'Feedback Requested!'**
+  String get feedbackRequested;
+
+  /// No description provided for @backToToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Back to Today'**
+  String get backToToday;
+
+  /// No description provided for @volLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'VOL'**
+  String get volLabel;
+
+  /// No description provided for @assignTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Your First Program'**
+  String get assignTitle;
+
+  /// No description provided for @assignSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Based on your goals, here are your best matches.'**
+  String get assignSubtitle;
+
+  /// No description provided for @browsePrograms.
+  ///
+  /// In en, this message translates to:
+  /// **'Browse Programs'**
+  String get browsePrograms;
+
+  /// No description provided for @noActiveProgram.
+  ///
+  /// In en, this message translates to:
+  /// **'No active program'**
+  String get noActiveProgram;
+
+  /// No description provided for @noActiveProgramHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a program from the library below to get started.'**
+  String get noActiveProgramHint;
+
+  /// No description provided for @coachNoNote.
+  ///
+  /// In en, this message translates to:
+  /// **'No coach note for today'**
+  String get coachNoNote;
+
+  /// No description provided for @workoutDoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'DONE'**
+  String get workoutDoneLabel;
+
+  /// No description provided for @viewDetails.
+  ///
+  /// In en, this message translates to:
+  /// **'View Details'**
+  String get viewDetails;
+
+  /// No description provided for @restDayLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'REST DAY'**
+  String get restDayLabel;
+
+  /// No description provided for @restDayTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Recovery Day'**
+  String get restDayTitle;
+
+  /// No description provided for @restDayBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this time to recover and prepare for your next session.'**
+  String get restDayBody;
+
+  /// No description provided for @restDayTipSleep.
+  ///
+  /// In en, this message translates to:
+  /// **'Sleep 8h'**
+  String get restDayTipSleep;
+
+  /// No description provided for @restDayTipHydration.
+  ///
+  /// In en, this message translates to:
+  /// **'Stay Hydrated'**
+  String get restDayTipHydration;
+
+  /// No description provided for @restDayTipMobility.
+  ///
+  /// In en, this message translates to:
+  /// **'Light Mobility'**
+  String get restDayTipMobility;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// No description provided for @filterBeginner.
+  ///
+  /// In en, this message translates to:
+  /// **'Beginner'**
+  String get filterBeginner;
+
+  /// No description provided for @filterIntermediate.
+  ///
+  /// In en, this message translates to:
+  /// **'Intermediate'**
+  String get filterIntermediate;
+
+  /// No description provided for @filterAdvanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced'**
+  String get filterAdvanced;
+
+  /// No description provided for @filterHypertrophy.
+  ///
+  /// In en, this message translates to:
+  /// **'Hypertrophy'**
+  String get filterHypertrophy;
+
+  /// No description provided for @filterStrength.
+  ///
+  /// In en, this message translates to:
+  /// **'Strength'**
+  String get filterStrength;
+
+  /// No description provided for @filterFatLoss.
+  ///
+  /// In en, this message translates to:
+  /// **'Fat Loss'**
+  String get filterFatLoss;
+
+  /// No description provided for @weeksLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Weeks'**
+  String get weeksLabel;
+
+  /// No description provided for @daysPerWeekShort.
+  ///
+  /// In en, this message translates to:
+  /// **'Days/Wk'**
+  String get daysPerWeekShort;
+
+  /// No description provided for @ratingLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating'**
+  String get ratingLabel;
+
+  /// No description provided for @usersLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Users'**
+  String get usersLabel;
+
+  /// No description provided for @secondsRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'seconds remaining'**
+  String get secondsRemaining;
+
+  /// No description provided for @exerciseLibrary.
+  ///
+  /// In en, this message translates to:
+  /// **'Exercise Library'**
+  String get exerciseLibrary;
+
+  /// No description provided for @searchExercises.
+  ///
+  /// In en, this message translates to:
+  /// **'Search exercises...'**
+  String get searchExercises;
+
+  /// No description provided for @noExercisesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No exercises found'**
+  String get noExercisesFound;
+
+  /// No description provided for @tryDifferentFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Try a different filter or search term'**
+  String get tryDifferentFilter;
+
+  /// No description provided for @checkInSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Check-in sent!'**
+  String get checkInSent;
+
+  /// No description provided for @coachUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Coach Updates'**
+  String get coachUpdates;
+
+  /// No description provided for @noCoachPosts.
+  ///
+  /// In en, this message translates to:
+  /// **'No coach posts yet'**
+  String get noCoachPosts;
+
+  /// No description provided for @weeklyCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly Check-In'**
+  String get weeklyCheckIn;
+
+  /// No description provided for @coachFeedbackSection.
+  ///
+  /// In en, this message translates to:
+  /// **'Coach Feedback'**
+  String get coachFeedbackSection;
+
+  /// No description provided for @noCoachFeedback.
+  ///
+  /// In en, this message translates to:
+  /// **'No feedback yet'**
+  String get noCoachFeedback;
+
+  /// No description provided for @yourCoach.
+  ///
+  /// In en, this message translates to:
+  /// **'Your Coach'**
+  String get yourCoach;
+
+  /// No description provided for @viewProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'View Profile'**
+  String get viewProfile;
+
+  /// No description provided for @postTypeTip.
+  ///
+  /// In en, this message translates to:
+  /// **'Tip'**
+  String get postTypeTip;
+
+  /// No description provided for @postTypeMotivation.
+  ///
+  /// In en, this message translates to:
+  /// **'Motivation'**
+  String get postTypeMotivation;
+
+  /// No description provided for @postTypeProgramUpdate.
+  ///
+  /// In en, this message translates to:
+  /// **'Program Update'**
+  String get postTypeProgramUpdate;
+
+  /// No description provided for @postTypeNutrition.
+  ///
+  /// In en, this message translates to:
+  /// **'Nutrition'**
+  String get postTypeNutrition;
+
+  /// No description provided for @howWasYourWeek.
+  ///
+  /// In en, this message translates to:
+  /// **'How was your week?'**
+  String get howWasYourWeek;
+
+  /// No description provided for @checkInPlaceholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Share your progress, how you\'re feeling, any questions...'**
+  String get checkInPlaceholder;
+
+  /// No description provided for @submitCheckIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit Check-In'**
+  String get submitCheckIn;
 }
 
 class _AppLocalizationsDelegate

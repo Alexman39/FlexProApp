@@ -4,8 +4,10 @@
   "appTitle": "FlexPro Coaching",
 
   "navHome": "Home",
+  "navToday": "Today",
   "navPrograms": "Programs",
   "navWorkout": "Workout",
+  "navCoach": "Coach",
   "navProgress": "Progress",
   "navProfile": "Profile",
 
@@ -30,6 +32,11 @@
   "activeProgram": "Active Program",
   "unlockProgram": "Unlock Program",
   "searchPrograms": "Search programs...",
+  "programLibrary": "Program Library",
+  "viewProgram": "View Program",
+  "allSessions": "All Sessions",
+  "leaveProgram": "Leave Program",
+  "noProgramsFound": "No programs found",
 
   "workoutTitle": "Workout",
   "finish": "Finish",
@@ -54,6 +61,13 @@
   "avgDuration": "Avg Duration",
   "duration": "Duration",
 
+  "coachNoteLabel": "FROM YOUR COACH",
+  "readinessTitle": "How are you feeling?",
+  "readinessSleep": "Sleep",
+  "readinessEnergy": "Energy",
+  "readinessSoreness": "Soreness",
+  "recentActivity": "Recent Activity",
+
   "progressTitle": "Progress",
   "weeklyVolume": "Weekly Volume",
   "weeklyVolumeSubtitle": "Total weight lifted per week (kg)",
@@ -68,6 +82,13 @@
   "noFrequencyData": "Complete workouts to see frequency data",
   "logWeightPrompt": "Tap + Log Weight to start tracking",
   "save": "Save",
+
+  "progressTabTraining": "Training",
+  "progressTabExercise": "Exercise",
+  "progressTabBody": "Body",
+  "exerciseHistory": "Exercise History",
+  "selectExercise": "Select an exercise to view progression",
+  "noExerciseData": "Complete workouts to track exercise progress",
 
   "profileTitle": "Profile",
   "account": "Account",
@@ -86,6 +107,12 @@
   "termsOfService": "Terms of Service",
   "signOut": "Sign Out",
   "memberSince": "Member since Jan 2025",
+  "athleteStats": "Athlete Stats",
+  "goal": "Goal",
+  "experienceLevel": "Experience",
+  "trainingDays": "Days / Week",
+  "equipmentLabel": "Equipment",
+  "heightLabel": "Height",
 
   "signIn": "Sign In",
   "signUp": "Sign up",
@@ -120,5 +147,80 @@
   "notificationReminderTime": "Reminder Time",
   "notificationOn": "On",
   "notificationOff": "Off",
-  "notificationPermissionDenied": "Enable notifications in system settings to receive workout reminders."
+  "notificationPermissionDenied": "Enable notifications in system settings to receive workout reminders.",
+
+  "setNumber": "Set {number}",
+  "@setNumber": {
+    "placeholders": {
+      "number": {
+        "type": "int"
+      }
+    }
+  },
+  "weightLabel": "WEIGHT",
+  "repsLabel": "REPS",
+  "rpeLabel": "RPE",
+  "completeSet": "Complete Set",
+  "markComplete": "Mark Complete",
+
+  "newPr": "NEW PR",
+  "requestCoachFeedback": "Request Coach Feedback",
+  "feedbackRequested": "Feedback Requested!",
+  "backToToday": "Back to Today",
+  "volLabel": "VOL",
+
+  "assignTitle": "Choose Your First Program",
+  "assignSubtitle": "Based on your goals, here are your best matches.",
+  "browsePrograms": "Browse Programs",
+  "noActiveProgram": "No active program",
+  "noActiveProgramHint": "Choose a program from the library below to get started.",
+
+  "coachNoNote": "No coach note for today",
+  "workoutDoneLabel": "DONE",
+  "viewDetails": "View Details",
+
+  "restDayLabel": "REST DAY",
+  "restDayTitle": "Recovery Day",
+  "restDayBody": "Use this time to recover and prepare for your next session.",
+  "restDayTipSleep": "Sleep 8h",
+  "restDayTipHydration": "Stay Hydrated",
+  "restDayTipMobility": "Light Mobility",
+
+  "filterAll": "All",
+  "filterBeginner": "Beginner",
+  "filterIntermediate": "Intermediate",
+  "filterAdvanced": "Advanced",
+  "filterHypertrophy": "Hypertrophy",
+  "filterStrength": "Strength",
+  "filterFatLoss": "Fat Loss",
+
+  "weeksLabel": "Weeks",
+  "daysPerWeekShort": "Days/Wk",
+  "ratingLabel": "Rating",
+  "usersLabel": "Users",
+
+  "secondsRemaining": "seconds remaining",
+
+  "exerciseLibrary": "Exercise Library",
+  "searchExercises": "Search exercises...",
+  "noExercisesFound": "No exercises found",
+  "tryDifferentFilter": "Try a different filter or search term",
+
+  "checkInSent": "Check-in sent!",
+  "coachUpdates": "Coach Updates",
+  "noCoachPosts": "No coach posts yet",
+  "weeklyCheckIn": "Weekly Check-In",
+  "coachFeedbackSection": "Coach Feedback",
+  "noCoachFeedback": "No feedback yet",
+  "yourCoach": "Your Coach",
+  "viewProfile": "View Profile",
+
+  "postTypeTip": "Tip",
+  "postTypeMotivation": "Motivation",
+  "postTypeProgramUpdate": "Program Update",
+  "postTypeNutrition": "Nutrition",
+
+  "howWasYourWeek": "How was your week?",
+  "checkInPlaceholder": "Share your progress, how you're feeling, any questions...",
+  "submitCheckIn": "Submit Check-In"
 }

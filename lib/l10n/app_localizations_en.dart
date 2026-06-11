@@ -15,10 +15,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navHome => 'Home';
 
   @override
+  String get navToday => 'Today';
+
+  @override
   String get navPrograms => 'Programs';
 
   @override
   String get navWorkout => 'Workout';
+
+  @override
+  String get navCoach => 'Coach';
 
   @override
   String get navProgress => 'Progress';
@@ -87,6 +93,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get searchPrograms => 'Search programs...';
 
   @override
+  String get programLibrary => 'Program Library';
+
+  @override
+  String get viewProgram => 'View Program';
+
+  @override
+  String get allSessions => 'All Sessions';
+
+  @override
+  String get leaveProgram => 'Leave Program';
+
+  @override
+  String get noProgramsFound => 'No programs found';
+
+  @override
   String get workoutTitle => 'Workout';
 
   @override
@@ -151,6 +172,24 @@ class AppLocalizationsEn extends AppLocalizations {
   String get duration => 'Duration';
 
   @override
+  String get coachNoteLabel => 'FROM YOUR COACH';
+
+  @override
+  String get readinessTitle => 'How are you feeling?';
+
+  @override
+  String get readinessSleep => 'Sleep';
+
+  @override
+  String get readinessEnergy => 'Energy';
+
+  @override
+  String get readinessSoreness => 'Soreness';
+
+  @override
+  String get recentActivity => 'Recent Activity';
+
+  @override
   String get progressTitle => 'Progress';
 
   @override
@@ -191,6 +230,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get save => 'Save';
+
+  @override
+  String get progressTabTraining => 'Training';
+
+  @override
+  String get progressTabExercise => 'Exercise';
+
+  @override
+  String get progressTabBody => 'Body';
+
+  @override
+  String get exerciseHistory => 'Exercise History';
+
+  @override
+  String get selectExercise => 'Select an exercise to view progression';
+
+  @override
+  String get noExerciseData => 'Complete workouts to track exercise progress';
 
   @override
   String get profileTitle => 'Profile';
@@ -242,6 +299,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get memberSince => 'Member since Jan 2025';
+
+  @override
+  String get athleteStats => 'Athlete Stats';
+
+  @override
+  String get goal => 'Goal';
+
+  @override
+  String get experienceLevel => 'Experience';
+
+  @override
+  String get trainingDays => 'Days / Week';
+
+  @override
+  String get equipmentLabel => 'Equipment';
+
+  @override
+  String get heightLabel => 'Height';
 
   @override
   String get signIn => 'Sign In';
@@ -337,4 +412,178 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get notificationPermissionDenied =>
       'Enable notifications in system settings to receive workout reminders.';
+
+  @override
+  String setNumber(int number) {
+    return 'Set $number';
+  }
+
+  @override
+  String get weightLabel => 'WEIGHT';
+
+  @override
+  String get repsLabel => 'REPS';
+
+  @override
+  String get rpeLabel => 'RPE';
+
+  @override
+  String get completeSet => 'Complete Set';
+
+  @override
+  String get markComplete => 'Mark Complete';
+
+  @override
+  String get newPr => 'NEW PR';
+
+  @override
+  String get requestCoachFeedback => 'Request Coach Feedback';
+
+  @override
+  String get feedbackRequested => 'Feedback Requested!';
+
+  @override
+  String get backToToday => 'Back to Today';
+
+  @override
+  String get volLabel => 'VOL';
+
+  @override
+  String get assignTitle => 'Choose Your First Program';
+
+  @override
+  String get assignSubtitle =>
+      'Based on your goals, here are your best matches.';
+
+  @override
+  String get browsePrograms => 'Browse Programs';
+
+  @override
+  String get noActiveProgram => 'No active program';
+
+  @override
+  String get noActiveProgramHint =>
+      'Choose a program from the library below to get started.';
+
+  @override
+  String get coachNoNote => 'No coach note for today';
+
+  @override
+  String get workoutDoneLabel => 'DONE';
+
+  @override
+  String get viewDetails => 'View Details';
+
+  @override
+  String get restDayLabel => 'REST DAY';
+
+  @override
+  String get restDayTitle => 'Recovery Day';
+
+  @override
+  String get restDayBody =>
+      'Use this time to recover and prepare for your next session.';
+
+  @override
+  String get restDayTipSleep => 'Sleep 8h';
+
+  @override
+  String get restDayTipHydration => 'Stay Hydrated';
+
+  @override
+  String get restDayTipMobility => 'Light Mobility';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get filterBeginner => 'Beginner';
+
+  @override
+  String get filterIntermediate => 'Intermediate';
+
+  @override
+  String get filterAdvanced => 'Advanced';
+
+  @override
+  String get filterHypertrophy => 'Hypertrophy';
+
+  @override
+  String get filterStrength => 'Strength';
+
+  @override
+  String get filterFatLoss => 'Fat Loss';
+
+  @override
+  String get weeksLabel => 'Weeks';
+
+  @override
+  String get daysPerWeekShort => 'Days/Wk';
+
+  @override
+  String get ratingLabel => 'Rating';
+
+  @override
+  String get usersLabel => 'Users';
+
+  @override
+  String get secondsRemaining => 'seconds remaining';
+
+  @override
+  String get exerciseLibrary => 'Exercise Library';
+
+  @override
+  String get searchExercises => 'Search exercises...';
+
+  @override
+  String get noExercisesFound => 'No exercises found';
+
+  @override
+  String get tryDifferentFilter => 'Try a different filter or search term';
+
+  @override
+  String get checkInSent => 'Check-in sent!';
+
+  @override
+  String get coachUpdates => 'Coach Updates';
+
+  @override
+  String get noCoachPosts => 'No coach posts yet';
+
+  @override
+  String get weeklyCheckIn => 'Weekly Check-In';
+
+  @override
+  String get coachFeedbackSection => 'Coach Feedback';
+
+  @override
+  String get noCoachFeedback => 'No feedback yet';
+
+  @override
+  String get yourCoach => 'Your Coach';
+
+  @override
+  String get viewProfile => 'View Profile';
+
+  @override
+  String get postTypeTip => 'Tip';
+
+  @override
+  String get postTypeMotivation => 'Motivation';
+
+  @override
+  String get postTypeProgramUpdate => 'Program Update';
+
+  @override
+  String get postTypeNutrition => 'Nutrition';
+
+  @override
+  String get howWasYourWeek => 'How was your week?';
+
+  @override
+  String get checkInPlaceholder =>
+      'Share your progress, how you\'re feeling, any questions...';
+
+  @override
+  String get submitCheckIn => 'Submit Check-In';
 }

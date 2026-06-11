@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../core/firebase_availability.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../auth/providers/auth_providers.dart';
 import '../domain/workout_log_model.dart';
+import 'workout_repository.dart';
 
 class FirestoreWorkoutRepository {
   FirestoreWorkoutRepository(this._firestore, this._uid);
@@ -110,9 +112,17 @@ final firestoreWorkoutRepoProvider =
 });
 
 // ── Workout history stream ─────────────────────────────────
+
+Stream<List<WorkoutLog>> _watchLocalWorkouts(WorkoutRepository repo) async* {
+  yield repo.getAll();
+  await for (final _ in Hive.box<String>('workout_logs').watch()) {
+    yield repo.getAll();
+  }
+}
+
 final workoutHistoryStreamProvider =
     StreamProvider<List<WorkoutLog>>((ref) {
   final repo = ref.watch(firestoreWorkoutRepoProvider);
-  if (repo == null) return Stream.value([]);
-  return repo.watchAll();
+  if (repo != null) return repo.watchAll();
+  return _watchLocalWorkouts(ref.read(workoutRepositoryProvider));
 });

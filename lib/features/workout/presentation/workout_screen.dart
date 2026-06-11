@@ -8,6 +8,8 @@ import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/tokens.dart';
+import '../../../core/widgets/set_card.dart';
 import '../../../shared/widgets/fp_button.dart';
 import '../../../shared/widgets/fp_card.dart';
 import '../../programs/providers/enrollment_provider.dart';
@@ -32,13 +34,13 @@ class WorkoutScreen extends ConsumerWidget {
     final exCount  = session?.exercises.length ?? 0;
     final subtitle = program != null && enrollment != null
         ? '${program.title}  ·  ${enrollment.weekLabel}'
-        : 'No program active';
+        : l.noActiveProgram;
 
     return Scaffold(
       backgroundColor: context.bg,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(AppSpacing.base),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -46,13 +48,13 @@ class WorkoutScreen extends ConsumerWidget {
                 l.workoutTitle,
                 style: TextStyle(
                   fontFamily: 'Inter',
-                  fontSize: 28,
+                  fontSize: AppTypeScale.displayMd,
                   fontWeight: FontWeight.w900,
                   color: context.primaryText,
                   letterSpacing: -0.5,
                 ),
               ).animate().fadeIn(duration: 300.ms),
-              const SizedBox(height: 20),
+              const SizedBox(height: AppSpacing.base),
               FpCard(
                 gradient: AppColors.heroCardGradient,
                 borderColor: AppColors.accent.withAlpha(51),
@@ -226,33 +228,29 @@ class _WorkoutActiveScreenState extends ConsumerState<WorkoutActiveScreen> {
     final enrollment = ref.read(enrollmentProvider).valueOrNull;
     final program    = ref.read(activeProgramProvider);
 
-    final logId = await ref.read(workoutProvider.notifier).finish(
+    final log = await ref.read(workoutProvider.notifier).finish(
       programId:   enrollment?.programId,
       programWeek: enrollment?.currentWeek,
       programDay:  enrollment?.currentDay,
     );
 
-    if (enrollment != null && program != null && logId != null) {
-      await ref.read(enrollmentProvider.notifier).completeSession(
-        logId,
-        daysPerWeek: program.daysPerWeek,
-      );
+    if (enrollment != null && program != null && log != null) {
+      try {
+        await ref.read(enrollmentProvider.notifier).completeSession(
+          log.id,
+          daysPerWeek: program.daysPerWeek,
+        );
+      } catch (e) {
+        debugPrint('completeSession failed: $e');
+      }
     }
 
     if (!mounted) return;
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: context.surface,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(AppTheme.radiusXXL)),
-      ),
-      builder: (_) => _WorkoutSummarySheet(
-        onClose: () {
-          Navigator.pop(context);
-          context.go(AppRoutes.home);
-        },
-      ),
-    );
+    if (log != null) {
+      context.go(AppRoutes.workoutSummary, extra: log);
+    } else {
+      context.go(AppRoutes.today);
+    }
   }
 }
 
@@ -272,16 +270,16 @@ class _TopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
+      padding: const EdgeInsets.fromLTRB(AppSpacing.base, AppSpacing.md, AppSpacing.base, AppSpacing.sm),
       child: Row(
         children: [
           GestureDetector(
             onTap: () => context.pop(),
             child: Container(
-              width: 40, height: 40,
+              width: 48, height: 48,
               decoration: BoxDecoration(
                 color: context.surface,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(AppRadius.sm),
                 border: Border.all(color: context.border),
               ),
               child: Icon(Icons.chevron_left_rounded,
@@ -424,6 +422,19 @@ class _ExerciseCard extends ConsumerStatefulWidget {
 }
 
 class _ExerciseCardState extends ConsumerState<_ExerciseCard> {
+  late List<double?> _weights;
+  late List<int?> _reps;
+  late List<double?> _rpes;
+
+  @override
+  void initState() {
+    super.initState();
+    final sets = widget.exerciseItem.sets;
+    _weights = sets.map((s) => s.loggedWeight ?? s.targetWeight).toList();
+    _reps    = sets.map((s) => s.loggedReps   ?? s.targetReps).toList();
+    _rpes    = sets.map((s) => s.loggedRpe    ?? s.rpe).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     final ex = widget.exerciseItem;
@@ -474,7 +485,6 @@ class _ExerciseCardState extends ConsumerState<_ExerciseCard> {
                   ],
                 ),
               ),
-              // Video thumb
               Container(
                 width: 60, height: 60,
                 decoration: BoxDecoration(
@@ -489,19 +499,31 @@ class _ExerciseCardState extends ConsumerState<_ExerciseCard> {
           ),
           const SizedBox(height: 18),
 
-          // ── Sets table ──
-          _SetsTable(
-            sets: ex.sets,
-            onComplete: (i, weight, reps, rpe) {
-              setState(() {
-                ex.sets[i].status       = SetStatus.completed;
-                ex.sets[i].loggedWeight = weight;
-                ex.sets[i].loggedReps   = reps;
-                ex.sets[i].loggedRpe    = rpe;
-              });
-              widget.onSetComplete(i);
-            },
-          ),
+          // ── Set cards ──
+          ...List.generate(ex.sets.length, (i) {
+            final set = ex.sets[i];
+            return Padding(
+              padding: EdgeInsets.only(bottom: i < ex.sets.length - 1 ? 10 : 0),
+              child: SetCard(
+                key: ValueKey('set_${widget.exerciseIdx}_$i'),
+                set: set,
+                onWeightChanged: (v) => _weights[i] = v,
+                onRepsChanged:   (v) => _reps[i]    = v,
+                onRpeChanged:    (v) => _rpes[i]     = v,
+                onComplete: () {
+                  ref.read(workoutProvider.notifier).logSet(
+                    exerciseIdx: widget.exerciseIdx,
+                    setIdx:      i,
+                    reps:   _reps[i]    ?? set.targetReps   ?? 0,
+                    weight: _weights[i] ?? set.targetWeight ?? 0.0,
+                    rpe:    _rpes[i],
+                  );
+                  widget.onSetComplete(i);
+                },
+              ),
+            );
+          }),
+
           const SizedBox(height: 14),
 
           // ── Rest timer bar ──
@@ -513,279 +535,6 @@ class _ExerciseCardState extends ConsumerState<_ExerciseCard> {
             _CuesList(cues: ex.exercise.cues),
           ],
         ],
-      ),
-    );
-  }
-}
-
-// ── Sets table ────────────────────────────────────────────
-class _SetsTable extends StatefulWidget {
-  const _SetsTable({required this.sets, required this.onComplete});
-
-  final List<WorkoutSet> sets;
-  final void Function(int setIdx, double? weight, int? reps, double? rpe) onComplete;
-
-  @override
-  State<_SetsTable> createState() => _SetsTableState();
-}
-
-class _SetsTableState extends State<_SetsTable> {
-  late final List<TextEditingController> _weightCtrl;
-  late final List<TextEditingController> _repsCtrl;
-  late final List<TextEditingController> _rpeCtrl;
-
-  @override
-  void initState() {
-    super.initState();
-    _weightCtrl = widget.sets.map((s) =>
-      TextEditingController(text: s.loggedWeight?.toStringAsFixed(0) ??
-          s.targetWeight?.toStringAsFixed(0) ?? '')).toList();
-    _repsCtrl = widget.sets.map((s) =>
-      TextEditingController(text: s.loggedReps?.toString() ??
-          s.targetReps?.toString() ?? '')).toList();
-    _rpeCtrl = widget.sets.map((s) =>
-      TextEditingController(text: s.loggedRpe?.toString() ??
-          s.rpe?.toString() ?? '')).toList();
-  }
-
-  @override
-  void dispose() {
-    for (final c in [..._weightCtrl, ..._repsCtrl, ..._rpeCtrl]) {
-      c.dispose();
-    }
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Header
-        Padding(
-          padding: const EdgeInsets.only(bottom: 8),
-          child: Row(
-            children: [
-              _TH('SET', flex: 1),
-              _TH('KG',  flex: 3),
-              _TH('REPS',flex: 3),
-              _TH('RPE', flex: 2),
-              const SizedBox(width: 36),
-            ],
-          ),
-        ),
-        // Rows
-        ...List.generate(widget.sets.length, (i) {
-          final set = widget.sets[i];
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: _SetNumBadge(
-                    number: i + 1,
-                    isDone: set.isDone,
-                  ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: _MetricInput(
-                    controller: _weightCtrl[i],
-                    enabled: !set.isDone,
-                    isDone: set.isDone,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                Expanded(
-                  flex: 3,
-                  child: _MetricInput(
-                    controller: _repsCtrl[i],
-                    enabled: !set.isDone,
-                    isDone: set.isDone,
-                  ),
-                ),
-                const SizedBox(width: 6),
-                Expanded(
-                  flex: 2,
-                  child: _RpeInput(
-                    controller: _rpeCtrl[i],
-                    isDone: set.isDone,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                // Complete button
-                GestureDetector(
-                  onTap: set.isDone ? null : () {
-                    HapticFeedback.mediumImpact();
-                    setState(() => set.status = SetStatus.completed);
-                    widget.onComplete(
-                      i,
-                      double.tryParse(_weightCtrl[i].text),
-                      int.tryParse(_repsCtrl[i].text),
-                      double.tryParse(_rpeCtrl[i].text),
-                    );
-                  },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 200),
-                    width: 30, height: 30,
-                    decoration: BoxDecoration(
-                      color: set.isDone ? AppColors.success : context.surface2,
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: set.isDone ? AppColors.success : context.border,
-                      ),
-                    ),
-                    child: Icon(
-                      Icons.check_rounded,
-                      size: 16,
-                      color: set.isDone ? Colors.white : context.tertiaryText,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }),
-      ],
-    );
-  }
-}
-
-class _TH extends StatelessWidget {
-  const _TH(this.label, {required this.flex});
-  final String label;
-  final int flex;
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      flex: flex,
-      child: Text(
-        label,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 10,
-          fontWeight: FontWeight.w700,
-          color: context.tertiaryText,
-          letterSpacing: 0.8,
-        ),
-      ),
-    );
-  }
-}
-
-class _SetNumBadge extends StatelessWidget {
-  const _SetNumBadge({required this.number, required this.isDone});
-  final int number;
-  final bool isDone;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        width: 28, height: 28,
-        decoration: BoxDecoration(
-          color: isDone ? AppColors.accent : context.surface2,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Center(
-          child: Text(
-            '$number',
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 12,
-              fontWeight: FontWeight.w800,
-              color: isDone ? Colors.black : context.secondaryText,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _MetricInput extends StatelessWidget {
-  const _MetricInput({
-    required this.controller,
-    required this.enabled,
-    required this.isDone,
-  });
-  final TextEditingController controller;
-  final bool enabled;
-  final bool isDone;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      enabled: enabled,
-      keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      textAlign: TextAlign.center,
-      style: TextStyle(
-        fontFamily: 'Inter',
-        fontSize: 15,
-        fontWeight: FontWeight.w800,
-        color: isDone ? AppColors.accent : context.primaryText,
-      ),
-      decoration: InputDecoration(
-        isDense: true,
-        contentPadding: const EdgeInsets.symmetric(vertical: 8),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
-            color: isDone ? AppColors.accent.withAlpha(77) : context.border,
-          ),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
-            color: isDone ? AppColors.accent.withAlpha(77) : context.border,
-          ),
-        ),
-        disabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: BorderSide(
-            color: isDone ? AppColors.accent.withAlpha(77) : context.border,
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
-          borderSide: const BorderSide(color: AppColors.accent, width: 1.5),
-        ),
-        filled: true,
-        fillColor: isDone ? AppColors.accentDim : context.surface2,
-      ),
-    );
-  }
-}
-
-class _RpeInput extends StatelessWidget {
-  const _RpeInput({required this.controller, required this.isDone});
-  final TextEditingController controller;
-  final bool isDone;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      decoration: BoxDecoration(
-        color: isDone ? AppColors.accentDim : context.surface2,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(
-          color: isDone ? AppColors.accent.withAlpha(77) : context.border,
-        ),
-      ),
-      child: Text(
-        controller.text.isEmpty ? '—' : controller.text,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          fontFamily: 'Inter',
-          fontSize: 13,
-          fontWeight: FontWeight.w700,
-          color: isDone ? AppColors.accent : context.secondaryText,
-        ),
       ),
     );
   }
@@ -898,6 +647,7 @@ class _RestOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return AnimatedOpacity(
       opacity: state.isActive ? 1 : 0,
       duration: const Duration(milliseconds: 300),
@@ -908,21 +658,21 @@ class _RestOverlay extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                AppLocalizations.of(context)!.rest,
-                style: const TextStyle(
+                l.rest,
+                style: TextStyle(
                   fontFamily: 'Inter',
-                  fontSize: 14,
+                  fontSize: AppTypeScale.labelLg,
                   fontWeight: FontWeight.w700,
-                  color: Color(0xFFA0A0A0),
+                  color: context.secondaryText,
                   letterSpacing: 2,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: AppSpacing.sm),
               Text(
                 state.formattedTime,
                 style: const TextStyle(
                   fontFamily: 'Inter',
-                  fontSize: 80,
+                  fontSize: AppTypeScale.timer,
                   fontWeight: FontWeight.w900,
                   color: AppColors.accent,
                   letterSpacing: -3,
@@ -930,47 +680,46 @@ class _RestOverlay extends StatelessWidget {
                 ),
               ).animate(onPlay: (c) => c.repeat(reverse: true))
                   .shimmer(duration: 2000.ms, color: AppColors.accent.withAlpha(200)),
-              const SizedBox(height: 4),
-              const Text(
-                'seconds remaining',
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                l.secondsRemaining,
                 style: TextStyle(
                   fontFamily: 'Inter',
-                  fontSize: 14,
-                  color: Color(0xFF606060),
+                  fontSize: AppTypeScale.labelLg,
+                  color: context.tertiaryText,
                 ),
               ),
-              const SizedBox(height: 20),
-              // Progress bar
+              const SizedBox(height: AppSpacing.base),
               SizedBox(
                 width: 160,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(3),
+                  borderRadius: BorderRadius.circular(AppRadius.xs),
                   child: LinearProgressIndicator(
                     value: state.progress,
                     minHeight: 6,
-                    backgroundColor: const Color(0xFF2A2A2A),
+                    backgroundColor: context.surface3,
                     valueColor: const AlwaysStoppedAnimation<Color>(AppColors.accent),
                   ),
                 ),
               ),
-              const SizedBox(height: 28),
+              const SizedBox(height: AppSpacing.xl),
               TextButton(
                 onPressed: onSkip,
                 style: TextButton.styleFrom(
-                  backgroundColor: const Color(0xFF1A1A1A),
-                  side: const BorderSide(color: Color(0xFF2A2A2A)),
+                  backgroundColor: context.surface,
+                  side: BorderSide(color: context.surface3),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppTheme.radiusSM),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 32, vertical: AppSpacing.md),
                 ),
                 child: Text(
-                  AppLocalizations.of(context)!.skipRest,
-                  style: const TextStyle(
+                  l.skipRest,
+                  style: TextStyle(
                     fontFamily: 'Inter',
-                    fontSize: 14,
+                    fontSize: AppTypeScale.labelLg,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFFA0A0A0),
+                    color: context.secondaryText,
                   ),
                 ),
               ),
@@ -1014,7 +763,7 @@ class _BottomNav extends StatelessWidget {
               onPressed: canGoPrev ? onPrev : null,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: AppSpacing.md),
           Expanded(
             child: FpButton(
               label: AppLocalizations.of(context)!.next,
@@ -1028,53 +777,3 @@ class _BottomNav extends StatelessWidget {
   }
 }
 
-// ── Workout summary sheet ─────────────────────────────────
-class _WorkoutSummarySheet extends StatelessWidget {
-  const _WorkoutSummarySheet({required this.onClose});
-  final VoidCallback onClose;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(24),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            width: 40, height: 4,
-            decoration: BoxDecoration(
-              color: context.surface3,
-              borderRadius: BorderRadius.circular(2),
-            ),
-          ),
-          const SizedBox(height: 24),
-          const Text('🏆', style: TextStyle(fontSize: 52)),
-          const SizedBox(height: 12),
-          Text(
-            AppLocalizations.of(context)!.workoutComplete,
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 24,
-              fontWeight: FontWeight.w900,
-              color: context.primaryText,
-            ),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            AppLocalizations.of(context)!.workoutCompleteSubtitle,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: 'Inter',
-              fontSize: 14,
-              color: context.secondaryText,
-              height: 1.5,
-            ),
-          ),
-          const SizedBox(height: 28),
-          FpButton(label: AppLocalizations.of(context)!.done, onPressed: onClose),
-          const SizedBox(height: 8),
-        ],
-      ),
-    );
-  }
-}

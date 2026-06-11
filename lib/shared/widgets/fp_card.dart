@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../../core/constants/app_colors.dart';
 import '../../core/theme/app_theme.dart';
 
 /// Premium card with optional press animation and gradient support.
@@ -168,7 +169,7 @@ class FpSectionHeader extends StatelessWidget {
                   fontFamily: 'Inter',
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: Color(0xFF02E6FF),
+                  color: AppColors.accent,
                 ),
               ),
             ),

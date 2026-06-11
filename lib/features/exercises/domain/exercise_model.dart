@@ -54,15 +54,6 @@ enum MuscleCategory {
     MuscleCategory.legs      => 'Legs',
     MuscleCategory.core      => 'Core',
   };
-
-  String get emoji => switch (this) {
-    MuscleCategory.chest     => '🫀',
-    MuscleCategory.back      => '🔙',
-    MuscleCategory.shoulders => '🦾',
-    MuscleCategory.arms      => '💪',
-    MuscleCategory.legs      => '🦵',
-    MuscleCategory.core      => '⚡',
-  };
 }
 
 enum Equipment {

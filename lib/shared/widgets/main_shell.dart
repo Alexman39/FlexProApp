@@ -26,21 +26,21 @@ class _BottomNav extends StatelessWidget {
 
   int _activeIndex(String location) {
     if (location.startsWith(AppRoutes.programs)) return 1;
-    if (location.startsWith(AppRoutes.workout))  return 2;
-    if (location.startsWith(AppRoutes.progress)) return 3;
+    if (location.startsWith(AppRoutes.progress)) return 2;
+    if (location.startsWith(AppRoutes.coach))    return 3;
     if (location.startsWith(AppRoutes.profile))  return 4;
-    return 0;
+    return 0; // /today
   }
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context)!;
     final tabs = [
-      _NavTab(label: l.navHome,     icon: Icons.home_rounded,               route: AppRoutes.home),
-      _NavTab(label: l.navPrograms, icon: Icons.format_list_bulleted_rounded, route: AppRoutes.programs),
-      _NavTab(label: l.navWorkout,  icon: Icons.play_circle_fill_rounded,   route: AppRoutes.workout),
-      _NavTab(label: l.navProgress, icon: Icons.show_chart_rounded,         route: AppRoutes.progress),
-      _NavTab(label: l.navProfile,  icon: Icons.person_rounded,             route: AppRoutes.profile),
+      _NavTab(label: l.navToday,    icon: Icons.today_rounded,                route: AppRoutes.today),
+      _NavTab(label: l.navPrograms, icon: Icons.format_list_bulleted_rounded,  route: AppRoutes.programs),
+      _NavTab(label: l.navProgress, icon: Icons.show_chart_rounded,            route: AppRoutes.progress),
+      _NavTab(label: l.navCoach,    icon: Icons.sports_rounded,                route: AppRoutes.coach),
+      _NavTab(label: l.navProfile,  icon: Icons.person_rounded,                route: AppRoutes.profile),
     ];
 
     final location = GoRouterState.of(context).uri.path;

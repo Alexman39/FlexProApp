@@ -394,7 +394,7 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('📋', style: TextStyle(fontSize: 48)),
+          const Icon(Icons.history_rounded, size: 48, color: AppColors.accent),
           const SizedBox(height: 16),
           Text(
             l.noWorkouts,

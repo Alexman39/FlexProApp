@@ -7,16 +7,20 @@ import '../../features/auth/presentation/auth_screen.dart';
 import '../../features/auth/providers/auth_providers.dart';
 import '../../features/splash/presentation/splash_screen.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
-import '../../features/home/presentation/home_screen.dart';
+import '../../features/programs/presentation/program_assign_screen.dart';
+import '../../features/today/today_screen.dart';
 import '../../features/programs/presentation/programs_screen.dart';
+import '../../features/programs/presentation/program_detail_screen.dart';
 import '../../features/workout/presentation/workout_screen.dart';
 import '../../features/workout/presentation/workout_history_screen.dart';
+import '../../features/workout/presentation/workout_summary_screen.dart';
 import '../../features/progress/presentation/progress_screen.dart';
 import '../../features/profile/presentation/profile_screen.dart';
 import '../../features/profile/presentation/paywall_screen.dart';
 import '../../features/profile/presentation/legal_screen.dart';
 import '../../features/exercises/presentation/exercise_library_screen.dart';
 import '../../features/coach/presentation/coach_profile_screen.dart';
+import '../../features/coach/presentation/coach_screen.dart';
 import '../../features/exercises/presentation/exercise_detail_screen.dart';
 import '../../features/workout/domain/workout_log_model.dart';
 import '../../features/workout/presentation/workout_log_detail_screen.dart';
@@ -24,31 +28,39 @@ import '../../shared/widgets/main_shell.dart';
 
 // ── Route paths ──────────────────────────────────────────
 abstract final class AppRoutes {
-  static const splash          = '/';
-  static const onboarding      = '/onboarding';
-  static const login           = '/login';
-  static const home            = '/home';
-  static const programs        = '/programs';
-  static const workout         = '/workout';
-  static const workoutActive   = '/workout/active';
-  static const workoutHistory  = '/workout/history';
-  static const progress        = '/progress';
-  static const profile         = '/profile';
-  static const paywall         = '/paywall';
+  static const splash           = '/';
+  static const onboarding       = '/onboarding';
+  static const programAssign    = '/assign';
+  static const login            = '/login';
+
+  // Shell tabs
+  static const today            = '/today';
+  static const programs         = '/programs';
+  static const progress         = '/progress';
+  static const coach            = '/coach';
+  static const coachProfile     = '/coach/profile';
+  static const profile          = '/profile';
+
+  // Full-screen (no shell)
+  static const workoutActive    = '/workout/active';
+  static const workoutSummary   = '/workout/summary';
+  static const workoutHistory   = '/workout/history';
+  static const workoutLogDetail = '/workout/history/detail';
   static const exerciseLibrary  = '/exercises';
   static const exerciseDetail   = '/exercises/:id';
-  static const workoutLogDetail = '/workout/history/detail';
-  static const coachProfile    = '/coach';
-  static const privacyPolicy   = '/privacy';
-  static const termsOfService  = '/terms';
+  static const paywall          = '/paywall';
+  static const privacyPolicy    = '/privacy';
+  static const termsOfService   = '/terms';
 }
 
 // ── Shell navigation keys ────────────────────────────────
 final _rootKey  = GlobalKey<NavigatorState>(debugLabel: 'root');
 final _shellKey = GlobalKey<NavigatorState>(debugLabel: 'shell');
 
-// Protected shell routes — require auth
-const _protectedPrefixes = ['/home', '/programs', '/workout', '/progress', '/profile', '/exercises', '/paywall'];
+const _protectedPrefixes = [
+  '/today', '/programs', '/progress', '/coach', '/profile',
+  '/exercises', '/paywall',
+];
 
 final routerProvider = Provider<GoRouter>((ref) {
   return GoRouter(
@@ -83,32 +95,58 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, __) => const OnboardingScreen(),
       ),
 
+      // ── Program assignment (no shell, post-onboarding) ──
+      GoRoute(
+        path: AppRoutes.programAssign,
+        builder: (_, __) => const ProgramAssignScreen(),
+      ),
+
       // ── Login / Register (no shell) ──
       GoRoute(
         path: AppRoutes.login,
         builder: (_, __) => const AuthScreen(),
       ),
 
-      // ── Main app shell (bottom nav) ──
+      // ── /home → /today redirect (backward compat) ──
+      GoRoute(
+        path: '/home',
+        redirect: (_, __) => AppRoutes.today,
+      ),
+
+      // ── Main app shell (5 tabs) ──
       ShellRoute(
         navigatorKey: _shellKey,
         builder: (context, state, child) => MainShell(child: child),
         routes: [
           GoRoute(
-            path: AppRoutes.home,
-            pageBuilder: (_, __) => _noTransitionPage(const HomeScreen()),
+            path: AppRoutes.today,
+            pageBuilder: (_, __) => _noTransitionPage(const TodayScreen()),
           ),
           GoRoute(
             path: AppRoutes.programs,
             pageBuilder: (_, __) => _noTransitionPage(const ProgramsScreen()),
-          ),
-          GoRoute(
-            path: AppRoutes.workout,
-            pageBuilder: (_, __) => _noTransitionPage(const WorkoutScreen()),
+            routes: [
+              GoRoute(
+                path: ':id',
+                builder: (_, state) => ProgramDetailScreen(
+                  programId: state.pathParameters['id'] ?? '',
+                ),
+              ),
+            ],
           ),
           GoRoute(
             path: AppRoutes.progress,
             pageBuilder: (_, __) => _noTransitionPage(const ProgressScreen()),
+          ),
+          GoRoute(
+            path: AppRoutes.coach,
+            pageBuilder: (_, __) => _noTransitionPage(const CoachScreen()),
+            routes: [
+              GoRoute(
+                path: 'profile',
+                builder: (_, __) => const CoachProfileScreen(),
+              ),
+            ],
           ),
           GoRoute(
             path: AppRoutes.profile,
@@ -126,6 +164,14 @@ final routerProvider = Provider<GoRouter>((ref) {
         },
       ),
 
+      // ── Post-workout summary (full-screen, no shell) ──
+      GoRoute(
+        path: AppRoutes.workoutSummary,
+        builder: (_, state) => WorkoutSummaryScreen(
+          log: state.extra as WorkoutLog,
+        ),
+      ),
+
       // ── Workout history (full-screen, no shell) ──
       GoRoute(
         path: AppRoutes.workoutHistory,
@@ -138,12 +184,6 @@ final routerProvider = Provider<GoRouter>((ref) {
         builder: (_, state) => WorkoutLogDetailScreen(
           log: state.extra as WorkoutLog,
         ),
-      ),
-
-      // ── Coach profile ──
-      GoRoute(
-        path: AppRoutes.coachProfile,
-        builder: (_, __) => const CoachProfileScreen(),
       ),
 
       // ── Exercise library (full-screen, no shell) ──
@@ -163,7 +203,8 @@ final routerProvider = Provider<GoRouter>((ref) {
       // ── Legal screens ──
       GoRoute(
         path: AppRoutes.privacyPolicy,
-        builder: (_, __) => const LegalScreen(type: LegalDocType.privacyPolicy),
+        builder: (_, __) =>
+            const LegalScreen(type: LegalDocType.privacyPolicy),
       ),
       GoRoute(
         path: AppRoutes.termsOfService,
@@ -179,7 +220,8 @@ final routerProvider = Provider<GoRouter>((ref) {
             position: Tween<Offset>(
               begin: const Offset(0, 1),
               end: Offset.zero,
-            ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
+            ).animate(
+                CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
             child: child,
           ),
         ),

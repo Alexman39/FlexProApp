@@ -36,7 +36,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
           .timeout(const Duration(seconds: 5), onTimeout: () => null);
       if (!mounted) return;
       if (user != null) {
-        context.go(AppRoutes.home);
+        context.go(AppRoutes.today);
         return;
       }
     }
@@ -47,7 +47,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
     if (!mounted) return;
     // On Linux (no Firebase): go straight to home after onboarding
     if (!firebaseAvailable) {
-      context.go(hasOnboarded ? AppRoutes.home : AppRoutes.onboarding);
+      context.go(hasOnboarded ? AppRoutes.today : AppRoutes.onboarding);
       return;
     }
     context.go(hasOnboarded ? AppRoutes.login : AppRoutes.onboarding);
@@ -88,7 +88,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                           fontFamily: 'Inter',
                           fontSize: 36,
                           fontWeight: FontWeight.w900,
-                          color: Color(0xFFF0F0F0),
+                          color: AppColors.textDark,
                           letterSpacing: -0.8,
                         ),
                       ),
@@ -116,7 +116,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                     fontFamily: 'Inter',
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFFA0A0A0),
+                    color: AppColors.text2Dark,
                     letterSpacing: 0.3,
                   ),
                 ).animate(delay: 400.ms).fadeIn(duration: 500.ms),
@@ -128,7 +128,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
                     fontFamily: 'Inter',
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF606060),
+                    color: AppColors.text3Dark,
                   ),
                 ).animate(delay: 500.ms).fadeIn(duration: 500.ms),
 
@@ -155,10 +155,10 @@ class _LogoMark extends StatelessWidget {
       height: 90,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
-        gradient: const LinearGradient(
+        gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [Color(0xFF2A3F44), Color(0xFF0D2228)],
+          colors: AppColors.logoGradient.colors,
         ),
         border: Border.all(
           color: AppColors.accent.withAlpha(77),
@@ -258,7 +258,7 @@ class _LoadingBarState extends State<_LoadingBar>
           animation: _ctrl,
           builder: (_, __) => LinearProgressIndicator(
             value: _ctrl.value,
-            backgroundColor: const Color(0xFF2A2A2A),
+            backgroundColor: AppColors.surface3Dark,
             valueColor: const AlwaysStoppedAnimation<Color>(AppColors.accent),
           ),
         ),

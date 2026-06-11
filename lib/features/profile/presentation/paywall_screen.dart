@@ -128,7 +128,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                         border: Border.all(color: context.border),
                       ),
                       child: Text(
-                        '✕ Close',
+                        'Close',
                         style: TextStyle(
                           fontFamily: 'Inter',
                           fontSize: 13,
@@ -162,7 +162,8 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                 padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
                 child: Column(
                   children: [
-                    const Text('⚡', style: TextStyle(fontSize: 56))
+                    const Icon(Icons.bolt_rounded,
+                            size: 56, color: AppColors.accent)
                         .animate()
                         .scale(begin: const Offset(0.6, 0.6),
                             curve: Curves.easeOutBack)
@@ -179,7 +180,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                               fontFamily: 'Inter',
                               fontSize: 28,
                               fontWeight: FontWeight.w900,
-                              color: Color(0xFFF0F0F0),
+                              color: AppColors.textDark,
                               letterSpacing: -0.5,
                             ),
                           ),
@@ -199,7 +200,7 @@ class _PaywallScreenState extends ConsumerState<PaywallScreen> {
                               fontFamily: 'Inter',
                               fontSize: 28,
                               fontWeight: FontWeight.w900,
-                              color: Color(0xFFF0F0F0),
+                              color: AppColors.textDark,
                               letterSpacing: -0.5,
                             ),
                           ),

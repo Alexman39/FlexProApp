@@ -297,8 +297,8 @@ class _ExerciseBlock extends StatelessWidget {
                     flex: 1,
                     child: Center(
                       child: isBest
-                          ? const Text('🏆',
-                              style: TextStyle(fontSize: 12))
+                          ? const Icon(Icons.emoji_events_rounded,
+                              size: 16, color: AppColors.accent)
                           : Text(
                               '${e.key + 1}',
                               textAlign: TextAlign.center,

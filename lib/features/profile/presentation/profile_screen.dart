@@ -11,9 +11,13 @@ import '../../../core/providers/notification_provider.dart';
 import '../../../core/providers/theme_provider.dart';
 import '../../../core/router/app_router.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/tokens.dart';
 import '../../../shared/widgets/fp_card.dart';
 import '../../auth/data/auth_repository.dart';
 import '../../auth/providers/auth_providers.dart';
+import '../../onboarding/domain/onboarding_models.dart';
+import '../../onboarding/providers/onboarding_provider.dart';
+import '../../progress/data/body_weight_repository.dart';
 
 void _showLanguagePicker(BuildContext context, WidgetRef ref) {
   showModalBottomSheet(
@@ -28,7 +32,8 @@ void _showLanguagePicker(BuildContext context, WidgetRef ref) {
         children: [
           const SizedBox(height: 12),
           Container(
-            width: 40, height: 4,
+            width: 40,
+            height: 4,
             decoration: BoxDecoration(
               color: context.surface3,
               borderRadius: BorderRadius.circular(2),
@@ -37,12 +42,14 @@ void _showLanguagePicker(BuildContext context, WidgetRef ref) {
           const SizedBox(height: 16),
           for (final entry in const [('English', 'en'), ('Ελληνικά', 'el')])
             ListTile(
-              title: Text(entry.$1,
-                  style: TextStyle(
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w600,
-                    color: context.primaryText,
-                  )),
+              title: Text(
+                entry.$1,
+                style: TextStyle(
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w600,
+                  color: context.primaryText,
+                ),
+              ),
               trailing: ref.watch(localeProvider).languageCode == entry.$2
                   ? const Icon(Icons.check_rounded, color: AppColors.accent)
                   : null,
@@ -86,16 +93,22 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appUser = ref.watch(appUserProvider).valueOrNull;
+    final onboarding = ref.watch(onboardingProvider);
+    final bodyWeights = ref.watch(bodyWeightProvider).valueOrNull ?? [];
+    final latestWeight = bodyWeights.isNotEmpty ? bodyWeights.last : null;
+
     return Scaffold(
       backgroundColor: context.bg,
       body: SafeArea(
         child: CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
-            // ── Header card ──
+            // ── Hero card ──────────────────────────────────────────
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.base, AppSpacing.md, AppSpacing.base, 0,
+                ),
                 child: _ProfileHeroCard(
                   name: appUser?.displayName ?? 'Athlete',
                   email: appUser?.email ?? '',
@@ -104,139 +117,166 @@ class ProfileScreen extends ConsumerWidget {
               ),
             ),
 
-            // ── Premium banner ──
+            // ── Premium banner ─────────────────────────────────────
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.base, AppSpacing.md, AppSpacing.base, 0,
+                ),
                 child: _PremiumBanner()
                     .animate(delay: 80.ms)
                     .fadeIn(duration: 300.ms),
               ),
             ),
 
-            // ── Settings sections ──
+            // ── Athlete stats grid ─────────────────────────────────
             SliverToBoxAdapter(
-              child: Column(
-                children: [
-                  Builder(builder: (context) {
-                    final l = AppLocalizations.of(context)!;
-                    final locale = ref.watch(localeProvider);
-                    final langLabel = locale.languageCode == 'el' ? 'Ελληνικά' : 'English';
-                    final notifEnabled = ref.watch(notificationSettingsProvider).enabled;
-                    return Column(
-                      children: [
-                        _SettingsSection(
-                          label: l.account,
-                          items: [
-                            _SettingItem(icon: '👤', iconBg: AppColors.accentDim,
-                                label: l.editProfile, onTap: () {}),
-                            _SettingItem(icon: '🎯', iconBg: AppColors.accentDim,
-                                label: l.myGoals, value: 'Hypertrophy', onTap: () {}),
-                            _SettingItem(icon: '📊', iconBg: const Color(0x262ECC71),
-                                label: l.bodyStats, value: '82 kg · 178 cm', onTap: () {}),
-                          ],
-                        ).animate(delay: 140.ms).fadeIn(),
-
-                        _SettingsSection(
-                          label: l.preferences,
-                          items: [
-                            _SettingItem(
-                              icon: '🌙',
-                              iconBg: AppColors.accentDim,
-                              label: l.appearance,
-                              trailing: _DarkModeToggle(),
-                            ),
-                            _SettingItem(
-                              icon: '🌍',
-                              iconBg: const Color(0x26F39C12),
-                              label: l.language,
-                              value: langLabel,
-                              onTap: () => _showLanguagePicker(context, ref),
-                            ),
-                            _SettingItem(
-                              icon: '🔔',
-                              iconBg: AppColors.accentDim,
-                              label: l.notifications,
-                              value: notifEnabled ? l.notificationOn : l.notificationOff,
-                              onTap: () => _showNotificationSheet(context, ref),
-                            ),
-                            _SettingItem(icon: '⚖️', iconBg: AppColors.accentDim,
-                                label: l.units, value: 'Metric (kg)', onTap: () {}),
-                          ],
-                        ).animate(delay: 180.ms).fadeIn(),
-
-                        _SettingsSection(
-                          label: l.support,
-                          items: [
-                            _SettingItem(icon: '❓', iconBg: const Color(0x262ECC71),
-                                label: l.helpFaq, onTap: () {}),
-                            _SettingItem(icon: '📧', iconBg: const Color(0x26F39C12),
-                                label: l.contactTasos,
-                                onTap: () => context.push(AppRoutes.coachProfile)),
-                            _SettingItem(icon: '📋', iconBg: AppColors.accentDim,
-                                label: l.privacyPolicy,
-                                onTap: () => context.push(AppRoutes.privacyPolicy)),
-                            _SettingItem(icon: '📄', iconBg: AppColors.accentDim,
-                                label: l.termsOfService,
-                                onTap: () => context.push(AppRoutes.termsOfService)),
-
-                            _SettingItem(
-                              icon: '🚪',
-                              iconBg: const Color(0x26FF4757),
-                              label: l.signOut,
-                              labelColor: AppColors.danger,
-                              onTap: () async {
-                                await ref.read(authRepositoryProvider)?.signOut();
-                                if (context.mounted) context.go(AppRoutes.login);
-                              },
-                            ),
-                          ],
-                        ).animate(delay: 220.ms).fadeIn(),
-                      ],
-                    );
-                  }),
-                ],
-              ),
+              child: _AthleteStatsSection(
+                onboarding: onboarding,
+                latestWeightKg: latestWeight?.weightKg,
+              ).animate(delay: 140.ms).fadeIn(),
             ),
 
-            // ── Footer ──
+            // ── Preferences + Account sections ────────────────────
+            SliverToBoxAdapter(
+              child: Builder(builder: (ctx) {
+                final l = AppLocalizations.of(ctx)!;
+                final locale = ref.watch(localeProvider);
+                final langLabel =
+                    locale.languageCode == 'el' ? 'Ελληνικά' : 'English';
+                final notifEnabled =
+                    ref.watch(notificationSettingsProvider).enabled;
+                return Column(
+                  children: [
+                    _SettingsSection(
+                      label: l.preferences,
+                      items: [
+                        _SettingItem(
+                          icon: Icons.dark_mode_rounded,
+                          iconColor: AppColors.accent,
+                          label: l.appearance,
+                          trailing: _DarkModeToggle(),
+                        ),
+                        _SettingItem(
+                          icon: Icons.language_rounded,
+                          iconColor: AppColors.warning,
+                          label: l.language,
+                          value: langLabel,
+                          onTap: () => _showLanguagePicker(ctx, ref),
+                        ),
+                        _SettingItem(
+                          icon: Icons.notifications_rounded,
+                          iconColor: AppColors.accent,
+                          label: l.notifications,
+                          value: notifEnabled
+                              ? l.notificationOn
+                              : l.notificationOff,
+                          onTap: () => _showNotificationSheet(ctx, ref),
+                        ),
+                      ],
+                    ).animate(delay: 180.ms).fadeIn(),
+
+                    _SettingsSection(
+                      label: l.account,
+                      items: [
+                        _SettingItem(
+                          icon: Icons.logout_rounded,
+                          iconColor: AppColors.danger,
+                          label: l.signOut,
+                          labelColor: AppColors.danger,
+                          onTap: () async {
+                            await ref.read(authRepositoryProvider)?.signOut();
+                            if (ctx.mounted) ctx.go(AppRoutes.login);
+                          },
+                        ),
+                      ],
+                    ).animate(delay: 220.ms).fadeIn(),
+                  ],
+                );
+              }),
+            ),
+
+            // ── Footer ────────────────────────────────────────────
             SliverToBoxAdapter(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 100),
-                child: Column(
-                  children: [
-                    Text(
-                      'FlexPro Coaching v1.0.0',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 12,
-                        color: context.tertiaryText,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'by Tasos Misailidis',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 12,
-                        color: context.tertiaryText,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      'FlexPro Coaching is not a substitute for professional medical advice.',
-                      style: TextStyle(
-                        fontFamily: 'Inter',
-                        fontSize: 11,
-                        color: context.tertiaryText,
-                        height: 1.5,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
+                padding: const EdgeInsets.fromLTRB(
+                  AppSpacing.base, AppSpacing.lg, AppSpacing.base, 100,
                 ),
+                child: Builder(builder: (ctx) {
+                  final l = AppLocalizations.of(ctx)!;
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () => ctx.push(AppRoutes.privacyPolicy),
+                            child: Text(
+                              l.privacyPolicy,
+                              style: const TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.accent,
+                              ),
+                            ),
+                          ),
+                          Text(
+                            ' · ',
+                            style: TextStyle(
+                              fontFamily: 'Inter',
+                              fontSize: 12,
+                              color: context.tertiaryText,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => ctx.push(AppRoutes.termsOfService),
+                            child: Text(
+                              l.termsOfService,
+                              style: const TextStyle(
+                                fontFamily: 'Inter',
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.accent,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: AppSpacing.sm),
+                      Text(
+                        'FlexPro Coaching v1.0.0',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12,
+                          color: context.tertiaryText,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'by Tasos Misailidis',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 12,
+                          color: context.tertiaryText,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: AppSpacing.xs),
+                      Text(
+                        'FlexPro Coaching is not a substitute for professional medical advice.',
+                        style: TextStyle(
+                          fontFamily: 'Inter',
+                          fontSize: 11,
+                          color: context.tertiaryText,
+                          height: 1.5,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  );
+                }),
               ),
             ),
           ],
@@ -246,33 +286,37 @@ class ProfileScreen extends ConsumerWidget {
   }
 }
 
-// ── Profile hero card ─────────────────────────────────────
+// ── Profile hero card ──────────────────────────────────────────────────────────
+
 class _ProfileHeroCard extends StatelessWidget {
   const _ProfileHeroCard({
     required this.name,
     required this.email,
     required this.initials,
   });
+
   final String name;
   final String email;
   final String initials;
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
     return FpCard(
       gradient: AppColors.heroCardGradient,
       borderColor: AppColors.accent.withAlpha(38),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(AppSpacing.base + AppSpacing.xs),
       child: Row(
         children: [
           Container(
-            width: 68, height: 68,
+            width: 68,
+            height: 68,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(AppTheme.radiusLG),
               gradient: const LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [AppColors.accent, Color(0xFF66F0FF)],
+                colors: [AppColors.accent, AppColors.accentLight],
               ),
               border: Border.all(color: AppColors.accent, width: 2),
             ),
@@ -288,14 +332,14 @@ class _ProfileHeroCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(width: 16),
+          const SizedBox(width: AppSpacing.base),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
@@ -315,7 +359,7 @@ class _ProfileHeroCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  'Member since Jan 2025',
+                  l.memberSince,
                   style: TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 12,
@@ -325,22 +369,21 @@ class _ProfileHeroCard extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(Icons.edit_rounded,
-              color: AppColors.accent, size: 18),
         ],
       ),
     );
   }
 }
 
-// ── Premium banner ────────────────────────────────────────
+// ── Premium banner ─────────────────────────────────────────────────────────────
+
 class _PremiumBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => context.push(AppRoutes.paywall),
       child: Container(
-        padding: const EdgeInsets.all(18),
+        padding: const EdgeInsets.all(AppSpacing.base + AppSpacing.xs),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppTheme.radiusLG),
           gradient: LinearGradient(
@@ -358,8 +401,20 @@ class _PremiumBanner extends StatelessWidget {
         ),
         child: Row(
           children: [
-            const Text('⚡', style: TextStyle(fontSize: 28)),
-            const SizedBox(width: 14),
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: AppColors.accentDim,
+                borderRadius: BorderRadius.circular(AppTheme.radiusSM),
+              ),
+              child: const Icon(
+                Icons.bolt_rounded,
+                color: AppColors.accent,
+                size: 22,
+              ),
+            ),
+            const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -385,8 +440,11 @@ class _PremiumBanner extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right_rounded,
-                color: AppColors.accent, size: 22),
+            const Icon(
+              Icons.chevron_right_rounded,
+              color: AppColors.accent,
+              size: 22,
+            ),
           ],
         ),
       ),
@@ -394,7 +452,164 @@ class _PremiumBanner extends StatelessWidget {
   }
 }
 
-// ── Settings section ──────────────────────────────────────
+// ── Athlete stats section ──────────────────────────────────────────────────────
+
+class _AthleteStatsSection extends StatelessWidget {
+  const _AthleteStatsSection({
+    required this.onboarding,
+    this.latestWeightKg,
+  });
+
+  final OnboardingData onboarding;
+  final double? latestWeightKg;
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context)!;
+    final weightKg = latestWeightKg ?? onboarding.weightKg;
+    final weightStr =
+        weightKg != null ? '${weightKg.toStringAsFixed(1)} kg' : '—';
+    final heightStr = onboarding.heightCm != null
+        ? '${onboarding.heightCm!.toInt()} cm'
+        : '—';
+    final daysStr =
+        onboarding.daysPerWeek != null ? '${onboarding.daysPerWeek}' : '—';
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.base, AppSpacing.xl, AppSpacing.base, 0,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(left: 4, bottom: 10),
+            child: Text(
+              l.athleteStats.toUpperCase(),
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 11,
+                fontWeight: FontWeight.w700,
+                color: context.tertiaryText,
+                letterSpacing: 1,
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              _StatCell(
+                icon: Icons.flag_rounded,
+                iconColor: AppColors.accent,
+                label: l.goal,
+                value: onboarding.goal?.label ?? '—',
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              _StatCell(
+                icon: Icons.trending_up_rounded,
+                iconColor: AppColors.success,
+                label: l.experienceLevel,
+                value: onboarding.experience?.label ?? '—',
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              _StatCell(
+                icon: Icons.calendar_today_rounded,
+                iconColor: AppColors.warning,
+                label: l.trainingDays,
+                value: daysStr,
+              ),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Row(
+            children: [
+              _StatCell(
+                icon: Icons.monitor_weight_outlined,
+                iconColor: AppColors.info,
+                label: l.bodyWeight,
+                value: weightStr,
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              _StatCell(
+                icon: Icons.height_rounded,
+                iconColor: AppColors.accent,
+                label: l.heightLabel,
+                value: heightStr,
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              _StatCell(
+                icon: Icons.fitness_center_rounded,
+                iconColor: AppColors.success,
+                label: l.equipmentLabel,
+                value: onboarding.equipment?.label ?? '—',
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _StatCell extends StatelessWidget {
+  const _StatCell({
+    required this.icon,
+    required this.iconColor,
+    required this.label,
+    required this.value,
+  });
+
+  final IconData icon;
+  final Color iconColor;
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(AppSpacing.md),
+        decoration: BoxDecoration(
+          color: context.surface,
+          borderRadius: BorderRadius.circular(AppTheme.radius),
+          border: Border.all(color: context.border),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, color: iconColor, size: 18),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              value,
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 15,
+                fontWeight: FontWeight.w800,
+                color: context.primaryText,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: TextStyle(
+                fontFamily: 'Inter',
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+                color: context.tertiaryText,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ── Settings section ───────────────────────────────────────────────────────────
+
 class _SettingsSection extends StatelessWidget {
   const _SettingsSection({required this.label, required this.items});
 
@@ -404,7 +619,10 @@ class _SettingsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      padding: const EdgeInsets.fromLTRB(
+        AppSpacing.base, AppSpacing.base + AppSpacing.xs,
+        AppSpacing.base, 0,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -433,11 +651,13 @@ class _SettingsSection extends StatelessWidget {
                 return Column(
                   children: [
                     e.value,
-                    if (!isLast) Divider(
-                      height: 1, thickness: 1,
-                      color: context.border,
-                      indent: 54,
-                    ),
+                    if (!isLast)
+                      Divider(
+                        height: 1,
+                        thickness: 1,
+                        color: context.border,
+                        indent: 54,
+                      ),
                   ],
                 );
               }).toList(),
@@ -452,7 +672,7 @@ class _SettingsSection extends StatelessWidget {
 class _SettingItem extends StatelessWidget {
   const _SettingItem({
     required this.icon,
-    required this.iconBg,
+    required this.iconColor,
     required this.label,
     this.value,
     this.labelColor,
@@ -460,8 +680,8 @@ class _SettingItem extends StatelessWidget {
     this.trailing,
   });
 
-  final String icon;
-  final Color iconBg;
+  final IconData icon;
+  final Color iconColor;
   final String label;
   final String? value;
   final Color? labelColor;
@@ -474,20 +694,22 @@ class _SettingItem extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppTheme.radius),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 13),
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.md + AppSpacing.xs,
+          vertical: AppSpacing.md,
+        ),
         child: Row(
           children: [
             Container(
-              width: 36, height: 36,
+              width: 36,
+              height: 36,
               decoration: BoxDecoration(
-                color: iconBg,
-                borderRadius: BorderRadius.circular(10),
+                color: iconColor.withAlpha(38),
+                borderRadius: BorderRadius.circular(AppTheme.radiusSM),
               ),
-              child: Center(
-                child: Text(icon, style: const TextStyle(fontSize: 16)),
-              ),
+              child: Icon(icon, color: iconColor, size: 18),
             ),
-            const SizedBox(width: 14),
+            const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Text(
                 label,
@@ -499,7 +721,8 @@ class _SettingItem extends StatelessWidget {
                 ),
               ),
             ),
-            if (trailing != null) trailing!
+            if (trailing != null)
+              trailing!
             else ...[
               if (value != null)
                 Text(
@@ -511,9 +734,12 @@ class _SettingItem extends StatelessWidget {
                   ),
                 ),
               if (onTap != null) ...[
-                const SizedBox(width: 4),
-                Icon(Icons.chevron_right_rounded,
-                    color: context.tertiaryText, size: 18),
+                const SizedBox(width: AppSpacing.xs),
+                Icon(
+                  Icons.chevron_right_rounded,
+                  color: context.tertiaryText,
+                  size: 18,
+                ),
               ],
             ],
           ],
@@ -523,7 +749,8 @@ class _SettingItem extends StatelessWidget {
   }
 }
 
-// ── Notification settings sheet ──────────────────────────
+// ── Notification settings sheet ────────────────────────────────────────────────
+
 class _NotificationSheet extends ConsumerWidget {
   const _NotificationSheet({required this.onPermissionDenied});
 
@@ -531,25 +758,28 @@ class _NotificationSheet extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l        = AppLocalizations.of(context)!;
+    final l = AppLocalizations.of(context)!;
     final settings = ref.watch(notificationSettingsProvider);
     final notifier = ref.read(notificationSettingsProvider.notifier);
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 16),
+        padding: const EdgeInsets.fromLTRB(
+          AppSpacing.base, 0, AppSpacing.base, AppSpacing.base,
+        ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 12),
             Container(
-              width: 40, height: 4,
+              width: 40,
+              height: 4,
               decoration: BoxDecoration(
                 color: context.surface3,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: AppSpacing.base + AppSpacing.xs),
             Row(
               children: [
                 Text(
@@ -591,7 +821,7 @@ class _NotificationSheet extends ConsumerWidget {
                 ),
                 trailing: Text(
                   settings.time.format(context),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontFamily: 'Inter',
                     fontSize: 15,
                     fontWeight: FontWeight.w600,
@@ -613,7 +843,7 @@ class _NotificationSheet extends ConsumerWidget {
                 },
               ),
             ],
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSpacing.sm),
           ],
         ),
       ),
@@ -621,7 +851,8 @@ class _NotificationSheet extends ConsumerWidget {
   }
 }
 
-// ── Dark mode toggle ──────────────────────────────────────
+// ── Dark mode toggle ───────────────────────────────────────────────────────────
+
 class _DarkModeToggle extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -634,18 +865,20 @@ class _DarkModeToggle extends ConsumerWidget {
         persistThemeMode(newMode);
       },
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
-        width: 48, height: 26,
+        duration: AppDuration.medium,
+        width: 48,
+        height: 26,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(13),
           color: isDark ? AppColors.accent : context.surface3,
         ),
         child: AnimatedAlign(
-          duration: const Duration(milliseconds: 250),
+          duration: AppDuration.medium,
           alignment: isDark ? Alignment.centerRight : Alignment.centerLeft,
           child: Container(
             margin: const EdgeInsets.all(3),
-            width: 20, height: 20,
+            width: 20,
+            height: 20,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: isDark ? Colors.black : Colors.white,

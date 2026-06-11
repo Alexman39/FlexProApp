@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/constants/app_colors.dart';
 import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/tokens.dart';
 import '../../../shared/widgets/fp_card.dart';
 
 class CoachProfileScreen extends StatelessWidget {
@@ -30,11 +31,7 @@ class CoachProfileScreen extends StatelessWidget {
                 Container(
                   height: 260,
                   decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFF0D2228), Color(0xFF1A3A44)],
-                    ),
+                    gradient: AppColors.accentCardGradient,
                   ),
                   child: Stack(
                     children: [
@@ -61,10 +58,10 @@ class CoachProfileScreen extends StatelessWidget {
                         child: GestureDetector(
                           onTap: () => context.pop(),
                           child: Container(
-                            width: 36, height: 36,
+                            width: 48, height: 48,
                             decoration: BoxDecoration(
                               color: Colors.black.withAlpha(77),
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(AppRadius.sm),
                               border: Border.all(
                                   color: Colors.white.withAlpha(38)),
                             ),
@@ -92,7 +89,7 @@ class CoachProfileScreen extends StatelessWidget {
                             gradient: const LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
-                              colors: [AppColors.accent, Color(0xFF66F0FF)],
+                              colors: [AppColors.accent, AppColors.accentLight],
                             ),
                             border: Border.all(
                                 color: context.bg, width: 4),
@@ -235,17 +232,17 @@ class CoachProfileScreen extends StatelessWidget {
                     _SectionTitle(title: 'Experience & Credentials'),
                     const SizedBox(height: 12),
                     ...[
-                      ('🏆', '25+ years in fitness, personal training & nutrition'),
-                      ('🏛️', 'Founder of Flexapil training studio, Elliniko Athens'),
-                      ('⭐', 'Coached professional athletes and public figures'),
-                      ('💪', 'Specialized in fat loss, body transformation & strength'),
-                      ('🥗', 'Lifestyle coaching & nutrition programming'),
+                      (Icons.military_tech_rounded, '25+ years in fitness, personal training & nutrition'),
+                      (Icons.place_rounded, 'Founder of Flexapil training studio, Elliniko Athens'),
+                      (Icons.people_rounded, 'Coached professional athletes and public figures'),
+                      (Icons.trending_up_rounded, 'Specialized in fat loss, body transformation & strength'),
+                      (Icons.eco_rounded, 'Lifestyle coaching & nutrition programming'),
                     ].map((e) => Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(e.$1, style: const TextStyle(fontSize: 16)),
+                          Icon(e.$1, size: 18, color: AppColors.accent),
                           const SizedBox(width: 12),
                           Expanded(
                             child: Text(
@@ -281,7 +278,7 @@ class CoachProfileScreen extends StatelessWidget {
                       icon: Icons.camera_alt_rounded,
                       label: 'Instagram',
                       subtitle: '@tasosmisailidis',
-                      color: const Color(0xFFE1306C),
+                      color: AppColors.instagramPink,
                       onTap: () => _launch('https://www.instagram.com/tasosmisailidis'),
                     ),
                     const SizedBox(height: 10),

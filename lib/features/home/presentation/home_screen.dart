@@ -91,14 +91,14 @@ class HomeScreen extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(20, 14, 20, 0),
               sliver: SliverToBoxAdapter(
                 child: GestureDetector(
-                  onTap: () => context.push(AppRoutes.coachProfile),
+                  onTap: () => context.go(AppRoutes.coach),
                   child: Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
                       gradient: const LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [Color(0xFF0D2228), Color(0xFF1A3A44)],
+                        colors: AppColors.accentCardGradient.colors,
                       ),
                       borderRadius: BorderRadius.circular(AppTheme.radius),
                       border: Border.all(color: AppColors.accent.withAlpha(51)),
@@ -110,7 +110,7 @@ class HomeScreen extends ConsumerWidget {
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             gradient: const LinearGradient(
-                              colors: [AppColors.accent, Color(0xFF66F0FF)],
+                              colors: [AppColors.accent, AppColors.accentLight],
                             ),
                             border: Border.all(color: AppColors.accent, width: 2),
                           ),
@@ -187,7 +187,6 @@ class HomeScreen extends ConsumerWidget {
               sliver: SliverList(
                 delegate: SliverChildListDelegate([
                   _ProgramRow(
-                    emoji: '💪',
                     title: 'PPL Hypertrophy 6-Day',
                     subtitle: 'Push · Pull · Legs × 2 per week',
                     level: 'Intermediate',
@@ -196,7 +195,6 @@ class HomeScreen extends ConsumerWidget {
                   ).animate(delay: 320.ms).fadeIn().slideY(begin: 0.1, curve: Curves.easeOut),
                   const SizedBox(height: 10),
                   _ProgramRow(
-                    emoji: '🏋️',
                     title: 'Upper/Lower Strength',
                     subtitle: '4 days · Progressive overload focus',
                     level: 'Beginner',
@@ -205,7 +203,6 @@ class HomeScreen extends ConsumerWidget {
                   ).animate(delay: 380.ms).fadeIn().slideY(begin: 0.1, curve: Curves.easeOut),
                   const SizedBox(height: 10),
                   _ProgramRow(
-                    emoji: '🏆',
                     title: 'TASOS Elite — Pro Split',
                     subtitle: '5 days · Competitive prep methodology',
                     level: 'Advanced',
@@ -232,10 +229,10 @@ class _HomeHeader extends StatelessWidget {
     final l = AppLocalizations.of(context)!;
     final hour = DateTime.now().hour;
     final greeting = hour < 12
-        ? '${l.greetingMorning} 👋'
+        ? l.greetingMorning
         : hour < 17
-            ? '${l.greetingAfternoon} 👋'
-            : '${l.greetingEvening} 👋';
+            ? l.greetingAfternoon
+            : l.greetingEvening;
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
@@ -278,7 +275,7 @@ class _HomeHeader extends StatelessWidget {
                 gradient: const LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: [AppColors.accent, Color(0xFF66F0FF)],
+                  colors: [AppColors.accent, AppColors.accentLight],
                 ),
                 border: Border.all(color: AppColors.accent, width: 2),
               ),
@@ -450,7 +447,7 @@ class _HeroStat extends StatelessWidget {
             fontFamily: 'Inter',
             fontSize: 10,
             fontWeight: FontWeight.w600,
-            color: Color(0xFF606060),
+            color: AppColors.text3Dark,
             letterSpacing: 0.6,
           ),
         ),
@@ -469,7 +466,8 @@ class _StreakCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
       child: Row(
         children: [
-          const Text('🔥', style: TextStyle(fontSize: 34)),
+          const Icon(Icons.local_fire_department_rounded,
+              size: 34, color: AppColors.warning),
           const SizedBox(width: 14),
           Expanded(
             child: Column(
@@ -564,7 +562,6 @@ class _StatCard extends StatelessWidget {
 // ── Program row ───────────────────────────────────────────
 class _ProgramRow extends StatelessWidget {
   const _ProgramRow({
-    required this.emoji,
     required this.title,
     required this.subtitle,
     required this.level,
@@ -572,7 +569,6 @@ class _ProgramRow extends StatelessWidget {
     required this.levelColor,
   });
 
-  final String emoji;
   final String title;
   final String subtitle;
   final String level;
@@ -592,8 +588,9 @@ class _ProgramRow extends StatelessWidget {
               color: AppColors.accentDim,
               borderRadius: BorderRadius.circular(14),
             ),
-            child: Center(
-              child: Text(emoji, style: const TextStyle(fontSize: 22)),
+            child: const Center(
+              child: Icon(Icons.fitness_center_rounded,
+                  color: AppColors.accent, size: 22),
             ),
           ),
           const SizedBox(width: 14),

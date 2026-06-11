@@ -43,11 +43,37 @@ abstract final class AppColors {
   static const Color advancedColor      = Color(0xFFFF4757);
 
   // ── Gradient stops ───────────────────────────────────────
+  static const Color accentLight = Color(0xFF66F0FF);
+  static const Color bgDeep      = Color(0xFF070707);
+
   static const LinearGradient heroCardGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [Color(0xFF1A2A2E), Color(0xFF0D1F24), Color(0xFF0A1A1E)],
   );
+
+  static const LinearGradient accentCardGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF0D2228), Color(0xFF1A3A44)],
+  );
+
+  static const LinearGradient logoGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF2A3F44), Color(0xFF0D2228)],
+  );
+
+  static const LinearGradient restDayCardGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [Color(0xFF1A1A2E), Color(0xFF0D0D20), Color(0xFF0A0A1A)],
+  );
+
+  static const Color instagramPink = Color(0xFFE1306C);
+
+  // ── Glow overlays ─────────────────────────────────────────
+  static const Color restDayGlow = Color(0x20644DFF);
 
   static const LinearGradient streakGradient = LinearGradient(
     begin: Alignment.topLeft,

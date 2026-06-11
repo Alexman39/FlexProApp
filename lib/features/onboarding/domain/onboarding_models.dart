@@ -1,39 +1,58 @@
 // ── Domain models for onboarding questionnaire ──────────
+import 'package:flutter/material.dart';
 
 enum TrainingGoal {
-  hypertrophy('Hypertrophy',    'Build muscle mass and size',          '💪'),
-  strength   ('Strength',       'Maximize your lifts',                  '🏋️'),
-  fatLoss    ('Fat Loss',       'Lean out while preserving muscle',     '🔥'),
-  recomp     ('Recomposition',  'Build muscle and lose fat simultaneously', '⚖️'),
-  general    ('General Fitness','Look, feel, and perform better',       '🎯');
+  hypertrophy('Hypertrophy',    'Build muscle mass and size'),
+  strength   ('Strength',       'Maximize your lifts'),
+  fatLoss    ('Fat Loss',       'Lean out while preserving muscle'),
+  recomp     ('Recomposition',  'Build muscle and lose fat simultaneously'),
+  general    ('General Fitness','Look, feel, and perform better');
 
-  const TrainingGoal(this.label, this.description, this.emoji);
+  const TrainingGoal(this.label, this.description);
   final String label;
   final String description;
-  final String emoji;
+
+  IconData get icon => switch (this) {
+    TrainingGoal.hypertrophy => Icons.fitness_center_rounded,
+    TrainingGoal.strength    => Icons.emoji_events_rounded,
+    TrainingGoal.fatLoss     => Icons.local_fire_department_rounded,
+    TrainingGoal.recomp      => Icons.balance_rounded,
+    TrainingGoal.general     => Icons.sports_gymnastics_rounded,
+  };
 }
 
 enum ExperienceLevel {
-  beginner    ('Beginner',     'Less than 1 year of consistent training', '🌱'),
-  intermediate('Intermediate', '1–3 years of consistent training',         '📈'),
-  advanced    ('Advanced',     '3+ years, know your body well',            '🏆');
+  beginner    ('Beginner',     'Less than 1 year of consistent training'),
+  intermediate('Intermediate', '1–3 years of consistent training'),
+  advanced    ('Advanced',     '3+ years, know your body well');
 
-  const ExperienceLevel(this.label, this.description, this.emoji);
+  const ExperienceLevel(this.label, this.description);
   final String label;
   final String description;
-  final String emoji;
+
+  IconData get icon => switch (this) {
+    ExperienceLevel.beginner     => Icons.school_rounded,
+    ExperienceLevel.intermediate => Icons.trending_up_rounded,
+    ExperienceLevel.advanced     => Icons.military_tech_rounded,
+  };
 }
 
 enum EquipmentAccess {
-  fullGym    ('Full Gym',       'All equipment, cables, machines, free weights', '🏢'),
-  homeGym    ('Home Gym',       'Barbells, dumbbells, some machines',            '🏠'),
-  dumbbells  ('Dumbbells Only', 'Just dumbbells and a bench',                    '🔵'),
-  bodyweight ('Bodyweight',     'No equipment needed',                           '🤸');
+  fullGym    ('Full Gym',       'All equipment, cables, machines, free weights'),
+  homeGym    ('Home Gym',       'Barbells, dumbbells, some machines'),
+  dumbbells  ('Dumbbells Only', 'Just dumbbells and a bench'),
+  bodyweight ('Bodyweight',     'No equipment needed');
 
-  const EquipmentAccess(this.label, this.description, this.emoji);
+  const EquipmentAccess(this.label, this.description);
   final String label;
   final String description;
-  final String emoji;
+
+  IconData get icon => switch (this) {
+    EquipmentAccess.fullGym    => Icons.apartment_rounded,
+    EquipmentAccess.homeGym    => Icons.home_rounded,
+    EquipmentAccess.dumbbells  => Icons.fitness_center_rounded,
+    EquipmentAccess.bodyweight => Icons.accessibility_new_rounded,
+  };
 }
 
 enum Gender { male, female }

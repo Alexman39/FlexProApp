@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import '../../onboarding/domain/onboarding_models.dart';
 import '../domain/program_model.dart';
 import '../domain/program_session.dart';
@@ -11,7 +10,6 @@ final List<Program> kAllPrograms = [
     title: 'Foundation Full Body',
     subtitle: '3 days/week · Compound movements',
     description: 'Perfect starting point. Learn movement patterns, build consistency, and set your training foundation with Tasos\'s methodology.',
-    emoji: '🌱',
     level: ExperienceLevel.beginner,
     goal: ProgramGoal.general,
     split: ProgramSplit.fullBody,
@@ -19,8 +17,6 @@ final List<Program> kAllPrograms = [
     durationWeeks: 8,
     totalUsers: 3100,
     rating: 4.8,
-    bannerGradient: [Color(0xFF1F1A2E), Color(0xFF130F20)],
-    accentColor: Color(0xFF9B59B6),
     sessions: [
       ProgramSession(id: 'ffb_a', name: 'Full Body A', exercises: [
         SessionExercise(exerciseId: 'barbell_back_squat', sets: 3, targetReps: 8, maxReps: 10, rpe: 7, restSeconds: 150),
@@ -51,7 +47,6 @@ final List<Program> kAllPrograms = [
     title: 'Strength Starter 5×5',
     subtitle: '3 days/week · Linear progression',
     description: 'Classic 5×5 protocol adapted for beginners. Add weight every session — you\'ll be surprised how fast you progress.',
-    emoji: '🏋️',
     level: ExperienceLevel.beginner,
     goal: ProgramGoal.strength,
     split: ProgramSplit.fullBody,
@@ -59,8 +54,6 @@ final List<Program> kAllPrograms = [
     durationWeeks: 10,
     totalUsers: 2400,
     rating: 4.7,
-    bannerGradient: [Color(0xFF1F2A1A), Color(0xFF0F1A0F)],
-    accentColor: Color(0xFF2ECC71),
     sessions: [
       ProgramSession(id: 'ss_a', name: 'Workout A', exercises: [
         SessionExercise(exerciseId: 'barbell_back_squat', sets: 5, targetReps: 5, rpe: 8, restSeconds: 180),
@@ -80,7 +73,6 @@ final List<Program> kAllPrograms = [
     title: 'Beginner Body Recomp',
     subtitle: '4 days/week · Upper/Lower split',
     description: 'Build muscle and lose fat simultaneously — only possible for beginners. Maximise your newbie gains.',
-    emoji: '⚡',
     level: ExperienceLevel.beginner,
     goal: ProgramGoal.recomp,
     split: ProgramSplit.upperLower,
@@ -88,8 +80,6 @@ final List<Program> kAllPrograms = [
     durationWeeks: 8,
     totalUsers: 1800,
     rating: 4.6,
-    bannerGradient: [Color(0xFF1A2035), Color(0xFF0F1525)],
-    accentColor: Color(0xFF02E6FF),
     sessions: [
       ProgramSession(id: 'br_ua', name: 'Upper A', exercises: [
         SessionExercise(exerciseId: 'barbell_bench_press', sets: 4, targetReps: 8, maxReps: 10, rpe: 7, restSeconds: 150),
@@ -128,7 +118,6 @@ final List<Program> kAllPrograms = [
     title: 'PPL Hypertrophy 6-Day',
     subtitle: 'Push · Pull · Legs × 2 per week',
     description: 'Double frequency PPL built around progressive overload and advanced intensification techniques for maximum hypertrophy.',
-    emoji: '💪',
     level: ExperienceLevel.intermediate,
     goal: ProgramGoal.hypertrophy,
     split: ProgramSplit.ppl,
@@ -138,8 +127,6 @@ final List<Program> kAllPrograms = [
     rating: 4.9,
     isTasosFeatured: true,
     isPremium: true,
-    bannerGradient: [Color(0xFF1A2A2E), Color(0xFF0D1F24)],
-    accentColor: Color(0xFF02E6FF),
     sessions: [
       ProgramSession(id: 'ppl_push_a', name: 'Push A', exercises: [
         SessionExercise(exerciseId: 'barbell_bench_press', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
@@ -199,7 +186,6 @@ final List<Program> kAllPrograms = [
     title: 'Upper/Lower Power-Hypertrophy',
     subtitle: '4 days/week · Hybrid programming',
     description: 'Combines strength work in lower rep ranges with hypertrophy volume. Best of both worlds for the serious intermediate lifter.',
-    emoji: '⚡',
     level: ExperienceLevel.intermediate,
     goal: ProgramGoal.hypertrophy,
     split: ProgramSplit.upperLower,
@@ -208,8 +194,6 @@ final List<Program> kAllPrograms = [
     totalUsers: 1800,
     rating: 4.7,
     isPremium: true,
-    bannerGradient: [Color(0xFF1A2A1A), Color(0xFF0F1A0F)],
-    accentColor: Color(0xFF2ECC71),
     sessions: [
       ProgramSession(id: 'ulph_upper_power', name: 'Upper Power', exercises: [
         SessionExercise(exerciseId: 'barbell_bench_press', sets: 5, targetReps: 4, maxReps: 6, rpe: 8, restSeconds: 180),
@@ -251,7 +235,6 @@ final List<Program> kAllPrograms = [
     title: 'Classic Bro Split — Rebuilt',
     subtitle: '5 days/week · 1 muscle group/day',
     description: 'The classic split, modernised with evidence-based volume and frequency principles. High fun factor.',
-    emoji: '🔵',
     level: ExperienceLevel.intermediate,
     goal: ProgramGoal.hypertrophy,
     split: ProgramSplit.bro,
@@ -260,8 +243,6 @@ final List<Program> kAllPrograms = [
     totalUsers: 2100,
     rating: 4.5,
     isPremium: true,
-    bannerGradient: [Color(0xFF1A1A2E), Color(0xFF10102A)],
-    accentColor: Color(0xFF3498DB),
     sessions: [
       ProgramSession(id: 'bro_chest', name: 'Chest', exercises: [
         SessionExercise(exerciseId: 'barbell_bench_press', sets: 4, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
@@ -309,7 +290,6 @@ final List<Program> kAllPrograms = [
     title: 'Lean Out — Cut Protocol',
     subtitle: '5 days/week · High frequency',
     description: 'Preserve maximum muscle while dropping body fat. Structured around maintaining training intensity in a deficit.',
-    emoji: '🔥',
     level: ExperienceLevel.intermediate,
     goal: ProgramGoal.fatLoss,
     split: ProgramSplit.ppl,
@@ -318,8 +298,6 @@ final List<Program> kAllPrograms = [
     totalUsers: 1400,
     rating: 4.6,
     isPremium: true,
-    bannerGradient: [Color(0xFF2A1A1A), Color(0xFF1A0F0F)],
-    accentColor: Color(0xFFFF4757),
     sessions: [
       ProgramSession(id: 'cut_push', name: 'Push', exercises: [
         SessionExercise(exerciseId: 'barbell_bench_press', sets: 4, targetReps: 8, maxReps: 12, rpe: 8, restSeconds: 120),
@@ -367,7 +345,6 @@ final List<Program> kAllPrograms = [
     title: 'TASOS Elite — Pro Split',
     subtitle: '5 days/week · Competition prep methodology',
     description: 'Tasos\'s personal competitive bodybuilding prep methodology. Extreme detail, advanced periodization, and plateau-busting techniques for serious competitors.',
-    emoji: '🏆',
     level: ExperienceLevel.advanced,
     goal: ProgramGoal.hypertrophy,
     split: ProgramSplit.bro,
@@ -377,8 +354,6 @@ final List<Program> kAllPrograms = [
     rating: 5.0,
     isTasosFeatured: true,
     isPremium: true,
-    bannerGradient: [Color(0xFF2A1A1A), Color(0xFF1A0F0F)],
-    accentColor: Color(0xFFFF4757),
     sessions: [
       ProgramSession(id: 'elite_chest', name: 'Chest & Calves', exercises: [
         SessionExercise(exerciseId: 'barbell_bench_press', sets: 5, targetReps: 6, maxReps: 8, rpe: 9, restSeconds: 180),
@@ -434,7 +409,6 @@ final List<Program> kAllPrograms = [
     title: 'Advanced PPL Periodized',
     subtitle: '6 days/week · Block periodization',
     description: 'Structured mesocycles with accumulation, intensification, and deload phases. Built for lifters who have stalled on linear progression.',
-    emoji: '📊',
     level: ExperienceLevel.advanced,
     goal: ProgramGoal.hypertrophy,
     split: ProgramSplit.ppl,
@@ -443,8 +417,6 @@ final List<Program> kAllPrograms = [
     totalUsers: 760,
     rating: 4.8,
     isPremium: true,
-    bannerGradient: [Color(0xFF1A2A2E), Color(0xFF0D1F24)],
-    accentColor: Color(0xFF02E6FF),
     sessions: [
       ProgramSession(id: 'appl_push_a', name: 'Push A', exercises: [
         SessionExercise(exerciseId: 'barbell_bench_press', sets: 5, targetReps: 6, maxReps: 8, rpe: 8, restSeconds: 180),
@@ -501,7 +473,6 @@ final List<Program> kAllPrograms = [
     title: 'Powerbuilding 2.0',
     subtitle: '5 days/week · Strength + aesthetics',
     description: 'The best of powerlifting and bodybuilding. Big 3 strength work with bodybuilder accessory volume.',
-    emoji: '💥',
     level: ExperienceLevel.advanced,
     goal: ProgramGoal.strength,
     split: ProgramSplit.custom,
@@ -510,8 +481,6 @@ final List<Program> kAllPrograms = [
     totalUsers: 650,
     rating: 4.7,
     isPremium: true,
-    bannerGradient: [Color(0xFF1F1A2E), Color(0xFF130F20)],
-    accentColor: Color(0xFF9B59B6),
     sessions: [
       ProgramSession(id: 'pb_bench', name: 'Bench & Chest', exercises: [
         SessionExercise(exerciseId: 'barbell_bench_press', sets: 5, targetReps: 3, maxReps: 5, rpe: 9, restSeconds: 240),
@@ -557,7 +526,6 @@ final List<Program> kAllPrograms = [
     title: 'Arnold Blueprint',
     subtitle: '6 days/week · Classic Arnold split',
     description: 'Inspired by the legendary Arnold Schwarzenegger training split. High volume, high frequency chest/back, shoulders/arms, legs structure.',
-    emoji: '👑',
     level: ExperienceLevel.advanced,
     goal: ProgramGoal.hypertrophy,
     split: ProgramSplit.arnold,
@@ -566,8 +534,6 @@ final List<Program> kAllPrograms = [
     totalUsers: 890,
     rating: 4.6,
     isPremium: true,
-    bannerGradient: [Color(0xFF2A2A1A), Color(0xFF1A1A0F)],
-    accentColor: Color(0xFFF39C12),
     sessions: [
       ProgramSession(id: 'arnold_cb_a', name: 'Chest & Back A', exercises: [
         SessionExercise(exerciseId: 'barbell_bench_press', sets: 5, targetReps: 8, maxReps: 10, rpe: 8, restSeconds: 150),
@@ -625,7 +591,6 @@ final List<Program> kAllPrograms = [
     title: 'Contest Prep 20-Week',
     subtitle: '6 days/week · Peak week included',
     description: 'Full 20-week contest preparation protocol including peak week manipulation. Designed for competitive bodybuilders.',
-    emoji: '🎯',
     level: ExperienceLevel.advanced,
     goal: ProgramGoal.fatLoss,
     split: ProgramSplit.bro,
@@ -635,8 +600,6 @@ final List<Program> kAllPrograms = [
     rating: 4.9,
     isTasosFeatured: true,
     isPremium: true,
-    bannerGradient: [Color(0xFF2A1A2A), Color(0xFF1A0F1A)],
-    accentColor: Color(0xFFFF4757),
     sessions: [
       ProgramSession(id: 'cp_push', name: 'Push', exercises: [
         SessionExercise(exerciseId: 'barbell_bench_press', sets: 4, targetReps: 10, maxReps: 12, rpe: 8, restSeconds: 120),

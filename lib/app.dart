@@ -3,6 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flexpro_coaching/l10n/app_localizations.dart';
 
+import 'core/constants/app_colors.dart';
 import 'core/providers/locale_provider.dart';
 import 'core/providers/theme_provider.dart';
 import 'core/router/app_router.dart';
@@ -31,7 +32,7 @@ class FlexProApp extends ConsumerWidget {
         final isDesktop = MediaQuery.of(context).size.width > 600;
         if (!isDesktop || child == null) return child ?? const SizedBox();
         return Container(
-          color: const Color(0xFF070707),
+          color: AppColors.bgDeep,
           child: Center(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(44),

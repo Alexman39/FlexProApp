@@ -55,7 +55,7 @@ class WorkoutNotifier extends Notifier<ActiveWorkout?> {
     state = w;
   }
 
-  Future<String?> finish({String? programId, int? programWeek, int? programDay}) async {
+  Future<WorkoutLog?> finish({String? programId, int? programWeek, int? programDay}) async {
     final w = state;
     if (w == null) return null;
 
@@ -79,11 +79,10 @@ class WorkoutNotifier extends Notifier<ActiveWorkout?> {
         .whereType<LoggedExercise>()
         .toList();
 
-    String? logId;
+    WorkoutLog? log;
     if (completedExercises.isNotEmpty) {
-      logId = const Uuid().v4();
-      final log = WorkoutLog(
-        id: logId,
+      log = WorkoutLog(
+        id: const Uuid().v4(),
         workoutName: w.title,
         startedAt: w.startedAt,
         finishedAt: DateTime.now(),
@@ -106,7 +105,7 @@ class WorkoutNotifier extends Notifier<ActiveWorkout?> {
     }
 
     state = null;
-    return logId;
+    return log;
   }
 }
 
