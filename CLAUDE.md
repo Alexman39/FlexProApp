@@ -13,6 +13,39 @@ flutter build apk --release    # Build release APK
 flutter gen-l10n               # Regenerate localization after editing ARB files
 ```
 
+## Web Build (Mac required)
+
+### First-time setup (do once on Mac)
+```bash
+# 1. Enable web platform
+flutter create --platforms web .
+
+# 2. Get Firebase web config — two options:
+#    Option A: run FlutterFire CLI (needs firebase-tools + flutterfire_cli installed)
+flutterfire configure --platforms=android,ios,web
+#    Option B: manually — Firebase Console → Project Settings → Your apps → Add web app
+#              Copy apiKey and appId into lib/firebase_options.dart (web entry, marked TODO)
+
+# 3. Add authorised domain in Firebase Console:
+#    Authentication → Settings → Authorised domains → add your hosting domain
+```
+
+### Build & run
+```bash
+flutter run -d chrome          # Dev mode in Chrome
+flutter build web --release    # Production build → build/web/
+```
+
+### Deploy (optional — Firebase Hosting)
+```bash
+firebase deploy --only hosting
+```
+
+### Web limitations vs native
+- Push notifications: disabled (flutter_local_notifications has no web support)
+- RevenueCat subscriptions: disabled on web (no purchases_flutter web support)
+- Google Sign-In popup: works via web OAuth client ID already configured
+
 ---
 
 ## THIS IS A COACHING SYSTEM — NOT A WORKOUT TRACKER
